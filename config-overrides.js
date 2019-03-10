@@ -9,6 +9,7 @@ module.exports = override(
   addLessLoader({
     javascriptEnabled: true,
     modifyVars: {
+      /** Colours */
       '@black': '#46454C',            // Dark Slate Gray
       '@highlight-color': '#A6905B',  // Dark Khaki
       '@info-color': '#9FA0B3',       // Light Slate Grey
