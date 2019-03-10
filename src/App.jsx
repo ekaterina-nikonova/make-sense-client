@@ -4,6 +4,7 @@ import './App.less';
 import { Col, Layout, Row }  from 'antd';
 
 import Logo from './Components/UI/Logo';
+import MainPageCard from './Components/MainPageCard';
 
 class App extends Component {
   render() {
@@ -13,16 +14,29 @@ class App extends Component {
       <Layout>
         <Header>
           <Row>
-            <Col span={12} offset={6}>
+            <Col md={12} xs={24} offset={6} className="app-header">
               <Logo height={50} />
-              Make sense
+              <span className="app-title">Make sense</span>
             </Col>
           </Row>
         </Header>
-        <Content>
-          <Row>
-            <Col span={12}>Boards</Col>
-            <Col span={12}>Settings</Col>
+        <Content className="page-content">
+          <Row gutter={24} type="flex">
+            <Col md={12} xs={24}>
+              <MainPageCard
+                alt="boards"
+                img="board-200.svg"
+                title="Boards"
+              />
+            </Col>
+
+            <Col md={12} xs={24}>
+              <MainPageCard
+                alt="settings"
+                img="settings-200.svg"
+                title="Settings"
+              />
+            </Col>
           </Row>
         </Content>
         <Footer>Footer</Footer>

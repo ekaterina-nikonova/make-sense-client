@@ -1,3 +1,5 @@
+/* Colours */
+
 .blue-background {
   background: @primary-color;
 }
@@ -14,6 +16,36 @@
   border-color: @info-color;
 }
 
+/* Containers */
+
+.app-header {
+  align-items: center;
+  display: flex;
+}
+
+.app-title {
+  color: @black;
+  display: inline;
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin-left: 1.5rem;
+}
+
+.main-page-card.ant-card {
+  margin: 2rem auto;
+  padding: 2rem;
+  width: 200px;
+  @media (min-width: 768px) {
+    margin-top: 6rem;
+  }
+}
+
+
+.page-content {
+  min-height: calc(100vh - 64px - 69px);
+}
+
+/* Overrides */
 
 .ant-layout-header {
   background: @white;
