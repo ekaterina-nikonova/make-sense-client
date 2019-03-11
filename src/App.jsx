@@ -1,10 +1,12 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 import { Col, Layout, Row }  from 'antd';
 import { Icon, Menu } from 'antd';
+import { Alert } from 'antd';
 
 import './App.less';
+import { getBoards } from './Services/api';
 
 import Logo from './Components/UI/Logo';
 import MainPageCard from './Components/MainPageCard';
@@ -72,11 +74,27 @@ const MainPageContent = () => {
   )
 };
 
-const BoardsContainer = () => {
+function BoardsContainer() {
+  const [boards, setBoards] = useState();
+  const [error, setError] = useState();
+console.log(boards)
+  useEffect(() => {
+    getBoards
+    .then(boards => setBoards(boards.data))
+    .catch(error => setError(error));
+  });
+
   return (
     <React.Fragment>
       <TopLevelMenu item="boards" />
-      <div>Boards will be here</div>
+
+      {boards && boards.length &&
+        boards.map(board => <div key={board.id}>{board.name} - {board.description}</div>)
+      }
+
+      {error &&
+        <Alert description="Could not fetch boards." message="Error" showIcon type="error" />
+      }
     </React.Fragment>
   );
 };
