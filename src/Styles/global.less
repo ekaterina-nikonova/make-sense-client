@@ -32,6 +32,7 @@
 }
 
 .main-page-card.ant-card {
+  height: 350px;
   margin: 2rem auto;
   padding: 2rem;
   width: 200px;
@@ -40,9 +41,14 @@
   }
 }
 
-
 .page-content {
+  display: flex;
   min-height: calc(100vh - 64px - 69px);
+}
+
+.top-level-menu {
+  padding: 2rem 0;
+  width: auto;
 }
 
 /* Overrides */
@@ -50,4 +56,13 @@
 .ant-layout-header {
   background: @white;
   box-shadow: @shadow-large;
+  z-index: 1000;
+}
+
+.page-content .ant-row-flex {
+  width: 100%;
+}
+
+.top-level-menu .ant-menu-item {
+  padding-right: 5rem;
 }

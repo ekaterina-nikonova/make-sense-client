@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 import { Col, Layout, Row }  from 'antd';
+import { Icon, Menu } from 'antd';
 
 import './App.less';
 
@@ -19,7 +20,7 @@ class App extends Component {
             <Header>
               <Row>
                 <Col md={12} xs={24} offset={6} className="app-header">
-                  <Link to="/">
+                  <Link to="/" style={{ display: 'flex' }}>
                     <Logo height={50} />
                   </Link>
                   <span className="app-title">Make sense</span>
@@ -71,10 +72,43 @@ const MainPageContent = () => {
   )
 };
 
-const BoardsContainer = () => (
-  <div>Boards will be here</div>
-);
+const BoardsContainer = () => {
+  return (
+    <React.Fragment>
+      <TopLevelMenu item="boards" />
+      <div>Boards will be here</div>
+    </React.Fragment>
+  );
+};
 
 const SettingsContainer = () => (
-  <div>Settings will be here</div>
+  <React.Fragment>
+    <TopLevelMenu item="settings" />
+    <div>Settings will be here</div>
+  </React.Fragment>
 );
+
+const TopLevelMenu = ({ item }) => {
+  const [activeMenuItem, setActiveMenuItem] = useState(item);
+
+  const goTo = e => {
+    setActiveMenuItem(e.key);
+  };
+
+  return (
+    <Menu onClick={goTo} mode="inline" selectedKeys={[activeMenuItem]} className="top-level-menu">
+      <Menu.Item key="boards">
+        <Link to="/boards">
+          <Icon type="hdd" />
+          Boards
+        </Link>
+      </Menu.Item>
+      <Menu.Item key="settings">
+        <Link to="/settings">
+          <Icon type="sliders" />
+          Settings
+        </Link>
+      </Menu.Item>
+    </Menu>
+  );
+};
