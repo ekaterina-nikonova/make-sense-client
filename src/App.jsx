@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import { Col, Layout, Row }  from 'antd';
 import { Icon, Menu } from 'antd';
 import { Alert } from 'antd';
+import { Card } from 'antd';
 
 import './App.less';
 import { getBoards } from './Services/api';
@@ -21,9 +22,9 @@ class App extends Component {
           <React.Fragment>
             <Header>
               <Row>
-                <Col md={12} xs={24} offset={6} className="app-header">
+                <Col span={24} className="app-header">
                   <Link to="/" style={{ display: 'flex' }}>
-                    <Logo height={50} />
+                    <Logo height={40} />
                   </Link>
                   <span className="app-title">Make sense</span>
                 </Col>
@@ -77,7 +78,7 @@ const MainPageContent = () => {
 function BoardsContainer() {
   const [boards, setBoards] = useState();
   const [error, setError] = useState();
-console.log(boards)
+
   useEffect(() => {
     getBoards
     .then(boards => setBoards(boards.data))
@@ -88,9 +89,15 @@ console.log(boards)
     <React.Fragment>
       <TopLevelMenu item="boards" />
 
-      {boards && boards.length &&
-        boards.map(board => <div key={board.id}>{board.name} - {board.description}</div>)
-      }
+      <Row gutter={12}>
+        {boards &&
+          boards.map(board => (
+            <Col xs={24} sm={12} md={6} key={board.id} className="board-col">
+              <BoardCard board={board} />
+            </Col>
+          ))
+        }
+      </Row>
 
       {error &&
         <Alert description="Could not fetch boards." message="Error" showIcon type="error" />
@@ -128,5 +135,24 @@ const TopLevelMenu = ({ item }) => {
         </Link>
       </Menu.Item>
     </Menu>
+  );
+};
+
+const BoardCard = ({ board }) => {
+  const { Meta } = Card;
+
+  return (
+    <Link to={`/boards/${board.id}`}>
+      <Card
+        hoverable
+        cover={
+          <img alt="board" src={board.image || require('./Assets/Images/board-generic.jpg')} />
+        }
+      >
+        <Meta
+          title={board.name}
+        />
+      </Card>
+    </Link>
   );
 };
