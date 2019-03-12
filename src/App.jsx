@@ -8,10 +8,15 @@ import { Card } from 'antd';
 import { Tabs } from 'antd';
 
 import './App.less';
-import { getBoard, getBoards } from './Services/api';
+import { getBoard, getBoards, updateBoard } from './Services/api';
 
 import Logo from './Components/UI/Logo';
 import MainPageCard from './Components/MainPageCard';
+
+import SimpleSchema from 'simpl-schema';
+import AutoForm from 'uniforms-antd/AutoForm';
+import TextField from 'uniforms-antd/TextField';
+import LongTextField from 'uniforms-antd/LongTextField';
 
 class App extends Component {
   render() {
@@ -261,8 +266,7 @@ const BoardView = ({ board, boards }) => {
           <Col span={24}>
             <Tabs>
               <TabPane tab="Description" key="1">
-                <p>{board.name}</p>
-                <p>{board.description}</p>
+                <BoardDescriptionForm board={board} />
               </TabPane>
     
               <TabPane tab="Tech specs" key="2">
@@ -277,5 +281,33 @@ const BoardView = ({ board, boards }) => {
         </Row>
       </div>
     </React.Fragment>
+  );
+};
+
+const BoardDescriptionForm = ({ board }) => {
+  const schema = new SimpleSchema({
+    name: String,
+    description: String
+  },
+  {
+    requiredByDefault: false
+  });
+
+  const model = ({
+    name: board.name || '',
+    description: board.description || ''
+  });
+
+  return (
+    <AutoForm
+      autosave
+      autosaveDelay={500}
+      model={model}
+      onSubmit={data => updateBoard({ boardId: board.id, updates: data })}
+      schema={schema}
+    >
+      <TextField name="name" />
+      <LongTextField name="description" />
+    </AutoForm>
   );
 };
