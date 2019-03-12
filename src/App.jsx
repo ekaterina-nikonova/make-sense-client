@@ -6,9 +6,10 @@ import { Icon, Menu } from 'antd';
 import { Alert } from 'antd';
 import { Card } from 'antd';
 import { Tabs } from 'antd';
+import { Collapse } from 'antd';
 
 import './App.less';
-import { getBoard, getBoards, updateBoard } from './Services/api';
+import { createBoard, getBoard, getBoards, updateBoard } from './Services/api';
 
 import Logo from './Components/UI/Logo';
 import MainPageCard from './Components/MainPageCard';
@@ -105,6 +106,10 @@ function BoardsContainer({ location, match }) {
 
         <Route path="/boards" component={() =>
           <Row gutter={12}>
+            <Col span={24}>
+              <AddBoard />
+            </Col>
+
             {boards &&
               boards.map(board => (
                 <Col xs={24} sm={12} md={6} key={board.id} className="board-col">
@@ -309,5 +314,26 @@ const BoardDescriptionForm = ({ board }) => {
       <TextField name="name" />
       <LongTextField name="description" />
     </AutoForm>
+  );
+};
+
+const AddBoard = () => {
+  const Panel = Collapse.Panel;
+
+  const schema = new SimpleSchema({
+    name: String,
+    description: String
+  });
+
+  return (
+    <Collapse bordered={false}>
+      <Panel header="Add new board">
+        <AutoForm
+          onSubmit={data => createBoard(data)}
+          schema={schema}
+        >
+        </AutoForm>
+      </Panel>
+    </Collapse>
   );
 };
