@@ -7,9 +7,11 @@ import { Alert } from 'antd';
 import { Card } from 'antd';
 import { Tabs } from 'antd';
 import { Collapse } from 'antd';
+import { Modal } from 'antd';
+import { Empty } from 'antd';
 
 import './App.less';
-import { createBoard, getBoard, getBoards, updateBoard } from './Services/api';
+import { createBoard, deleteBoard, getBoard, getBoards, updateBoard } from './Services/api';
 
 import Logo from './Components/UI/Logo';
 import MainPageCard from './Components/MainPageCard';
@@ -197,24 +199,56 @@ const BoardMenu = ({ currentBoardId, boards }) => {
 };
 
 const BoardCard = ({ board, boards }) => {
+  const [modalOpen, openModal] = useState();
+
   const { Meta } = Card;
 
+  const handleDelete = e => {
+    e.preventDefault();
+    deleteBoard(board.id);
+  };
+
+  const handleOpenModal = e => {
+    e.preventDefault();
+    openModal(true);
+  };
+
   return (
-    <Link to={{
-      pathname: `/boards/${board.id}`,
-      state: { boards }
-    }}>
-      <Card
-        hoverable
-        cover={
-          <img alt="board" src={board.image || require('./Assets/Images/board-generic.jpg')} />
-        }
+    <React.Fragment>
+      <Link to={{
+        pathname: `/boards/${board.id}`,
+        state: { boards }
+      }}>
+        <Card
+          actions={[
+            <Icon onClick={handleOpenModal} type="plus-circle" />,
+            <Icon onClick={handleDelete} type="delete" />
+          ]}
+          hoverable
+          cover={
+            <img
+              alt="board"
+              src={board.image || require('./Assets/Images/board-generic.jpg')}
+            />
+          }
+        >
+          <Meta
+            title={board.name}
+          />
+        </Card>
+      </Link>
+
+      <Modal
+        onOk={() => openModal(false)}
+        onCancel={() => openModal(false)}
+        title="Add component"
+        visible={modalOpen}
       >
-        <Meta
-          title={board.name}
+        <Empty
+          description="Soon you'll be able to create here a new component for the selected board."
         />
-      </Card>
-    </Link>
+      </Modal>
+    </React.Fragment>
   );
 };
 
