@@ -5,6 +5,7 @@ import { Col, Layout, Row }  from 'antd';
 import { Icon, Menu } from 'antd';
 import { Alert } from 'antd';
 import { Card } from 'antd';
+import { Tabs } from 'antd';
 
 import './App.less';
 import { getBoard, getBoards } from './Services/api';
@@ -239,14 +240,42 @@ const BoardContainer = ({ location, match }) => {
   );
 };
 
-const BoardView = ({ board, boards }) => (
-  <React.Fragment>
-    <BoardMenu currentBoardId={board.id} boards={boards} />
+const BoardView = ({ board, boards }) => {
+  const { TabPane } = Tabs;
 
-    <div>
-      <p>{board.id}</p>
-      <p>{board.name}</p>
-      <p>{board.description}</p>
-    </div>
-  </React.Fragment>
-);
+  return (
+    <React.Fragment>
+      <BoardMenu currentBoardId={board.id} boards={boards} />
+      <div style={{ width: '100%' }}>
+        <Row>
+          <Col offset={6} span={12}>
+            <img
+              alt="board main"
+              src={board.image || require('./Assets/Images/board.jpg')}
+              className="board-main-image"
+            />
+          </Col>
+        </Row>
+
+        <Row>
+          <Col span={24}>
+            <Tabs>
+              <TabPane tab="Description" key="1">
+                <p>{board.name}</p>
+                <p>{board.description}</p>
+              </TabPane>
+    
+              <TabPane tab="Tech specs" key="2">
+                <p>{board.id}</p>
+              </TabPane>
+    
+              <TabPane tab="Components" key="3">
+                <p>Components will be here.</p>
+              </TabPane>
+            </Tabs>
+          </Col>
+        </Row>
+      </div>
+    </React.Fragment>
+  );
+};
