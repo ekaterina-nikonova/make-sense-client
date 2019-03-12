@@ -1,5 +1,5 @@
 import React, { Component, useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 
 import { Col, Layout, Row }  from 'antd';
 import { Icon, Menu } from 'antd';
@@ -7,7 +7,7 @@ import { Alert } from 'antd';
 import { Card } from 'antd';
 
 import './App.less';
-import { getBoards } from './Services/api';
+import { getBoard, getBoards } from './Services/api';
 
 import Logo from './Components/UI/Logo';
 import MainPageCard from './Components/MainPageCard';
@@ -75,29 +75,40 @@ const MainPageContent = () => {
   )
 };
 
-function BoardsContainer() {
+function BoardsContainer({ location, match }) {
   const [boards, setBoards] = useState();
   const [error, setError] = useState();
 
-  useEffect(() => {
-    getBoards
-    .then(boards => setBoards(boards.data))
-    .catch(error => setError(error));
-  });
+  const { pathname } = location;
+  const { url } = match;
+
+  const getBoardsAsync = async () => {
+    await getBoards()
+      .then(boards => setBoards(boards.data))
+      .catch(error => setError(error));
+  }
+
+  useEffect(() => { getBoardsAsync(); }, []);
 
   return (
     <React.Fragment>
-      <TopLevelMenu item="boards" />
+      <TopLevelMenu currentPath={pathname} item="boards" url={url} />
 
-      <Row gutter={12}>
-        {boards &&
-          boards.map(board => (
-            <Col xs={24} sm={12} md={6} key={board.id} className="board-col">
-              <BoardCard board={board} />
-            </Col>
-          ))
-        }
-      </Row>
+      <Switch>
+        <Route path="/boards/:id" component={BoardContainer} />
+
+        <Route path="/boards" component={() =>
+          <Row gutter={12}>
+            {boards &&
+              boards.map(board => (
+                <Col xs={24} sm={12} md={6} key={board.id} className="board-col">
+                  <BoardCard board={board} boards={boards} />
+                </Col>
+              ))
+            }
+          </Row>
+        } />
+      </Switch>
 
       {error &&
         <Alert description="Could not fetch boards." message="Error" showIcon type="error" />
@@ -106,14 +117,19 @@ function BoardsContainer() {
   );
 };
 
-const SettingsContainer = () => (
-  <React.Fragment>
-    <TopLevelMenu item="settings" />
-    <div>Settings will be here</div>
-  </React.Fragment>
-);
+const SettingsContainer = ({ location, match }) => {
+  const { pathname } = location;
+  const { url } = match;
 
-const TopLevelMenu = ({ item }) => {
+  return (
+    <React.Fragment>
+      <TopLevelMenu currentPath={pathname} item="settings" url={url} />
+      <div>Settings will be here</div>
+    </React.Fragment>
+  );
+};
+
+const TopLevelMenu = ({ currentPath, item, url }) => {
   const [activeMenuItem, setActiveMenuItem] = useState(item);
 
   const goTo = e => {
@@ -121,28 +137,62 @@ const TopLevelMenu = ({ item }) => {
   };
 
   return (
-    <Menu onClick={goTo} mode="inline" selectedKeys={[activeMenuItem]} className="top-level-menu">
+    <Menu
+      inlineCollapsed={currentPath !== url}
+      mode="inline"
+      onClick={goTo}
+      selectedKeys={[activeMenuItem]}
+      className="top-level-menu"
+    >
       <Menu.Item key="boards">
         <Link to="/boards">
           <Icon type="hdd" />
-          Boards
+          <span>Boards</span>
         </Link>
       </Menu.Item>
       <Menu.Item key="settings">
         <Link to="/settings">
           <Icon type="sliders" />
-          Settings
+          <span>Settings</span>
         </Link>
       </Menu.Item>
     </Menu>
   );
 };
 
-const BoardCard = ({ board }) => {
+const BoardMenu = ({ currentBoardId, boards }) => {
+  const [activeBoardId, setActiveBoard] = useState(currentBoardId);
+
+  const goTo = e => {
+    setActiveBoard(e.key)
+  };
+
+  return (
+    <Menu onClick={goTo} mode="inline" selectedKeys={[activeBoardId]} className="top-level-menu">
+      {boards &&
+        boards.map(board => (
+          <Menu.Item key={board.id}>
+            <Link to={{
+              pathname: `/boards/${board.id}`,
+              state: { boards }
+            }}>
+              {board.name}
+            </Link>
+          </Menu.Item>
+        ))
+      }
+    </Menu>
+  );
+};
+
+const BoardCard = ({ board, boards }) => {
   const { Meta } = Card;
 
   return (
-    <Link to={`/boards/${board.id}`}>
+    <Link to={{
+      pathname: `/boards/${board.id}`,
+      state: { boards }
+    }}>
       <Card
         hoverable
         cover={
@@ -156,3 +206,47 @@ const BoardCard = ({ board }) => {
     </Link>
   );
 };
+
+const BoardContainer = ({ location, match }) => {
+  const [board, setBoard] = useState();
+  const [error, setError] = useState();
+
+  const { params } = match;
+  const { state } = location;
+
+  const getBoardAsync = async params => {
+    await getBoard(params.id)
+      .then(result => setBoard(result.data))
+      .catch(error => setError(error));
+  }
+
+  useEffect(() => {
+    getBoardAsync(params);
+  }, [params]);
+
+  return (
+    <React.Fragment>
+      {error &&
+        <Alert description="Could not fetch board info." message="Error" showIcon type="error" />
+      }
+
+      {
+        board &&
+        <BoardView board={board} boards={state.boards} />
+      }
+
+    </React.Fragment>
+  );
+};
+
+const BoardView = ({ board, boards }) => (
+  <React.Fragment>
+    <BoardMenu currentBoardId={board.id} boards={boards} />
+
+    <div>
+      <p>{board.id}</p>
+      <p>{board.name}</p>
+      <p>{board.description}</p>
+    </div>
+  </React.Fragment>
+);
