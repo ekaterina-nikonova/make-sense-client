@@ -9,6 +9,7 @@ import { Tabs } from 'antd';
 import { Collapse } from 'antd';
 import { Modal } from 'antd';
 import { Empty } from 'antd';
+import { message, Popconfirm } from 'antd';
 
 import './App.less';
 import { createBoard, deleteBoard, getBoard, getBoards, updateBoard, getComponents, updateComponent } from './Services/api';
@@ -234,8 +235,9 @@ const BoardCard = ({ board, boards }) => {
   const { Meta } = Card;
 
   const handleDelete = e => {
-    e.preventDefault();
+    e.stopPropagation();
     deleteBoard(board.id);
+    message.success('The board has been deleted.');
   };
 
   const handleOpenModal = e => {
@@ -252,7 +254,10 @@ const BoardCard = ({ board, boards }) => {
         <Card
           actions={[
             <Icon onClick={handleOpenModal} type="plus-circle" />,
-            <Icon onClick={handleDelete} type="delete" />
+
+            <Popconfirm placement="topRight" title="Delete the board?" onCancel={e => e.stopPropagation()} onConfirm={handleDelete} okText="Yes" cancelText="No">
+              <Icon type="delete" />
+            </Popconfirm>
           ]}
           hoverable
           cover={
@@ -433,7 +438,7 @@ const ComponentsContainer = ({ boardId }) => {
       .catch(error => setError(error));
   }
 
-  useEffect(() => { getComponentsAsync(); }, []);
+  useEffect(() => { getComponentsAsync(); }, [boardId]);
 
   return (
     <React.Fragment>
@@ -444,29 +449,32 @@ const ComponentsContainer = ({ boardId }) => {
       {!error &&
           components &&
           !!components.length &&
-          components.map(component =>
-            <Collapse key={`collapse-${component.id}`}>
-              <Panel
-                extra={
-                  <Link to={`/components/${component.id}`} target="_blank">
-                    <Icon type="profile" />
-                  </Link>
-                }
-                header={component.name}
-              >
-                <AutoForm
-                  autosave
-                  autosaveDelay={500}
-                  model={model(component)}
-                  onSubmit={data => updateComponent({ componentId: component.id, updates: data})}
-                  schema={schema}
+          <Collapse>
+            {
+              components.map(component =>
+                <Panel
+                  extra={
+                    <Link to={`/components/${component.id}`} target="_blank">
+                      <Icon type="profile" />
+                    </Link>
+                  }
+                  header={component.name}
+                  key={`collapse-panel-${component.id}`}
                 >
-                  <TextField name="name" />
-                  <LongTextField name="description" />
-                </AutoForm>
-              </Panel>
-            </Collapse>
-          )
+                  <AutoForm
+                    autosave
+                    autosaveDelay={500}
+                    model={model(component)}
+                    onSubmit={data => updateComponent({ componentId: component.id, updates: data})}
+                    schema={schema}
+                  >
+                    <TextField name="name" />
+                    <LongTextField name="description" />
+                  </AutoForm>
+                </Panel>
+              )
+            }
+          </Collapse>
       }
 
       {!error && (!components || !components.length) &&
