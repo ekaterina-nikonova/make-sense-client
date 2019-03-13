@@ -13,3 +13,5 @@ export const updateBoard = ({ boardId, updates }) => axios.patch(`http://localho
 /** Components */
 
 export const getComponents = boardId => axios.get(`http://localhost:3001/api/v1/boards/${boardId}/components`);
+
+export const updateComponent = ({ componentId, updates }) => axios.patch(`http://localhost:3001/api/v1/components/${componentId}`, updates);

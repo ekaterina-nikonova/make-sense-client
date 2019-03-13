@@ -1,7 +1,7 @@
 import React, { Component, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 
-import { Col, Layout, Row }  from 'antd';
+import { Col, Layout, Row, Button }  from 'antd';
 import { Icon, Menu } from 'antd';
 import { Alert } from 'antd';
 import { Card } from 'antd';
@@ -11,7 +11,7 @@ import { Modal } from 'antd';
 import { Empty } from 'antd';
 
 import './App.less';
-import { createBoard, deleteBoard, getBoard, getBoards, updateBoard, getComponents } from './Services/api';
+import { createBoard, deleteBoard, getBoard, getBoards, updateBoard, getComponents, updateComponent } from './Services/api';
 
 import Logo from './Components/UI/Logo';
 import MainPageCard from './Components/MainPageCard';
@@ -29,7 +29,7 @@ class App extends Component {
       <Layout>
         <Router>
           <React.Fragment>
-            <Header>
+            <Header style={{ position: 'sticky', top: '0' }}>
               <Row>
                 <Col span={24} className="app-header">
                   <Link to="/" style={{ display: 'flex' }}>
@@ -44,6 +44,13 @@ class App extends Component {
               <Route exact path="/" component=  {MainPageContent} />
               <Route path="/boards" component={BoardsContainer} />
               <Route path="/settings" component={SettingsContainer} />
+
+              <Route path="/components/:id" component={({ match }) => (
+                <EmptyFullPage
+                  description={`A page for the component with id ${match.params.id} will be here soon.`}
+                />
+              )} />
+
             </Content>
           </React.Fragment>
         </Router>
@@ -146,17 +153,17 @@ const SettingsContainer = ({ location, match }) => {
     <React.Fragment>
       <TopLevelMenu currentPath={pathname} item="settings" url={url} />
 
-      <EmptyFullPage />
+      <EmptyFullPage description="The Settings page is under construction." />
     </React.Fragment>
   );
 };
 
-const EmptyFullPage = () => (
+const EmptyFullPage = ({ description }) => (
   <Row type="flex">
     <Col span={24} style={{ display: 'flex' }}>
       <Empty
         className="empty-full-page"
-        description="Coming soon"
+        description={description}
         image={
           <Icon type="tool" className="empty-icon" />
         }
@@ -389,6 +396,12 @@ const AddBoard = () => {
           onSubmit={data => createBoard(data)}
           schema={schema}
         >
+          <TextField name="name" />
+          <LongTextField name="description" />
+          <Button type="primary" htmlType="submit">
+            <Icon type="check" />
+            <span>Save</span>
+          </Button>
         </AutoForm>
       </Panel>
     </Collapse>
@@ -398,6 +411,21 @@ const AddBoard = () => {
 const ComponentsContainer = ({ boardId }) => {
   const [components, setComponents] = useState();
   const [error, setError] = useState();
+
+  const { Panel } = Collapse;
+
+  const model = component => ({
+    name: component.name || '',
+    description: component.description || ''
+  })
+
+  const schema = new SimpleSchema({
+    name: String,
+    description: String
+  },
+  {
+    requiredByDefault: false
+  });
 
   const getComponentsAsync = async () => {
     await getComponents(boardId)
@@ -415,8 +443,30 @@ const ComponentsContainer = ({ boardId }) => {
 
       {!error &&
           components &&
-          components.length &&
-          components.map(component => <div>{component.name} - {component.description}</div>)
+          !!components.length &&
+          components.map(component =>
+            <Collapse key={`collapse-${component.id}`}>
+              <Panel
+                extra={
+                  <Link to={`/components/${component.id}`} target="_blank">
+                    <Icon type="profile" />
+                  </Link>
+                }
+                header={component.name}
+              >
+                <AutoForm
+                  autosave
+                  autosaveDelay={500}
+                  model={model(component)}
+                  onSubmit={data => updateComponent({ componentId: component.id, updates: data})}
+                  schema={schema}
+                >
+                  <TextField name="name" />
+                  <LongTextField name="description" />
+                </AutoForm>
+              </Panel>
+            </Collapse>
+          )
       }
 
       {!error && (!components || !components.length) &&
