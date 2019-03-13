@@ -11,7 +11,7 @@ import { Modal } from 'antd';
 import { Empty } from 'antd';
 
 import './App.less';
-import { createBoard, deleteBoard, getBoard, getBoards, updateBoard } from './Services/api';
+import { createBoard, deleteBoard, getBoard, getBoards, updateBoard, getComponents } from './Services/api';
 
 import Logo from './Components/UI/Logo';
 import MainPageCard from './Components/MainPageCard';
@@ -85,7 +85,7 @@ const MainPageContent = () => {
 };
 
 function BoardsContainer({ location, match }) {
-  const [boards, setBoards] = useState();
+  const [boards, setBoards] = useState([]);
   const [error, setError] = useState();
 
   const { pathname } = location;
@@ -107,25 +107,33 @@ function BoardsContainer({ location, match }) {
         <Route path="/boards/:id" component={BoardContainer} />
 
         <Route path="/boards" component={() =>
-          <Row gutter={12}>
+          <Row gutter={12} type="flex" style={{alignContent: boards.length ? 'flex-start': 'stretch'}}>
             <Col span={24}>
               <AddBoard />
             </Col>
 
-            {boards &&
+            {!error && (!boards || !boards.length) &&
+              <Col span={24}>
+                <Empty description="No boards." />
+              </Col>
+            }
+
+            {!error && boards &&
               boards.map(board => (
                 <Col xs={24} sm={12} md={6} key={board.id} className="board-col">
                   <BoardCard board={board} boards={boards} />
                 </Col>
               ))
             }
+
+            {error &&
+              <Col xs={{span: 22, offset: 1}} sm={{span: 12, offset: 6}}>
+                <Alert description="Could not fetch boards." message="Error" showIcon type="error" />
+              </Col>
+            }
           </Row>
         } />
       </Switch>
-
-      {error &&
-        <Alert description="Could not fetch boards." message="Error" showIcon type="error" />
-      }
     </React.Fragment>
   );
 };
@@ -137,10 +145,25 @@ const SettingsContainer = ({ location, match }) => {
   return (
     <React.Fragment>
       <TopLevelMenu currentPath={pathname} item="settings" url={url} />
-      <div>Settings will be here</div>
+
+      <EmptyFullPage />
     </React.Fragment>
   );
 };
+
+const EmptyFullPage = () => (
+  <Row type="flex">
+    <Col span={24} style={{ display: 'flex' }}>
+      <Empty
+        className="empty-full-page"
+        description="Coming soon"
+        image={
+          <Icon type="tool" className="empty-icon" />
+        }
+      />
+    </Col>
+  </Row>
+);
 
 const TopLevelMenu = ({ currentPath, item, url }) => {
   const [activeMenuItem, setActiveMenuItem] = useState(item);
@@ -309,11 +332,11 @@ const BoardView = ({ board, boards }) => {
               </TabPane>
     
               <TabPane tab="Tech specs" key="2">
-                <p>{board.id}</p>
+                <EmptyFullPage />
               </TabPane>
     
               <TabPane tab="Components" key="3">
-                <p>Components will be here.</p>
+                <ComponentsContainer boardId={board.id} />
               </TabPane>
             </Tabs>
           </Col>
@@ -369,5 +392,38 @@ const AddBoard = () => {
         </AutoForm>
       </Panel>
     </Collapse>
+  );
+};
+
+const ComponentsContainer = ({ boardId }) => {
+  const [components, setComponents] = useState();
+  const [error, setError] = useState();
+
+  const getComponentsAsync = async () => {
+    await getComponents(boardId)
+      .then(response => setComponents(response.data))
+      .catch(error => setError(error));
+  }
+
+  useEffect(() => { getComponentsAsync(); }, []);
+
+  return (
+    <React.Fragment>
+      {error &&
+        <Alert description="Could not fetch components." message="Error" showIcon type="error" />
+      }
+
+      {!error &&
+          components &&
+          components.length &&
+          components.map(component => <div>{component.name} - {component.description}</div>)
+      }
+
+      {!error && (!components || !components.length) &&
+        <Empty
+          description="No components for this board."
+        />
+      }
+    </React.Fragment>
   );
 };
