@@ -1,0 +1,124 @@
+/* Colours */
+
+.blue-background {
+  background: @primary-color;
+}
+
+.light-grey-background {
+  background: @info-color;
+}
+
+.blue-border {
+  border-color: @primary-color;
+}
+
+.light-grey-border {
+  border-color: @info-color;
+}
+
+/* Containers */
+
+.app-header {
+  align-items: center;
+  display: flex;
+}
+
+.app-title {
+  color: @black;
+  display: inline;
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin-left: 1.5rem;
+}
+
+.board-col {
+  @media (min-width: 769px) {
+    margin: 0 1rem;
+    padding: 2rem;
+  }
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+}
+
+.main-page-card.ant-card {
+  height: 350px;
+  margin: 2rem auto;
+  padding: 2rem;
+  width: 200px;
+  @media (min-width: 768px) {
+    margin-top: 6rem;
+  }
+}
+
+.page-content {
+  display: flex;
+  min-height: calc(100vh - 64px - 69px);
+}
+
+.top-level-menu {
+  padding: 2rem 0;
+  width: auto;
+}
+
+/* Visuals */
+
+.board-main-image {
+  display: block;
+  margin: 2rem auto;
+  max-height: 200px;
+  max-width: 100%;
+}
+
+.empty-full-page {
+  margin: auto;
+}
+
+.empty-icon svg {
+  color: @highlight-color;
+  height: 3rem;
+  opacity: .6;
+  width: 3rem;
+}
+
+/* Overrides */
+
+.ant-alert {
+  height: fit-content;
+  margin: auto;
+}
+
+.ant-layout-footer {
+  background: @info-color;
+  color: @white;
+}
+
+.ant-layout-header {
+  background: @white;
+  box-shadow: @shadow-large;
+  z-index: 1000;
+}
+
+.top-level-menu .ant-menu-item {
+  padding-right: 5rem;
+}
+
+.page-content .ant-row-flex {
+  width: 100%;
+}
+
+.ant-tabs-tabpane {
+  padding: 2rem;
+}
+
+.ant-tabs-nav {
+  width: 100%;
+}
+
+.ant-tabs-nav > div {
+  display: flex;
+}
+
+.ant-tabs-tab {
+  flex-grow: 1;
+}
