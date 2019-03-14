@@ -394,11 +394,17 @@ const AddBoard = () => {
     description: String
   });
 
+  let formRef;
+
   return (
     <Collapse bordered={false}>
       <Panel header="Add new board">
         <AutoForm
-          onSubmit={data => createBoard(data)}
+          onSubmit={data => {
+            createBoard(data);
+            formRef.reset();
+          }}
+          ref={ref => formRef = ref}
           schema={schema}
         >
           <TextField name="name" />
