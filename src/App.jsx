@@ -17,6 +17,8 @@ import { createBoard, deleteBoard, getBoard, getBoards, updateBoard, getComponen
 import Logo from './Components/UI/Logo';
 import MainPageCard from './Components/MainPageCard';
 
+import ComponentsContainer from './Components/Components/ComponentsContainer';
+
 import SimpleSchema from 'simpl-schema';
 import AutoForm from 'uniforms-antd/AutoForm';
 import TextField from 'uniforms-antd/TextField';
@@ -419,7 +421,7 @@ const AddBoard = () => {
   );
 };
 
-const ComponentsContainer = ({ boardId }) => {
+const ComponentsContainerOld = ({ boardId }) => {
   const [components, setComponents] = useState();
   const [error, setError] = useState();
 
