@@ -7,7 +7,7 @@ const MainPageCard = ({ alt, img, title }) => {
   return (
     <Card
       hoverable
-      cover={<img alt={alt} src={require(`../Assets/Images/${img}`)} />} 
+      cover={<img alt={alt} src={require(`../../Assets/Images/${img}`)} />} 
       className="main-page-card"
     >
       <Meta title={title} />
