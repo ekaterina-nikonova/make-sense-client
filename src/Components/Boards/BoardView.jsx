@@ -19,7 +19,7 @@ const BoardView = ({ board, boards }) => {
           <Col offset={6} span={12}>
             <img
               alt="board main"
-              src={board.image || require('../../Assets/Images/board.jpg')}
+              src={board.image || require('../../Assets/Images/board-generic.svg')}
               className="board-main-image"
             />
           </Col>
