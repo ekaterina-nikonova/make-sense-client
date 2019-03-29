@@ -30,6 +30,13 @@ const Component = ({ component }) => {
       onSubmit={data => updateComponent({ componentId: component.id, updates: data })}
       schema={schema}
     >
+      {component.image &&
+        <img
+          alt={component.name}
+          src={component.image || require('../../Assets/Images/component-generic.svg')}
+          className="component-image"
+        />
+      }
       <TextField name="name" />
       <LongTextField name="description" />
     </AutoForm>

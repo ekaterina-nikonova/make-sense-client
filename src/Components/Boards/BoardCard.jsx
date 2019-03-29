@@ -40,7 +40,7 @@ const BoardCard = ({ board, boards }) => {
           cover={
             <img
               alt="board"
-              src={board.image || require('../../Assets/Images/board-generic.jpg')}
+              src={board.image || require('../../Assets/Images/board-generic.svg')}
             />
           }
         >

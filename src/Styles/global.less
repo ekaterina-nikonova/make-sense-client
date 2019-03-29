@@ -67,11 +67,28 @@
 
 /* Visuals */
 
+.board-image-upload {
+  display: block;
+  max-height: fit-content;
+}
+
 .board-main-image {
   display: block;
   margin: 2rem auto;
   max-height: 200px;
   max-width: 100%;
+  min-width: 200px;
+}
+
+.component-image {
+  display: block;
+  margin-left: auto;
+  max-height: 150px;
+}
+
+.component-image-icon {
+  height: 1.5rem;
+  margin-right: 1rem;
 }
 
 .empty-full-page {
@@ -83,6 +100,14 @@
   height: 3rem;
   opacity: .6;
   width: 3rem;
+}
+
+/* Controls */
+
+.button-right {
+  display: block;
+  margin-left: auto;
+  margin-top: 1rem;
 }
 
 /* Overrides */
@@ -109,6 +134,14 @@
 
 .page-content .ant-row-flex {
   width: 100%;
+}
+
+.ant-steps-horizontal {
+  margin: 1rem 0 2rem 0;
+}
+
+.ant-steps-item-title {
+  font-size: .8rem;
 }
 
 .ant-tabs-tabpane {
