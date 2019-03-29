@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Button, Col, Icon, Row, Tabs, Upload, message } from 'antd';
+import { Col, Icon, Row, Tabs, Upload, message } from 'antd';
 
 import BoardDescriptionForm from './BoardDescriptionForm';
 import BoardMenu from '../Layout/BoardMenu';
