@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { baseUrl } from '../../Services/api';
+
 import { Col, Icon, Row, Tabs, Upload, message } from 'antd';
 
 import BoardDescriptionForm from './BoardDescriptionForm';
@@ -13,7 +15,7 @@ const BoardView = ({ board, boards }) => {
   const { TabPane } = Tabs;
 
   const props = {
-    action: '/api/v1/uploads',
+    action: `${baseUrl}/api/v1/uploads`,
     data: { parent: 'board', parent_id: board.id, type: 'image' },
     name: 'file',
     onChange(info) {
