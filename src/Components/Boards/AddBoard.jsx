@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { createBoard, updateBoard } from '../../Services/api';
+import { baseUrl, createBoard, updateBoard } from '../../Services/api';
 
 import { Button, Collapse, Icon, message, Steps, Upload } from 'antd';
 
@@ -42,7 +42,7 @@ const AddBoard = () => {
 
   const ImageUpload = () => {
     const props = {
-      action: '/api/v1/uploads',
+      action: `${baseUrl}/api/v1/uploads`,
       data: { parent: 'board', parent_id: newBoardId, type: 'image' },
       name: 'file',
       onChange(info) {
