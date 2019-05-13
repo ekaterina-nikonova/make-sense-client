@@ -57,7 +57,10 @@ const LoginForm = ({ form }) => {
         ) }
       </Item>
 
-      <Button type="primary" block htmlType="submit">Log in</Button>
+      <Button type="primary" block htmlType="submit">
+        Log in <Icon type="login" />
+      </Button>
+
       <div style={{ margin: '1rem 0' }}>
         <span>Haven't registered yet? </span>
         <Link to="/signup">Sign up</Link>

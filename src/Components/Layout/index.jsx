@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 
 import { Button, Col, Dropdown, Icon, Layout, Row } from 'antd';
 
+import { authLogout } from '../../Services/auth';
+
 import BoardsContainer from '../Boards/BoardsContainer';
 import EmptyFullPage from '../UI/EmptyFullPage';
 import Logo from '../UI/Logo';
@@ -27,11 +29,19 @@ export default () => {
                 <span className="app-title">Make sense</span>
 
                 <span style={{ marginLeft: 'auto' }}>
-                  <Dropdown overlay={<LoginForm />} trigger={['click']}>
-                    <Button type="dashed">
-                      Log in <Icon type="down" />
-                    </Button>
-                  </Dropdown>
+                  {
+                    localStorage.signedIn ? (
+                      <Button type="dashed" onClick={authLogout}>
+                        Log out <Icon type="logout" />
+                      </Button>
+                    ) : (
+                      <Dropdown overlay={<LoginForm />} trigger={['click']}>
+                        <Button type="dashed">
+                          Log in <Icon type="down" />
+                        </Button>
+                      </Dropdown>  
+                    )
+                  }
                 </span>
               </Col>
             </Row>

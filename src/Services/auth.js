@@ -1,4 +1,4 @@
-import { signin } from './api';
+import { signin, signout } from './api';
 
 export const authLogin = data => {
   const success = response => {
@@ -15,3 +15,16 @@ export const authLogin = data => {
     .then(response => success(response))
     .catch(error => failure(error));
 };
+
+export const authLogout = () => {
+  const success = response => {
+    delete localStorage.csrf;
+    delete localStorage.signedIn;
+  };
+
+  const failure = error => console.log(error);
+
+  signout()
+    .then(response => success(response))
+    .catch(error => failure(error))
+}

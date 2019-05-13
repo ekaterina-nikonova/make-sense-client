@@ -8,6 +8,8 @@ console.log(`Base URL ${baseUrl} for ${process.env.NODE_ENV} environment`);
 
 export const signin = data => axios.post(`${baseUrl}/api/v1/signin`, data);
 
+export const signout = () => axios.delete(`${baseUrl}/api/v1/signin`);
+
 /** Boards */
 
 export const createBoard = data => axios.post(`${baseUrl}/api/v1/boards`, data);
