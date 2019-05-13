@@ -4,6 +4,12 @@ export const baseUrl = process.env.NODE_ENV === 'production' ? 'https://make-sen
 
 console.log(`Base URL ${baseUrl} for ${process.env.NODE_ENV} environment`);
 
+/** Account */
+
+export const signin = data => axios.post(`${baseUrl}/api/v1/signin`, data);
+
+/** Boards */
+
 export const createBoard = data => axios.post(`${baseUrl}/api/v1/boards`, data);
 
 export const deleteBoard = id => axios.delete(`${baseUrl}/api/v1/boards/${id}`);

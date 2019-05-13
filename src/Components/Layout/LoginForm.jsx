@@ -3,6 +3,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Form, Icon, Input } from 'antd';
 
+import { authLogin } from '../../Services/auth';
+
 const LoginForm = ({ form }) => {
   const { Item } = Form;
   const { getFieldDecorator, validateFields } = form;
@@ -13,7 +15,7 @@ const LoginForm = ({ form }) => {
     e.preventDefault();
     validateFields((err, values) => {
       if (!err) {
-        console.log('Received values from form: ', values)
+        authLogin(values);
       }
     });
   };
@@ -50,6 +52,7 @@ const LoginForm = ({ form }) => {
           <Input
             prefix={<Icon type="lock" />}
             placeholder="Password"
+            type="password"
           />
         ) }
       </Item>
