@@ -24,6 +24,7 @@ const SignupPage = ({ form }) => {
 
 const SignupForm = ({ form }) => {
   const { Item } = Form;
+  const { getFieldDecorator, validateFields } = form;
 
   const formLayout = {
     labelCol: {
@@ -38,7 +39,7 @@ const SignupForm = ({ form }) => {
 
   const signUp = e => {
     e.preventDefault();
-    form.validateFields((err, values) => {
+    validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
       }
@@ -48,19 +49,47 @@ const SignupForm = ({ form }) => {
   return (
     <Form {...formLayout} onSubmit={signUp}>
       <Item label="Email">
-        <Input prefix={<Icon type="mail" />} />
+        { getFieldDecorator('email', {
+          rules: [
+            {
+              required: true,
+              whitespace: true,
+              message: 'Please provide an email.'
+            }
+          ]
+        })(
+          <Input prefix={<Icon type="mail" />} />
+        ) }
       </Item>
 
       <Item label="Username">
-        <Input prefix={<Icon type="user" />} />
+        { getFieldDecorator('username', {
+          rules: [
+            {
+              required: true,
+              whitespace: true,
+              message: 'Please choose a unique username.'
+            }
+          ]
+        })(
+          <Input prefix={<Icon type="user" />} />
+        ) }
       </Item>
 
       <Item label="Password">
-        <Input type="password" prefix={<Icon type="lock" />} />
+        { getFieldDecorator('password', {
+          rules: [
+            { required: true, message: 'Please provide a password.' }
+          ]
+        })(
+          <Input type="password" prefix={<Icon type="lock" />} />
+        ) }
       </Item>
 
       <Item label="Invitation code">
-        <Input prefix={<Icon type="key" />} />
+        { getFieldDecorator('invitation_code')(
+          <Input prefix={<Icon type="key" />} />
+        ) }
       </Item>
 
       <Button type="primary" htmlType="submit" block>Sign up</Button>
