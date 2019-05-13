@@ -32,8 +32,6 @@ export default () => {
                       Log in <Icon type="down" />
                     </Button>
                   </Dropdown>
-                  <span style={{ margin: '0 1rem' }}>or</span>
-                  <Link to="/signup">Sign up</Link>
                 </span>
               </Col>
             </Row>
