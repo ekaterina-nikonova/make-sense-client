@@ -15,6 +15,7 @@ const BoardView = ({ board, boards }) => {
   const { TabPane } = Tabs;
 
   const props = {
+    // TODO: Authorization
     action: `${baseUrl}/api/v1/uploads`,
     data: { parent: 'board', parent_id: board.id, type: 'image' },
     name: 'file',

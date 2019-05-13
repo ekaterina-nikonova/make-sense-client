@@ -41,6 +41,7 @@ const AddBoard = () => {
   };
 
   const ImageUpload = () => {
+    // TODO: Authorization
     const props = {
       action: `${baseUrl}/api/v1/uploads`,
       data: { parent: 'board', parent_id: newBoardId, type: 'image' },
