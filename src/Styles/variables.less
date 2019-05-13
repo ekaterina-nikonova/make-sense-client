@@ -4,4 +4,13 @@
 @primary-color: #71A4EA;    // Cornflower Blue
 @white: #FBFBFB;
 
+.bgr-opacity-6(@color) {
+  @result: fadeout(@color, 40%);
+}
+
+.bgr-opacity-8(@color) {
+  @result: fadeout(@color, 20%);
+}
+
 @shadow-large: 0 8px 20px #46454C30;
+@shadow-small: 0 4px 10px #46454C30;

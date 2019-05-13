@@ -1,13 +1,14 @@
 import React from 'react';
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 
-import { Col, Layout, Row } from 'antd';
+import { Button, Col, Dropdown, Icon, Layout, Row } from 'antd';
 
 import BoardsContainer from '../Boards/BoardsContainer';
 import EmptyFullPage from '../UI/EmptyFullPage';
 import Logo from '../UI/Logo';
 import MainPageContent from './MainPageContent';
 import SettingsContainer from '../Settings/SettingsContainer';
+import LoginForm from './LoginForm';
 import SignupPage from './SignupPage';
 
 export default () => {
@@ -24,6 +25,16 @@ export default () => {
                   <Logo height={40} />
                 </Link>
                 <span className="app-title">Make sense</span>
+
+                <span style={{ marginLeft: 'auto' }}>
+                  <Dropdown overlay={<LoginForm />} trigger={['click']}>
+                    <Button type="dashed">
+                      Log in <Icon type="down" />
+                    </Button>
+                  </Dropdown>
+                  <span style={{ margin: '0 1rem' }}>or</span>
+                  <Link to="/signup">Sign up</Link>
+                </span>
               </Col>
             </Row>
           </Header>

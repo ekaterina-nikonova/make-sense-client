@@ -79,7 +79,11 @@ const SignupForm = ({ form }) => {
       <Item label="Password">
         { getFieldDecorator('password', {
           rules: [
-            { required: true, message: 'Please provide a password.' }
+            {
+              required: true,
+              whitespace: true,
+              message: 'Please provide a password.'
+            }
           ]
         })(
           <Input type="password" prefix={<Icon type="lock" />} />
