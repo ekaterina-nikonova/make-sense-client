@@ -19,7 +19,7 @@ const LoginForm = ({ form }) => {
 
   return (
     <Form { ...formLayout } onSubmit={logIn} className="login-form-container">
-      <Item label="Username or email">
+      <Item>
         { getFieldDecorator('email', {
           rules: [
             {
@@ -29,11 +29,14 @@ const LoginForm = ({ form }) => {
             }
           ]
         })(
-          <Input prefix={<Icon type="user" />} />
+          <Input
+            prefix={<Icon type="user" />}
+            placeholder="Username or email"
+          />
         )}
       </Item>
 
-      <Item label="Password">
+      <Item>
         { getFieldDecorator('password', {
           rules: [
             {
@@ -43,7 +46,10 @@ const LoginForm = ({ form }) => {
             }
           ]
         })(
-          <Input prefix={<Icon type="lock" />} />
+          <Input
+            prefix={<Icon type="lock" />}
+            placeholder="Password"
+          />
         ) }
       </Item>
 
