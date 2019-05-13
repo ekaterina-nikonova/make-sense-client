@@ -8,6 +8,7 @@ import EmptyFullPage from '../UI/EmptyFullPage';
 import Logo from '../UI/Logo';
 import MainPageContent from './MainPageContent';
 import SettingsContainer from '../Settings/SettingsContainer';
+import SignupPage from './SignupPage';
 
 export default () => {
   const { Content, Footer, Header } = Layout;
@@ -31,6 +32,7 @@ export default () => {
             <Route exact path="/" component={MainPageContent} />
             <Route path="/boards" component={BoardsContainer} />
             <Route path="/settings" component={SettingsContainer} />
+            <Route path="/signup" component={SignupPage} />
 
             <Route path="/components/:id" component={({ match }) => (
               <EmptyFullPage
