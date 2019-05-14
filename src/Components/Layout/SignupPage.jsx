@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Button, Card, Col, Form, Icon, Input, Row } from 'antd';
 
+import { authSignup } from '../../Services/auth';
+
 const SignupPage = ({ form }) => {
   const formWidth = {
     xs: 24,
@@ -41,7 +43,7 @@ const SignupForm = ({ form }) => {
     e.preventDefault();
     validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        authSignup(values);
       }
     });
   };
