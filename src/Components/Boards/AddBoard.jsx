@@ -41,9 +41,11 @@ const AddBoard = () => {
   };
 
   const ImageUpload = () => {
-    // TODO: Authorization
     const props = {
       action: `${baseUrl}/api/v1/uploads`,
+      headers: {
+        'X-CSRF-TOKEN': localStorage.csrf
+      },
       data: { parent: 'board', parent_id: newBoardId, type: 'image' },
       name: 'file',
       onChange(info) {

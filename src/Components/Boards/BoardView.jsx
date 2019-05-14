@@ -15,8 +15,10 @@ const BoardView = ({ board, boards }) => {
   const { TabPane } = Tabs;
 
   const props = {
-    // TODO: Authorization
     action: `${baseUrl}/api/v1/uploads`,
+    headers: {
+      'X-CSRF-TOKEN': localStorage.csrf
+    },
     data: { parent: 'board', parent_id: board.id, type: 'image' },
     name: 'file',
     onChange(info) {
