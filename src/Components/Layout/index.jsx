@@ -1,13 +1,17 @@
 import React from 'react';
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 
-import { Col, Layout, Row } from 'antd';
+import { Button, Col, Dropdown, Icon, Layout, Row } from 'antd';
+
+import { authLogout } from '../../Services/auth';
 
 import BoardsContainer from '../Boards/BoardsContainer';
 import EmptyFullPage from '../UI/EmptyFullPage';
 import Logo from '../UI/Logo';
 import MainPageContent from './MainPageContent';
 import SettingsContainer from '../Settings/SettingsContainer';
+import LoginForm from './LoginForm';
+import SignupPage from './SignupPage';
 
 export default () => {
   const { Content, Footer, Header } = Layout;
@@ -23,6 +27,22 @@ export default () => {
                   <Logo height={40} />
                 </Link>
                 <span className="app-title">Make sense</span>
+
+                <span style={{ marginLeft: 'auto' }}>
+                  {
+                    localStorage.signedIn ? (
+                      <Button type="dashed" onClick={authLogout}>
+                        Log out <Icon type="logout" />
+                      </Button>
+                    ) : (
+                      <Dropdown overlay={<LoginForm />} trigger={['click']}>
+                        <Button type="dashed">
+                          Log in <Icon type="down" />
+                        </Button>
+                      </Dropdown>  
+                    )
+                  }
+                </span>
               </Col>
             </Row>
           </Header>
@@ -31,6 +51,7 @@ export default () => {
             <Route exact path="/" component={MainPageContent} />
             <Route path="/boards" component={BoardsContainer} />
             <Route path="/settings" component={SettingsContainer} />
+            <Route path="/signup" component={SignupPage} />
 
             <Route path="/components/:id" component={({ match }) => (
               <EmptyFullPage
