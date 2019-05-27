@@ -1,6 +1,6 @@
 import axios from './axios';
 
-export const baseUrl = process.env.NODE_ENV === 'production' ? 'https://make-sense-api.herokuapp.com' : '';
+export const baseUrl = process.env.NODE_ENV === 'production' ? 'https://brittle-pins-api.herokuapp.com' : '';
 
 console.log(`Base URL ${baseUrl} for ${process.env.NODE_ENV} environment`);
 

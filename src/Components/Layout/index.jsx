@@ -26,7 +26,7 @@ export default () => {
                 <Link to="/" style={{ display: 'flex' }}>
                   <Logo height={40} />
                 </Link>
-                <span className="app-title">Make sense</span>
+                <span className="app-title">Brittle pins</span>
 
                 <span style={{ marginLeft: 'auto' }}>
                   {
