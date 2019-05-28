@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Route, Switch } from 'react-router-dom';
+import { ActionCable } from 'react-actioncable-provider';
 
 import { getBoards } from '../../Services/api';
 
@@ -22,6 +23,11 @@ function BoardsContainer({ location, match }) {
     await getBoards()
       .then(boards => setBoards(boards.data))
       .catch(error => setError(error));
+  };
+
+  const handleReceivedBoard = response => {
+    const board = JSON.parse(response);
+    setBoards([...boards, board]);
   };
 
   useEffect(() => { getBoardsAsync(); }, []);
@@ -46,11 +52,18 @@ function BoardsContainer({ location, match }) {
             }
 
             {!error && boards &&
-              boards.map(board => (
-                <Col xs={24} sm={12} md={6} key={board.id} className="board-col">
-                  <BoardCard board={board} boards={boards} />
-                </Col>
-              ))
+              <ActionCable
+                channel={{ channel: 'BoardsChannel' }}
+                onReceived={handleReceivedBoard}
+              >
+                {
+                  boards.map(board => (
+                    <Col xs={24} sm={12} md={6} key={board.id} className="board-col">
+                      <BoardCard board={board} boards={boards}/>
+                    </Col>
+                  ))
+                }
+              </ActionCable>
             }
 
             {error &&
