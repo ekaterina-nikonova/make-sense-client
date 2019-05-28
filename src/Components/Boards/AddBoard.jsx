@@ -46,6 +46,7 @@ const AddBoard = () => {
       headers: {
         'X-CSRF-TOKEN': localStorage.csrf
       },
+      withCredentials: true,
       data: { parent: 'board', parent_id: newBoardId, type: 'image' },
       name: 'file',
       onChange(info) {
