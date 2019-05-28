@@ -19,6 +19,7 @@ const BoardView = ({ board, boards }) => {
     headers: {
       'X-CSRF-TOKEN': localStorage.csrf
     },
+    withCredentials: true,
     data: { parent: 'board', parent_id: board.id, type: 'image' },
     name: 'file',
     onChange(info) {
