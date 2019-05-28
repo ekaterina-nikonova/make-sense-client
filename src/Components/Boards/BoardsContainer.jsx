@@ -22,7 +22,7 @@ function BoardsContainer({ location, match }) {
     await getBoards()
       .then(boards => setBoards(boards.data))
       .catch(error => setError(error));
-  }
+  };
 
   useEffect(() => { getBoardsAsync(); }, []);
 
