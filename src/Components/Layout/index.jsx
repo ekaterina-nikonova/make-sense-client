@@ -7,7 +7,7 @@ import { authLogout } from '../../Services/auth';
 
 import BoardsContainer from '../Boards/BoardsContainer';
 import EmptyFullPage from '../UI/EmptyFullPage';
-import Logo from '../UI/Logo';
+import logo from '../../Assets/Images/logo_square_full_color.png';
 import MainPageContent from './MainPageContent';
 import SettingsContainer from '../Settings/SettingsContainer';
 import LoginForm from './LoginForm';
@@ -24,7 +24,7 @@ export default () => {
             <Row>
               <Col span={24} className="app-header">
                 <Link to="/" style={{ display: 'flex' }}>
-                  <Logo height={40} />
+                  <img src={logo} alt="Brittle Pins logo" className="logo" />
                 </Link>
                 <span className="app-title">Brittle pins</span>
 
