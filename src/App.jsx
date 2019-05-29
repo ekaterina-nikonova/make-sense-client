@@ -16,7 +16,11 @@ const App = () => {
     document.addEventListener(
       'storageChanged',
       e => setLoggedIn(localStorage.signedIn)
-    )
+    );
+    window.addEventListener(
+      'storage',
+      e => setLoggedIn(localStorage.signedIn)
+    );
   });
 
   return (

@@ -38,7 +38,7 @@ export default () => {
                           Log out <Icon type="logout" />
                         </Button>
                       ) : (
-                        <Dropdown overlay={<LoginForm />} trigger={['click']}>
+                        <Dropdown overlay={<LoginForm />} trigger={['hover']}>
                           <Button type="dashed">
                             Log in <Icon type="down" />
                           </Button>
