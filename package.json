@@ -3,14 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "antd": "^3.14.1",
+    "antd": "^3.x",
     "axios": "^0.18.0",
     "babel-plugin-import": "^1.11.0",
     "customize-cra": "^0.2.12",
     "http-proxy-middleware": "^0.19.1",
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
-    "react": "^16.8.4",
+    "react": "^16.x",
     "react-actioncable-provider": "^2.0.0",
     "react-app-rewired": "^2.1.0",
     "react-dom": "^16.8.4",
@@ -34,11 +34,5 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ],
-  "devDependencies": {
-    "@babel/core": "^7.4.5",
-    "@babel/preset-env": "^7.4.5",
-    "babel-loader": "^8.0.6",
-    "webpack": "^4.32.2"
-  }
+  ]
 }
