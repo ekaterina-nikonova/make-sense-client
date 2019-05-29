@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useGlobal } from 'reactn';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import { Menu } from 'antd';
 
-const BoardMenu = ({ currentBoardId, boards }) => {
+const BoardMenu = ({ currentBoardId }) => {
+  const [boards, setBoards] = useGlobal('boards');
   const [activeBoardId, setActiveBoard] = useState(currentBoardId);
 
   const goTo = e => {
@@ -30,8 +32,7 @@ const BoardMenu = ({ currentBoardId, boards }) => {
 };
 
 BoardMenu.propTypes = {
-  currentBoardId: PropTypes.string.isRequired,
-  boards: PropTypes.array.isRequired
+  currentBoardId: PropTypes.string.isRequired
 };
 
 export default BoardMenu;

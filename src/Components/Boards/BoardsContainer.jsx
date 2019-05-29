@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useGlobal } from 'reactn';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Route, Switch } from 'react-router-dom';
-import { ActionCable } from 'react-actioncable-provider';
+import { ActionCableConsumer } from 'react-actioncable-provider';
 
 import { getBoards } from '../../Services/api';
 
@@ -13,7 +14,7 @@ import BoardContainer from './BoardContainer';
 import TopLevelMenu from '../Layout/TopLevelMenu';
 
 function BoardsContainer({ location, match }) {
-  const [boards, setBoards] = useState([]);
+  const [boards, setBoards] = useGlobal('boards');
   const [error, setError] = useState();
 
   const { pathname } = location;
@@ -26,8 +27,15 @@ function BoardsContainer({ location, match }) {
   };
 
   const handleReceivedBoard = response => {
-    const board = JSON.parse(response);
-    setBoards([...boards, board]);
+    const board = JSON.parse(response.data);
+
+    if (response.action === 'create') {
+      setBoards([...boards, board]);
+    } else if (response.action === 'destroy') {
+      setBoards(boards.filter(b => b.id !== board.id));
+    } else if (response.action === 'update') {
+      setBoards(boards.map(b => b.id === board.id ? board : b));
+    }
   };
 
   useEffect(() => { getBoardsAsync(); }, []);
@@ -52,18 +60,18 @@ function BoardsContainer({ location, match }) {
             }
 
             {!error && boards &&
-              <ActionCable
+              <ActionCableConsumer
                 channel={{ channel: 'BoardsChannel' }}
                 onReceived={handleReceivedBoard}
               >
                 {
                   boards.map(board => (
                     <Col xs={24} sm={12} md={6} key={board.id} className="board-col">
-                      <BoardCard board={board} boards={boards}/>
+                      <BoardCard board={board} />
                     </Col>
                   ))
                 }
-              </ActionCable>
+              </ActionCableConsumer>
             }
 
             {error &&

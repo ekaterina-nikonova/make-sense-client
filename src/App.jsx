@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import React, { setGlobal } from 'reactn';
+import { useEffect, useState } from 'react';
 import { ActionCableProvider } from 'react-actioncable-provider';
 
 import { wsBaseUrl } from "./Services/api";
@@ -8,6 +9,10 @@ import Layout from './Components/Layout';
 import './App.less';
 
 export const LoggedInContext = React.createContext(false);
+
+setGlobal({
+  boards: []
+});
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(localStorage.signedIn);

@@ -16,6 +16,7 @@
     "react-dom": "^16.8.4",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.5",
+    "reactn": "^2.0.2",
     "simpl-schema": "^1.5.5",
     "uniforms": "^1.31.1",
     "uniforms-antd": "^1.31.1"

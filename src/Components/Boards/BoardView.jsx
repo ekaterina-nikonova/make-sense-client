@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'reactn';
 import PropTypes from 'prop-types';
 
 import { baseUrl } from '../../Services/api';
@@ -10,7 +10,7 @@ import BoardMenu from '../Layout/BoardMenu';
 import ComponentsContainer from '../Components/ComponentsContainer';
 import EmptyFullPage from '../UI/EmptyFullPage';
 
-const BoardView = ({ board, boards }) => {
+const BoardView = ({ board }) => {
   const Dragger = Upload.Dragger;
   const { TabPane } = Tabs;
 
@@ -35,7 +35,7 @@ const BoardView = ({ board, boards }) => {
 
   return (
     <React.Fragment>
-      <BoardMenu currentBoardId={board.id} boards={boards} />
+      <BoardMenu currentBoardId={board.id} />
       <div style={{ width: '100%' }}>
         <Row>
           <Col offset={6} span={12}>
@@ -77,8 +77,7 @@ const BoardView = ({ board, boards }) => {
 };
 
 BoardView.propTypes = {
-  board: PropTypes.object.isRequired,
-  boards: PropTypes.array.isRequired
+  board: PropTypes.object.isRequired
 };
 
 export default BoardView;

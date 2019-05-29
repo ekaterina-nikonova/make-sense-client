@@ -7,18 +7,17 @@ import { Alert } from 'antd';
 
 import BoardView from './BoardView';
 
-const BoardContainer = ({ location, match }) => {
+const BoardContainer = ({ match }) => {
   const [board, setBoard] = useState();
   const [error, setError] = useState();
 
   const { params } = match;
-  const { state } = location;
 
   const getBoardAsync = async params => {
     await getBoard(params.id)
       .then(result => setBoard(result.data))
       .catch(error => setError(error));
-  }
+  };
 
   useEffect(() => {
     getBoardAsync(params);
@@ -32,7 +31,7 @@ const BoardContainer = ({ location, match }) => {
 
       {
         board &&
-        <BoardView board={board} boards={state.boards} />
+        <BoardView board={board} />
       }
 
     </React.Fragment>
