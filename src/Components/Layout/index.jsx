@@ -13,6 +13,8 @@ import SettingsContainer from '../Settings/SettingsContainer';
 import LoginForm from './LoginForm';
 import SignupPage from './SignupPage';
 
+import { LoggedInContext } from "../../App";
+
 export default () => {
   const { Content, Footer, Header } = Layout;
 
@@ -29,19 +31,21 @@ export default () => {
                 <span className="app-title">Brittle pins</span>
 
                 <span style={{ marginLeft: 'auto' }}>
-                  {
-                    localStorage.signedIn ? (
-                      <Button type="dashed" onClick={authLogout}>
-                        Log out <Icon type="logout" />
-                      </Button>
-                    ) : (
-                      <Dropdown overlay={<LoginForm />} trigger={['click']}>
-                        <Button type="dashed">
-                          Log in <Icon type="down" />
+                  <LoggedInContext.Consumer>
+                    {loggedIn => (
+                      loggedIn ? (
+                        <Button type="dashed" onClick={authLogout}>
+                          Log out <Icon type="logout" />
                         </Button>
-                      </Dropdown>  
-                    )
-                  }
+                      ) : (
+                        <Dropdown overlay={<LoginForm />} trigger={['click']}>
+                          <Button type="dashed">
+                            Log in <Icon type="down" />
+                          </Button>
+                        </Dropdown>
+                      )
+                    )}
+                  </LoggedInContext.Consumer>
                 </span>
               </Col>
             </Row>
