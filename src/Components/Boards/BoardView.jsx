@@ -28,7 +28,7 @@ const BoardView = ({ board }) => {
       if (info.file.status === 'done') {
         dispatchUpdate({
           action: 'update',
-          data: { ...board, image: info.file.response.data.image }
+          data: { ...board, image: info.file.response.data.url }
         });
         message.success(`File ${info.file.name} uploaded.`);
       }
