@@ -1,4 +1,4 @@
-import React from 'reactn';
+import React, { useDispatch } from 'reactn';
 import PropTypes from 'prop-types';
 
 import { baseUrl } from '../../Services/api';
@@ -11,10 +11,12 @@ import ComponentsContainer from '../Components/ComponentsContainer';
 import EmptyFullPage from '../UI/EmptyFullPage';
 
 const BoardView = ({ board }) => {
+  const dispatchUpdate = useDispatch('boardReducer');
+
   const Dragger = Upload.Dragger;
   const { TabPane } = Tabs;
 
-  const props = {
+  const draggerProps = {
     action: `${baseUrl}/api/v1/uploads`,
     headers: {
       'X-CSRF-TOKEN': localStorage.csrf
@@ -24,6 +26,10 @@ const BoardView = ({ board }) => {
     name: 'file',
     onChange(info) {
       if (info.file.status === 'done') {
+        dispatchUpdate({
+          action: 'update',
+          data: { ...board, image: info.file.response.data.image }
+        });
         message.success(`File ${info.file.name} uploaded.`);
       }
 
@@ -51,7 +57,7 @@ const BoardView = ({ board }) => {
           <Col span={24}>
             <Tabs>
               <TabPane tab="Description" key="1">
-                <Dragger {...props} className="board-image-upload">
+                <Dragger {...draggerProps} className="board-image-upload">
                   <p className="ant-upload-drag-icon">
                     <Icon type="cloud-upload" />
                   </p>

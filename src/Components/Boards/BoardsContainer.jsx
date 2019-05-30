@@ -1,12 +1,12 @@
-import React, { useGlobal } from 'reactn';
-import { useState, useEffect } from 'react';
+import React, { useDispatch, useGlobal, useState } from 'reactn';
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Route, Switch } from 'react-router-dom';
 import { ActionCableConsumer } from 'react-actioncable-provider';
 
-import { getBoards } from '../../Services/api';
-
 import { Alert, Col, Empty, Row } from 'antd';
+
+import { getBoards } from '../../Services/api';
 
 import AddBoard from './AddBoard';
 import BoardCard from './BoardCard';
@@ -16,6 +16,9 @@ import TopLevelMenu from '../Layout/TopLevelMenu';
 function BoardsContainer({ location, match }) {
   const [boards, setBoards] = useGlobal('boards');
   const [error, setError] = useState();
+  const handleReceivedBoard = useDispatch('boardReducer');
+
+  useEffect(() => { getBoardsAsync(); }, []);
 
   const { pathname } = location;
   const { url } = match;
@@ -25,20 +28,6 @@ function BoardsContainer({ location, match }) {
       .then(boards => setBoards(boards.data))
       .catch(error => setError(error));
   };
-
-  const handleReceivedBoard = response => {
-    const board = JSON.parse(response.data);
-
-    if (response.action === 'create') {
-      setBoards([...boards, board]);
-    } else if (response.action === 'destroy') {
-      setBoards(boards.filter(b => b.id !== board.id));
-    } else if (response.action === 'update') {
-      setBoards(boards.map(b => b.id === board.id ? board : b));
-    }
-  };
-
-  useEffect(() => { getBoardsAsync(); }, []);
 
   return (
     <React.Fragment>
@@ -62,7 +51,7 @@ function BoardsContainer({ location, match }) {
             {!error && boards &&
               <ActionCableConsumer
                 channel={{ channel: 'BoardsChannel' }}
-                onReceived={handleReceivedBoard}
+                onReceived={response => handleReceivedBoard(response)}
               >
                 {
                   boards.map(board => (

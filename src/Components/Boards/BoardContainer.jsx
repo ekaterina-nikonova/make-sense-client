@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { setGlobal, useGlobal } from 'reactn';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { getBoard } from '../../Services/api';
