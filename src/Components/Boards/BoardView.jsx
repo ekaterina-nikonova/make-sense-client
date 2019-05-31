@@ -45,6 +45,13 @@ const BoardView = ({ board }) => {
       <div style={{ width: '100%' }}>
         <Row>
           <Col offset={6} span={12}>
+            <Dragger {...draggerProps} className="board-image-upload">
+              <p className="ant-upload-drag-icon">
+                <Icon type="cloud-upload" />
+              </p>
+              <p className="ant-upload-text">Click or drag and drop an image file to upload</p>
+              <p className="ant-upload-hint">Only JPG, JPEG, and PNG formats are supported.</p>
+            </Dragger>
             <img
               alt="board main"
               src={board.image || require('../../Assets/Images/board-generic.svg')}
@@ -57,13 +64,6 @@ const BoardView = ({ board }) => {
           <Col span={24}>
             <Tabs>
               <TabPane tab="Description" key="1">
-                <Dragger {...draggerProps} className="board-image-upload">
-                  <p className="ant-upload-drag-icon">
-                    <Icon type="cloud-upload" />
-                  </p>
-                  <p className="ant-upload-text">Click or drag and drop an image file to upload</p>
-                  <p className="ant-upload-hint">Only JPG, JPEG, and PNG formats are supported.</p>
-                </Dragger>
                 <BoardDescriptionForm board={board} />
               </TabPane>
 
