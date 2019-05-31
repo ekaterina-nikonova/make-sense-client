@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { baseUrl, createBoard, updateBoard } from '../../Services/api';
 
-import { Button, Collapse, Icon, message, Steps, Upload } from 'antd';
+import { Button, Collapse, Icon, Menu, message, Steps, Upload } from 'antd';
 
 import AutoForm from 'uniforms-antd/AutoForm';
 import LongTextField from 'uniforms-antd/LongTextField';
@@ -109,20 +109,22 @@ const AddBoard = () => {
   };
 
   return (
-    <Collapse bordered={false}>
-      <Panel header="Add new board">
-        <Steps current={currentStep}>
-          {steps.map(step =>
-            <Step
-              icon={<Icon type={step.icon} />}
-              key={step.title}
-              title={step.title}
-            />
-          )}
-        </Steps>
-        {steps[currentStep].content}
-      </Panel>
-    </Collapse>
+    <Menu mode="horizontal">
+      <Collapse bordered={false}>
+        <Panel header="Add new board">
+          <Steps current={currentStep}>
+            {steps.map(step =>
+              <Step
+                icon={<Icon type={step.icon} />}
+                key={step.title}
+                title={step.title}
+              />
+            )}
+          </Steps>
+          {steps[currentStep].content}
+        </Panel>
+      </Collapse>
+    </Menu>
   );
 };
 

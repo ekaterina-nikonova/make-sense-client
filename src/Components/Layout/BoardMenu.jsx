@@ -1,15 +1,25 @@
 import React, { useDispatch, useGlobal } from 'reactn';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { ActionCableConsumer } from 'react-actioncable-provider';
 
 import { Menu } from 'antd';
 
+import { getBoards } from '../../Services/api';
+
 const BoardMenu = ({ currentBoardId }) => {
   const [boards, setBoards] = useGlobal('boards');
   const [activeBoardId, setActiveBoard] = useState(currentBoardId);
   const boardsDispatch = useDispatch('boardReducer');
+
+  useEffect(() => { getBoardsAsync(); }, []);
+
+  const getBoardsAsync = async () => {
+    await getBoards()
+      .then(boards => setBoards(boards.data))
+      .catch(error => console.log(error));
+  };
 
   const goTo = e => {
     setActiveBoard(e.key)
@@ -22,7 +32,7 @@ const BoardMenu = ({ currentBoardId }) => {
       channel={{ channel: 'BoardsChannel' }}
       onReceived={ handleResponse }
     >
-      <Menu onClick={goTo} mode="inline" selectedKeys={[activeBoardId]} className="top-level-menu">
+      <Menu onClick={goTo} mode="vertical" selectedKeys={[activeBoardId]} className="top-level-menu">
         {boards &&
           boards.map(board => (
             <Menu.Item key={board.id}>

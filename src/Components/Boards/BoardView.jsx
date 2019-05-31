@@ -6,7 +6,6 @@ import { baseUrl } from '../../Services/api';
 import { Col, Icon, Row, Tabs, Upload, message } from 'antd';
 
 import BoardDescriptionForm from './BoardDescriptionForm';
-import BoardMenu from '../Layout/BoardMenu';
 import ComponentsContainer from '../Components/ComponentsContainer';
 import EmptyFullPage from '../UI/EmptyFullPage';
 
@@ -48,11 +47,10 @@ const BoardView = ({ board }) => {
 
   return (
     <React.Fragment>
-      <BoardMenu currentBoardId={board.id} />
       <div style={{ width: '100%' }}>
         <Row>
           <Col offset={6} span={12}>
-            <Dragger {...draggerProps} className="board-image-upload">
+            <Dragger {...draggerProps} className="board-image-upload-overlay">
               <p className="ant-upload-drag-icon">
                 <Icon type="cloud-upload" />
               </p>

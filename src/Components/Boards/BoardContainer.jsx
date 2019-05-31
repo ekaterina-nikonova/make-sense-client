@@ -1,4 +1,4 @@
-import React, { setGlobal, useGlobal } from 'reactn';
+import React from 'reactn';
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
@@ -7,6 +7,7 @@ import { getBoard } from '../../Services/api';
 import { Alert } from 'antd';
 
 import BoardView from './BoardView';
+import BoardMenu from "../Layout/BoardMenu";
 
 const BoardContainer = ({ match }) => {
   const [board, setBoard] = useState();
@@ -25,17 +26,23 @@ const BoardContainer = ({ match }) => {
   }, [params]);
 
   return (
-    <React.Fragment>
+    <div style={{ width: '100%', display: 'flex' }}>
+      {board &&
+        <BoardMenu currentBoardId={board.id} />
+      }
+
       {error &&
-        <Alert description="Could not fetch board info." message="Error" showIcon type="error" />
+        <div style={{ flexShrink: '1' }}>
+          <Alert description="Could not fetch board info." message="Error" showIcon type="error" />
+        </div>
       }
 
-      {
-        board &&
-        <BoardView board={board} />
+      {!error && board &&
+        <div style={{ flexGrow: '1' }}>
+          <BoardView board={board} />
+        </div>
       }
-
-    </React.Fragment>
+    </div>
   );
 };
 
