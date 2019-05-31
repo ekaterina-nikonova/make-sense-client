@@ -1,4 +1,4 @@
-import React, { useDispatch } from 'reactn';
+import React, { useDispatch, useState } from 'reactn';
 import PropTypes from 'prop-types';
 
 import { baseUrl } from '../../Services/api';
@@ -11,6 +11,7 @@ import ComponentsContainer from '../Components/ComponentsContainer';
 import EmptyFullPage from '../UI/EmptyFullPage';
 
 const BoardView = ({ board }) => {
+  const [fileList, updateFileList] = useState([]);
   const dispatchUpdate = useDispatch('boardReducer');
 
   const Dragger = Upload.Dragger;
@@ -23,19 +24,25 @@ const BoardView = ({ board }) => {
     },
     withCredentials: true,
     data: { parent: 'board', parent_id: board.id, type: 'image' },
+    fileList: fileList,
     name: 'file',
     onChange(info) {
+      const file = info.file;
+
       if (info.file.status === 'done') {
         dispatchUpdate({
           action: 'update',
           data: { ...board, image: info.file.response.data.url }
         });
         message.success(`File ${info.file.name} uploaded.`);
+        file.url = info.file.response.data.url;
       }
 
       if (info.file.status === 'error') {
         message.error(`Could not upload file ${info.file.name}`);
       }
+
+      updateFileList([file]);
     }
   };
 
