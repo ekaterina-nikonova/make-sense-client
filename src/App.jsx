@@ -33,7 +33,6 @@ addReducer('boardReducer', (global, dispatch, action) => {
     default:
       newState = global.boards;
   }
-  setGlobal(newState);
   return newState;
 });
 
