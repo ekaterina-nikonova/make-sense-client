@@ -26,7 +26,7 @@ const BoardContainer = ({ match }) => {
   }, [params]);
 
   return (
-    <div style={{ width: '100%', display: 'flex' }}>
+    <div style={{ width: '100%', display: 'flex', minHeight: 'calc(100vh - 48px - 64px' }}>
       {board &&
         <BoardMenu currentBoardId={board.id} />
       }

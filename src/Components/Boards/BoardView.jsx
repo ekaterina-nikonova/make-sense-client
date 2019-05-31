@@ -47,7 +47,7 @@ const BoardView = ({ board }) => {
 
   return (
     <React.Fragment>
-      <div style={{ width: '100%' }}>
+      <div style={{ width: '100%', paddingBottom: '80px' }}>
         <Row>
           <Col offset={6} span={12}>
             <Dragger {...draggerProps} className="board-image-upload-overlay">
