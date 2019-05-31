@@ -8,10 +8,11 @@ import Layout from './Components/Layout';
 
 import './App.less';
 
-export const LoggedInContext = React.createContext(false);
+export const LoggedInContext = React.createContext(localStorage.signedIn);
 
 setGlobal({
-  boards: []
+  boards: [],
+  status: null
 });
 
 addReducer('boardReducer', (global, dispatch, action) => {
@@ -38,6 +39,7 @@ addReducer('boardReducer', (global, dispatch, action) => {
 
 addCallback(global => {
   console.log("Callback called", global);
+  return null;
 });
 
 const App = () => {
