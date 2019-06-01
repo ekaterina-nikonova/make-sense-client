@@ -33,7 +33,7 @@ export const updateComponent = ({ componentId, updates }) => axios.secured.patch
 /** ActionCable */
 
 export const wsBaseUrl = process.env.NODE_ENV === 'production'
-  ? 'ws://brittle-pins-api.herokuapp.com/cable'
+  ? 'wss://brittle-pins-api.herokuapp.com/cable'
   : 'ws://localhost:3001/cable';
 
 export const wsHeaders = {
