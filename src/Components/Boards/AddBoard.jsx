@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { baseUrl, createBoard, updateBoard } from '../../Services/api';
 
-import { Button, Collapse, Icon, message, Steps, Upload } from 'antd';
+import { Button, Collapse, Icon, Menu, message, Steps, Upload } from 'antd';
 
 import AutoForm from 'uniforms-antd/AutoForm';
 import LongTextField from 'uniforms-antd/LongTextField';
@@ -46,6 +46,7 @@ const AddBoard = () => {
       headers: {
         'X-CSRF-TOKEN': localStorage.csrf
       },
+      withCredentials: true,
       data: { parent: 'board', parent_id: newBoardId, type: 'image' },
       name: 'file',
       onChange(info) {
@@ -76,6 +77,11 @@ const AddBoard = () => {
     );
   };
 
+  const resetAndClose = () => {
+    setCurrentStep(0);
+    setNewBoardId('');
+  };
+
   const steps = [{
     content: <NameDescriptionForm />,
     icon: 'info-circle',
@@ -85,7 +91,15 @@ const AddBoard = () => {
     icon: 'picture',
     title: 'Image'
   }, {
-    content: <EmptyFullPage description="Soon you'll be able to add components here." />,
+    content: (
+      <div>
+        <EmptyFullPage description="Soon you'll be able to add components here." />
+        <Button type="primary" onClick={resetAndClose} className="button-right">
+          <span>Done</span>
+          <Icon type="check" />
+        </Button>
+      </div>
+    ),
     icon: 'bars',
     title: 'Components'
   }];
@@ -108,20 +122,22 @@ const AddBoard = () => {
   };
 
   return (
-    <Collapse bordered={false}>
-      <Panel header="Add new board">
-        <Steps current={currentStep}>
-          {steps.map(step =>
-            <Step
-              icon={<Icon type={step.icon} />}
-              key={step.title}
-              title={step.title}
-            />
-          )}
-        </Steps>
-        {steps[currentStep].content}
-      </Panel>
-    </Collapse>
+    <Menu mode="horizontal">
+      <Collapse bordered={false}>
+        <Panel header="Add new board" key="addBoardPanel">
+          <Steps current={currentStep}>
+            {steps.map(step =>
+              <Step
+                icon={<Icon type={step.icon} />}
+                key={step.title}
+                title={step.title}
+              />
+            )}
+          </Steps>
+          {steps[currentStep].content}
+        </Panel>
+      </Collapse>
+    </Menu>
   );
 };
 

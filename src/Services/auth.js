@@ -6,7 +6,7 @@ export const authSignup = data => {
       failure(response);
     } else {
       localStorage.csrf = response.data.csrf;
-      localStorage.signedIn = true;
+      localStorage.setItem('signedIn', 'true');
     }
   };
 
@@ -26,7 +26,7 @@ export const authLogin = data => {
       failure(response);
     } else {
       localStorage.csrf = response.data.csrf;
-      localStorage.signedIn = true;
+      localStorage.setItem('signedIn', 'true');
     }
   };
   const failure = error => console.log(error);
@@ -39,7 +39,7 @@ export const authLogin = data => {
 export const authLogout = () => {
   const success = response => {
     delete localStorage.csrf;
-    delete localStorage.signedIn;
+    localStorage.setItem('signedIn', '');
   };
 
   const failure = error => console.log(error);
@@ -47,4 +47,4 @@ export const authLogout = () => {
   signout()
     .then(response => success(response))
     .catch(error => failure(error))
-}
+};

@@ -29,3 +29,14 @@ export const updateBoard = ({ boardId, updates }) => axios.secured.patch(`${base
 export const getComponents = boardId => axios.secured.get(`${baseUrl}/api/v1/boards/${boardId}/components`);
 
 export const updateComponent = ({ componentId, updates }) => axios.secured.patch(`${baseUrl}/api/v1/components/${componentId}`, updates);
+
+/** ActionCable */
+
+export const wsBaseUrl = process.env.NODE_ENV === 'production'
+  ? 'ws://brittle-pins-api.herokuapp.com/cable'
+  : 'ws://localhost:3001/cable';
+
+export const wsHeaders = {
+  'Content-Type': 'application/json',
+  Accept: 'application/json'
+};

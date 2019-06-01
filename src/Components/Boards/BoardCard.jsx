@@ -6,7 +6,7 @@ import { deleteBoard } from '../../Services/api';
 
 import { Card, Empty, Icon, message, Modal, Popconfirm } from 'antd';
 
-const BoardCard = ({ board, boards }) => {
+const BoardCard = ({ board }) => {
   const [modalOpen, openModal] = useState();
 
   const { Meta } = Card;
@@ -25,8 +25,7 @@ const BoardCard = ({ board, boards }) => {
   return (
     <React.Fragment>
       <Link to={{
-        pathname: `/boards/${board.id}`,
-        state: { boards }
+        pathname: `/boards/${board.id}`
       }}>
         <Card
           actions={[
@@ -65,8 +64,7 @@ const BoardCard = ({ board, boards }) => {
 };
 
 BoardCard.propTypes = {
-  board: PropTypes.object.isRequired,
-  boards: PropTypes.array.isRequired
+  board: PropTypes.object.isRequired
 };
 
 export default BoardCard;
