@@ -77,6 +77,11 @@ const AddBoard = () => {
     );
   };
 
+  const resetAndClose = () => {
+    setCurrentStep(0);
+    setNewBoardId('');
+  };
+
   const steps = [{
     content: <NameDescriptionForm />,
     icon: 'info-circle',
@@ -86,7 +91,15 @@ const AddBoard = () => {
     icon: 'picture',
     title: 'Image'
   }, {
-    content: <EmptyFullPage description="Soon you'll be able to add components here." />,
+    content: (
+      <div>
+        <EmptyFullPage description="Soon you'll be able to add components here." />
+        <Button type="primary" onClick={resetAndClose} className="button-right">
+          <span>Done</span>
+          <Icon type="check" />
+        </Button>
+      </div>
+    ),
     icon: 'bars',
     title: 'Components'
   }];
@@ -111,7 +124,7 @@ const AddBoard = () => {
   return (
     <Menu mode="horizontal">
       <Collapse bordered={false}>
-        <Panel header="Add new board">
+        <Panel header="Add new board" key="addBoardPanel">
           <Steps current={currentStep}>
             {steps.map(step =>
               <Step
