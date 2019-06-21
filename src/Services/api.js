@@ -1,6 +1,6 @@
 import axios from './axios';
 
-export const baseUrl = process.env.NODE_ENV === 'production' ? 'https://brittle-pins-api.herokuapp.com' : '';
+export const baseUrl = process.env.NODE_ENV === 'production' ? 'http://api.brittle-pins.com' : '';
 
 console.log(`Base URL ${baseUrl} for ${process.env.NODE_ENV} environment`);
 
@@ -33,7 +33,7 @@ export const updateComponent = ({ componentId, updates }) => axios.secured.patch
 /** ActionCable */
 
 export const wsBaseUrl = process.env.NODE_ENV === 'production'
-  ? 'wss://brittle-pins-api.herokuapp.com/cable'
+  ? 'wss://api.brittle-pins.com/cable'
   : 'ws://localhost:3001/cable';
 
 export const wsHeaders = {
