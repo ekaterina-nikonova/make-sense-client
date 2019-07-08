@@ -1,6 +1,6 @@
 import axios from './axios';
 
-export const baseUrl = process.env.NODE_ENV === 'production' ? 'http://api.brittle-pins.com' : '';
+export const baseUrl = process.env.NODE_ENV === 'production' ? 'https://api.brittle-pins.com' : '';
 
 console.log(`Base URL ${baseUrl} for ${process.env.NODE_ENV} environment`);
 
