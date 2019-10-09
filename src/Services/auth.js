@@ -20,7 +20,7 @@ export const authSignup = data => {
     .catch(error => failure(error));
 };
 
-export const authLogin = data => {
+export const authLogin = (data, setError) => {
   const success = response => {
     if (!response.data.csrf) {
       failure(response);
@@ -29,7 +29,10 @@ export const authLogin = data => {
       localStorage.setItem('signedIn', 'true');
     }
   };
-  const failure = error => console.log(error);
+  const failure = error => {
+    console.log(error);
+    setError(error);
+  };
 
   signin(data)
     .then(response => success(response))

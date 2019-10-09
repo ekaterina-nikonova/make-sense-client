@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Link } from 'react-router-dom';
-import { Button, Form, Icon, Input } from 'antd';
+import { Alert, Button, Form, Icon, Input } from 'antd';
 
 import { authLogin } from '../../Services/auth';
 
 const LoginForm = ({ form }) => {
+  const [error, setError] = useState();
+
   const { Item } = Form;
   const { getFieldDecorator, validateFields } = form;
 
@@ -15,13 +17,18 @@ const LoginForm = ({ form }) => {
     e.preventDefault();
     validateFields((err, values) => {
       if (!err) {
-        authLogin(values);
+        authLogin(values, setError);
       }
     });
   };
 
   return (
     <Form { ...formLayout } onSubmit={logIn} className="login-form-container">
+      {error &&
+        error.response.status === 401 &&
+          <Alert type="error" message="Wrong username/email or password" />
+      }
+
       <Item>
         { getFieldDecorator('email', {
           rules: [
