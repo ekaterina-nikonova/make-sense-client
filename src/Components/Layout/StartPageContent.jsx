@@ -3,6 +3,7 @@ import { Redirect } from "react-router-dom";
 
 import { LoggedInContext } from "../../App";
 import HeroSection from "./HeroSection";
+import AboutSection from "./AboutSection";
 
 const StartPageContent = () => {
   return (
@@ -14,7 +15,9 @@ const StartPageContent = () => {
               <div className="hero-container">
                 <HeroSection />
               </div>
-              <div className="about-container">About</div>
+              <div className="about-container">
+                <AboutSection />
+              </div>
             </div>
           </React.Fragment>
         )
