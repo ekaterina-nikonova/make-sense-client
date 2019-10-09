@@ -14,7 +14,7 @@ import iconConnected from '../../Assets/Icons/icon-connected.png';
 import iconDisconnected from '../../Assets/Icons/icon-disconnected.png';
 import logo from '../../Assets/Images/logo_square.png';
 import MainPageContent from './MainPageContent';
-import StartPageContent from "./StartPageContent";
+import StartPageContent from "./StartPage/StartPageContent";
 import SettingsContainer from '../Settings/SettingsContainer';
 import LoginForm from './LoginForm';
 import SignupPage from './SignupPage';

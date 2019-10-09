@@ -1,7 +1,7 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 
-import { LoggedInContext } from "../../App";
+import { LoggedInContext } from "../../../App";
 import HeroSection from "./HeroSection";
 import AboutSection from "./AboutSection";
 
