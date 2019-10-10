@@ -13,7 +13,7 @@ const AboutSection = () => {
     <div className="about-section">
       <Divider>
         <Title level={2}>
-          About Brittle pins
+          About Brittle Pins
         </Title>
       </Divider>
 
