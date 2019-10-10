@@ -18,9 +18,10 @@ import StartPageContent from "./StartPage/StartPageContent";
 import SettingsContainer from '../Settings/SettingsContainer';
 import LoginForm from './LoginForm';
 import SignupPage from './SignupPage';
+import Footer from './Footer';
 
 export default () => {
-  const { Content, Footer, Header } = Layout;
+  const { Content, Header } = Layout;
 
   const [ connected, setConnected ] = useState(false);
 
@@ -96,7 +97,7 @@ export default () => {
         </React.Fragment>
       </Router>
 
-      <Footer>Footer</Footer>
+      <Footer />
     </Layout>
   );
 };
