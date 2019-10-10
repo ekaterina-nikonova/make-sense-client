@@ -39,7 +39,7 @@ const AppsSection = () => {
             image={BrittleUpAndroidScreenshot}
             imgAlt="Screenshot of Brittle Up for Android"
             title="Brittle Up Android"
-            text="Manage data for your hardware and projects"
+            text="Collect training data for you image labelling models"
             link="https://play.google.com/store/apps/details?id=com.brittlepins.brittleup"
           />
         </Col>
@@ -49,7 +49,7 @@ const AppsSection = () => {
             image={BrittleEyeAndroidScreenshot}
             imgAlt="Screenshot of Brittle Eye for Android"
             title="Brittle Eye Android"
-            text="Manage data for your hardware and projects"
+            text="Classify electronic components using image recognition"
             link="https://play.google.com/store/apps/details?id=com.brittlepins.brittleeye"
           />
         </Col>
