@@ -1,9 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 import { Col, Row } from 'antd';
 
 import MainPageCard from '../UI/MainPageCard';
+import {LoggedInContext} from "../../App";
 
 const MainPageContent = () => {
   return (
@@ -33,4 +34,12 @@ const MainPageContent = () => {
   )
 };
 
-export default MainPageContent;
+const WrappedMainPage = () => (
+  <LoggedInContext.Consumer>
+    {loggedIn => (
+      loggedIn ? <MainPageContent /> : <Redirect to='/start' />
+    )}
+  </LoggedInContext.Consumer>
+);
+
+export default WrappedMainPage;

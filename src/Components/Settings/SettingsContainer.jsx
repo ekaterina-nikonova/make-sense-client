@@ -1,5 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Redirect } from "react-router-dom";
+
+import { LoggedInContext } from "../../App";
 
 import EmptyFullPage from '../UI/EmptyFullPage';
 import TopLevelMenu from '../Layout/TopLevelMenu';
@@ -22,4 +25,12 @@ SettingsContainer.propTypes = {
   match: PropTypes.object.isRequired
 };
 
-export default SettingsContainer;
+const WrappedSettingsContainer = ({ location, match }) => (
+  <LoggedInContext.Consumer>
+    {loggedIn => (
+      loggedIn ? <SettingsContainer location={location} match={match} /> : <Redirect to='/start' />
+    )}
+  </LoggedInContext.Consumer>
+);
+
+export default WrappedSettingsContainer;

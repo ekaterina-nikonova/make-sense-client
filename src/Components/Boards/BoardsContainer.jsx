@@ -1,11 +1,12 @@
 import React, { useDispatch, useGlobal, useState } from 'reactn';
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Route, Switch } from 'react-router-dom';
+import {Redirect, Route, Switch} from 'react-router-dom';
 import { ActionCableConsumer } from 'react-actioncable-provider';
 
 import { Alert, Col, Empty, Row } from 'antd';
 
+import {LoggedInContext} from "../../App";
 import { getBoards } from '../../Services/api';
 
 import AddBoard from './AddBoard';
@@ -85,4 +86,12 @@ const BoardList = function() {
   );
 };
 
-export default BoardsContainer;
+const WrappedBoardsContainer = ({ location, match }) => (
+  <LoggedInContext.Consumer>
+    {loggedIn => (
+      loggedIn ? <BoardsContainer location={location} match={match} /> : <Redirect to='/start' />
+    )}
+  </LoggedInContext.Consumer>
+);
+
+export default WrappedBoardsContainer;
