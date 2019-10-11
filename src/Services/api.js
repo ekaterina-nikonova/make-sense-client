@@ -34,6 +34,10 @@ export const getComponents = boardId => axios.secured.get(`${baseUrl}/api/v1/boa
 
 export const updateComponent = ({ componentId, updates }) => axios.secured.patch(`${baseUrl}/api/v1/components/${componentId}`, updates);
 
+/** Admin */
+
+export const getUsers = () => axios.secured.get(`${baseUrl}/api/v1/admin/users`);
+
 /** ActionCable */
 
 export const wsBaseUrl = process.env.NODE_ENV === 'production'
