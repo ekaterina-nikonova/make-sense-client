@@ -3,7 +3,7 @@ import { useDispatch, useGlobal } from "reactn";
 
 import { deleteUser, getUsers } from "../../Services/api";
 
-import {Alert, Icon, List} from "antd";
+import { Alert, Icon, List, Popconfirm } from "antd";
 import EmptyFullPage from "../UI/EmptyFullPage";
 
 const UsersContainer = () => {
@@ -36,7 +36,17 @@ const UsersContainer = () => {
         dataSource={users}
         renderItem={user => (
           <List.Item
-            actions={[<Icon type="delete" onClick={() => handleDelete(user)} /> ]}
+            actions={[
+              <Popconfirm
+                placement="topRight"
+                title={`Delete user ${user.email}?`}
+                onConfirm={() => handleDelete(user)}
+                okText="Yes"
+                cancelText="Cancel"
+              >
+                <Icon type="delete" />
+              </Popconfirm>
+            ]}
           >
             <List.Item.Meta
               title={<a href={`profile/${user.id}`}>{user.email}</a>}
