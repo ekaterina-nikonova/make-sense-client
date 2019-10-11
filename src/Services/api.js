@@ -6,6 +6,8 @@ console.log(`Base URL ${baseUrl} for ${process.env.NODE_ENV} environment`);
 
 /** Account */
 
+export const requestInvitation = data => axios.plain.post(`${baseUrl}/api/v1/admin/invitations`, data);
+
 export const signup = data => axios.plain.post(`${baseUrl}/api/v1/signup`, data);
 
 export const signin = data => axios.plain.post(`${baseUrl}/api/v1/signin`, data);

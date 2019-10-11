@@ -39,7 +39,7 @@ const AppsSection = () => {
             image={BrittleUpAndroidScreenshot}
             imgAlt="Screenshot of Brittle Up for Android"
             title="Brittle Up Android"
-            text="Collect training data for you image labelling models"
+            text="Collect training data for your image labelling models"
             link="https://play.google.com/store/apps/details?id=com.brittlepins.brittleup"
           />
         </Col>
