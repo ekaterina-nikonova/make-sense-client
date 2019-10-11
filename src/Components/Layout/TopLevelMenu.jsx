@@ -42,7 +42,7 @@ const TopLevelMenu = ({ currentPath, user, item, url }) => {
       </Menu.Item>
 
       {
-        user === 'admin' &&
+        (user === 'admin' || user === 'manager') &&
           <Menu.Item key="admin">
             <Link to="/admin">
               <Icon type="setting" />
