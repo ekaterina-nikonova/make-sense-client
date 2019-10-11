@@ -31,6 +31,18 @@ const TopLevelMenu = ({ currentPath, item, url }) => {
           <span>Settings</span>
         </Link>
       </Menu.Item>
+      <Menu.Item key="profile">
+        <Link to="/profile">
+          <Icon type="user" />
+          <span>Profile</span>
+        </Link>
+      </Menu.Item>
+      <Menu.Item key="admin">
+        <Link to="/admin">
+          <Icon type="setting" />
+          <span>Admin panel</span>
+        </Link>
+      </Menu.Item>
     </Menu>
   );
 };

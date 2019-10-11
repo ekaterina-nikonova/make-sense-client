@@ -8,6 +8,7 @@ import {Button, Col, Dropdown, Icon, Layout, Row} from 'antd';
 import { LoggedInContext } from "../../App";
 import { authLogout } from '../../Services/auth';
 
+import AdminPanelContainer from '../AdminPanel/AdminPanelContainer';
 import BoardsContainer from '../Boards/BoardsContainer';
 import EmptyFullPage from '../UI/EmptyFullPage';
 import iconConnected from '../../Assets/Icons/icon-connected.png';
@@ -77,6 +78,7 @@ export default () => {
             <Route path="/start" component={StartPageContent} />
             <Route path="/boards" component={BoardsContainer} />
             <Route path="/settings" component={SettingsContainer} />
+            <Route path="/admin" component={AdminPanelContainer} />
             <Route path="/signup" component={SignupPage} />
             <Route exact path="/components" component={MainPageContent} />
 
