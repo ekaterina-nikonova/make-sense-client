@@ -14,6 +14,7 @@ export const UserContext = React.createContext();
 setGlobal({
   boards: [],
   users: [],
+  invitations: [],
   status: null
 });
 
@@ -48,6 +49,22 @@ addReducer('userReducer', (global, dispatch, action) => {
       break;
     default:
       newState = global.users;
+  }
+
+  return newState;
+});
+
+addReducer('invitationReducer', (global, dispatch, action) => {
+  const invitation = action.data;
+  let newState;
+
+  switch (action.action) {
+    case 'update':
+      newState = { invitations: global.invitations.map(i =>
+        i.id === invitation.id ? invitation : i) };
+      break;
+    default:
+      newState = global.invitations;
   }
 
   return newState;
