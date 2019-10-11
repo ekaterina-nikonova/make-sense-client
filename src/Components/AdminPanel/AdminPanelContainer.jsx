@@ -3,17 +3,30 @@ import { Redirect } from "react-router-dom";
 
 import { LoggedInContext } from "../../App";
 
+import { Tabs } from "antd";
+
 import TopLevelMenu from "../Layout/TopLevelMenu";
+import UsersContainer from "./UsersContainer";
+import InvitationsContainer from "./InvitationsContainer";
 
 const AdminPanelContainer = ({ location, match }) => {
   const { pathname } = location;
   const { url } = match;
 
+  const { TabPane } = Tabs;
+
   return (
     <React.Fragment>
       <TopLevelMenu url={url} currentPath={pathname} item="admin"/>
 
-      <div>Admin panel</div>
+      <Tabs defaultActiveKey="1" className="admin-panel-container">
+        <TabPane tab="Users" key="1">
+          <UsersContainer />
+        </TabPane>
+        <TabPane tab="Invitations" key="2">
+          <InvitationsContainer />
+        </TabPane>
+      </Tabs>
     </React.Fragment>
   );
 };
