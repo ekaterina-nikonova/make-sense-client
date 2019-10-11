@@ -40,6 +40,8 @@ export const getUsers = () => axios.secured.get(`${baseUrl}/api/v1/admin/users`)
 
 export const deleteUser = id => axios.secured.delete(`${baseUrl}/api/v1/admin/users/${id}`);
 
+export const getInvitations = () => axios.secured.get(`${baseUrl}/api/v1/admin/invitations`);
+
 /** ActionCable */
 
 export const wsBaseUrl = process.env.NODE_ENV === 'production'
