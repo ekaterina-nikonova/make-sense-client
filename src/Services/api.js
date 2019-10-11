@@ -14,6 +14,8 @@ export const signin = data => axios.plain.post(`${baseUrl}/api/v1/signin`, data)
 
 export const signout = () => axios.secured.delete(`${baseUrl}/api/v1/signin`);
 
+export const me = () => axios.secured.get(`${baseUrl}/api/v1/me`);
+
 /** Boards */
 
 export const createBoard = data => axios.secured.post(`${baseUrl}/api/v1/boards`, data);

@@ -1,4 +1,8 @@
 import React from "react";
+import { Redirect } from "react-router-dom";
+
+import { LoggedInContext } from "../../App";
+
 import TopLevelMenu from "../Layout/TopLevelMenu";
 
 const AdminPanelContainer = ({ location, match }) => {
@@ -14,4 +18,12 @@ const AdminPanelContainer = ({ location, match }) => {
   );
 };
 
-export default AdminPanelContainer;
+const WrappedAdminPanelContainer = ({ location, match }) => (
+  <LoggedInContext.Consumer>
+    {loggedIn => (
+      loggedIn ? <AdminPanelContainer location={location} match={match} /> : <Redirect to='/start' />
+    )}
+  </LoggedInContext.Consumer>
+);
+
+export default WrappedAdminPanelContainer;

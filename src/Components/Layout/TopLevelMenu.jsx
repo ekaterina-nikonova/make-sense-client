@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import { Icon, Menu } from 'antd';
+import {UserContext} from "../../App";
 
-const TopLevelMenu = ({ currentPath, item, url }) => {
+const TopLevelMenu = ({ currentPath, user, item, url }) => {
   const [activeMenuItem, setActiveMenuItem] = useState(item);
 
   const goTo = e => {
@@ -25,24 +26,30 @@ const TopLevelMenu = ({ currentPath, item, url }) => {
           <span>Boards</span>
         </Link>
       </Menu.Item>
+
       <Menu.Item key="settings">
         <Link to="/settings">
           <Icon type="sliders" />
           <span>Settings</span>
         </Link>
       </Menu.Item>
+
       <Menu.Item key="profile">
         <Link to="/profile">
           <Icon type="user" />
           <span>Profile</span>
         </Link>
       </Menu.Item>
-      <Menu.Item key="admin">
-        <Link to="/admin">
-          <Icon type="setting" />
-          <span>Admin panel</span>
-        </Link>
-      </Menu.Item>
+
+      {
+        user === 'admin' &&
+          <Menu.Item key="admin">
+            <Link to="/admin">
+              <Icon type="setting" />
+              <span>Admin panel</span>
+            </Link>
+          </Menu.Item>
+      }
     </Menu>
   );
 };
@@ -53,4 +60,17 @@ TopLevelMenu.propTypes = {
   url: PropTypes.string.isRequired
 };
 
-export default TopLevelMenu;
+const WrappedTopLevelMenu = ({ currentPath, item, url }) => (
+  <UserContext.Consumer>
+    {user =>
+      <TopLevelMenu
+        currentPath={currentPath}
+        url={url}
+        item={item}
+        user={user ? user.role : ''}
+      />
+    }
+  </UserContext.Consumer>
+);
+
+export default WrappedTopLevelMenu;

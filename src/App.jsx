@@ -2,13 +2,14 @@ import React, { addCallback, addReducer, setGlobal } from 'reactn';
 import { useEffect, useState } from 'react';
 import { ActionCableProvider } from 'react-actioncable-provider';
 
-import { wsBaseUrl } from "./Services/api";
+import {me, wsBaseUrl} from "./Services/api";
 
 import Layout from './Components/Layout';
 
 import './App.less';
 
 export const LoggedInContext = React.createContext(localStorage.signedIn);
+export const UserContext = React.createContext();
 
 setGlobal({
   boards: [],
@@ -43,6 +44,15 @@ addCallback(global => {
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(localStorage.signedIn);
+  const [currentUser, setCurrentUser] = useState();
+
+  useEffect(() => {
+    if (loggedIn) {
+      me()
+        .then(response => setCurrentUser(response.data))
+        .catch(err => console.log("ERR", err));
+    }
+  }, []);
 
   useEffect(() => {
     document.addEventListener(
@@ -58,7 +68,9 @@ const App = () => {
   return (
     <ActionCableProvider url={wsBaseUrl}>
       <LoggedInContext.Provider value={loggedIn}>
-        <Layout/>
+        <UserContext.Provider value={currentUser}>
+          <Layout/>
+        </UserContext.Provider>
       </LoggedInContext.Provider>
     </ActionCableProvider>
   );
