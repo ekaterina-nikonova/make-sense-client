@@ -2,7 +2,7 @@ import React, { addCallback, addReducer, setGlobal } from 'reactn';
 import { useEffect, useState } from 'react';
 import { ActionCableProvider } from 'react-actioncable-provider';
 
-import {me, wsBaseUrl} from "./Services/api";
+import { me, wsBaseUrl } from "./Services/api";
 
 import Layout from './Components/Layout';
 
@@ -13,6 +13,7 @@ export const UserContext = React.createContext();
 
 setGlobal({
   boards: [],
+  users: [],
   status: null
 });
 
@@ -34,6 +35,21 @@ addReducer('boardReducer', (global, dispatch, action) => {
     default:
       newState = global.boards;
   }
+  return newState;
+});
+
+addReducer('userReducer', (global, dispatch, action) => {
+  const user = action.data;
+  let newState;
+
+  switch (action.action) {
+    case 'destroy':
+      newState = { users: global.users.filter(u => u.id !== user.id) };
+      break;
+    default:
+      newState = global.users;
+  }
+
   return newState;
 });
 

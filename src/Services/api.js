@@ -38,6 +38,8 @@ export const updateComponent = ({ componentId, updates }) => axios.secured.patch
 
 export const getUsers = () => axios.secured.get(`${baseUrl}/api/v1/admin/users`);
 
+export const deleteUser = id => axios.secured.delete(`${baseUrl}/api/v1/admin/users/${id}`);
+
 /** ActionCable */
 
 export const wsBaseUrl = process.env.NODE_ENV === 'production'

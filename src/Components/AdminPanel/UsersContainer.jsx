@@ -1,19 +1,30 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useGlobal } from "reactn";
 
-import { getUsers } from "../../Services/api";
+import { deleteUser, getUsers } from "../../Services/api";
 
 import {Alert, Icon, List} from "antd";
 import EmptyFullPage from "../UI/EmptyFullPage";
 
 const UsersContainer = () => {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useGlobal('users');
   const [error, setError] = useState();
+
+  const dispatchDelete = useDispatch('userReducer');
 
   useEffect(() => {
     getUsers()
       .then(response => setUsers(response.data))
       .catch(error => setError(error));
   }, []);
+
+  const handleDelete = user => {
+    deleteUser(user.id)
+      .then(dispatchDelete({
+        action: 'destroy',
+        data: { ...user }
+      }));
+  };
 
   return (
     <React.Fragment>
@@ -25,7 +36,7 @@ const UsersContainer = () => {
         dataSource={users}
         renderItem={user => (
           <List.Item
-            actions={[<Icon type="delete" /> ]}
+            actions={[<Icon type="delete" onClick={() => handleDelete(user)} /> ]}
           >
             <List.Item.Meta
               title={<a href={`profile/${user.id}`}>{user.email}</a>}

@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
+import { UserContext } from "../../App";
+
 import { Icon, Menu } from 'antd';
-import {UserContext} from "../../App";
 
 const TopLevelMenu = ({ currentPath, user, item, url }) => {
   const [activeMenuItem, setActiveMenuItem] = useState(item);
