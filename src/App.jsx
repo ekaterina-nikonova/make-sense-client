@@ -59,6 +59,9 @@ addReducer('invitationReducer', (global, dispatch, action) => {
   let newState;
 
   switch (action.action) {
+    case 'destroy':
+      newState = { invitations: global.invitations.filter(i => i.id !== invitation.id) };
+      break;
     case 'update':
       newState = { invitations: global.invitations.map(i =>
         i.id === invitation.id ? invitation : i) };

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useGlobal } from "reactn";
+import { useDispatch, useGlobal } from "reactn";
 
 import { deleteInvitationSilent,
   deleteInvitationWithEmail,
@@ -13,6 +13,8 @@ const InvitationsContainer = () => {
   const [invitations, setInvitations] = useGlobal('invitations');
   const [error, setError] = useState();
 
+  const dispatch = useDispatch('invitationReducer');
+
   useEffect(() => {
     getInvitations()
       .then(response => setInvitations(response.data))
@@ -21,12 +23,18 @@ const InvitationsContainer = () => {
 
   const handleDeleteSilent = invitation => {
     deleteInvitationSilent(invitation.id)
-      .then();
+      .then(dispatch({
+        action: 'destroy',
+        data: { ...invitation }
+      }));
   };
 
   const handleDeleteWithEmail = invitation => {
     deleteInvitationWithEmail(invitation.id)
-      .then();
+      .then(dispatch({
+        action: 'destroy',
+        data: { ...invitation }
+      }));
   };
 
   return (
