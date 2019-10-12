@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useGlobal } from "reactn";
 
-import { getInvitations } from "../../Services/api";
+import { deleteInvitationSilent,
+  deleteInvitationWithEmail,
+  getInvitations } from "../../Services/api";
 
-import { Alert, Icon, List } from "antd";
+import { Alert, Icon, List, Popconfirm } from "antd";
 
 import EmptyFullPage from "../UI/EmptyFullPage";
 
@@ -16,6 +18,16 @@ const InvitationsContainer = () => {
       .then(response => setInvitations(response.data))
       .catch(error => setError(error));
   }, []);
+
+  const handleDeleteSilent = invitation => {
+    deleteInvitationSilent(invitation.id)
+      .then();
+  };
+
+  const handleDeleteWithEmail = invitation => {
+    deleteInvitationWithEmail(invitation.id)
+      .then();
+  };
 
   return (
     <React.Fragment>
@@ -31,7 +43,16 @@ const InvitationsContainer = () => {
           renderItem={invitation => (
             <List.Item
               actions={[
-                <Icon type="close-circle" />,
+                <Popconfirm
+                  placement="topRight"
+                  title={`Send rejection email to ${invitation.email}?`}
+                  onConfirm={ () => handleDeleteWithEmail(invitation) }
+                  onCancel={ () => handleDeleteSilent(invitation) }
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <Icon type="close-circle" />
+                </Popconfirm>,
                 <Icon type="check-circle" />
               ]}>
               <List.Item.Meta
