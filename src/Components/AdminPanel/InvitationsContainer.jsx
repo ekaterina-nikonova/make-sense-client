@@ -5,7 +5,7 @@ import { deleteInvitationSilent,
   deleteInvitationWithEmail,
   getInvitations } from "../../Services/api";
 
-import { Alert, Icon, List, Popconfirm } from "antd";
+import { Alert, Icon, List, Popconfirm, Tooltip } from "antd";
 
 import EmptyFullPage from "../UI/EmptyFullPage";
 
@@ -59,7 +59,11 @@ const InvitationsContainer = () => {
                 deleteWithEmail: handleDeleteWithEmail
               })}>
               <List.Item.Meta
-                avatar={ InvitationAvatar({ invitation }) }
+                avatar={
+                  <Tooltip title={tooltipTitle({ invitation })}>
+                    { InvitationAvatar({ invitation }) }
+                  </Tooltip>
+                }
                 title={invitation.email}
                 description={invitation.code}
               />
@@ -69,6 +73,14 @@ const InvitationsContainer = () => {
       ) }
     </React.Fragment>
   );
+};
+
+const tooltipTitle = ({ invitation }) => {
+  if (invitation.used_at) {
+    return `Used at ${ Date(invitation.used_at) }`;
+  } else if (invitation.accepted_at) {
+    return `Accepted at ${ Date(invitation.accepted_at) }`;
+  } else return `Requested at ${ Date(invitation.created_at) }`;
 };
 
 const InvitationAvatar = ({ invitation }) => {
