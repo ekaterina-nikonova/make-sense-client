@@ -20,6 +20,7 @@ import SettingsContainer from '../Settings/SettingsContainer';
 import LoginForm from './LoginForm';
 import SignupPage from './SignupPage';
 import Footer from './Footer';
+import {ServerStatusConnected, ServerStatusDisconnected} from "../UI/ServerStatusIcon";
 
 export default () => {
   const { Content, Header } = Layout;
@@ -39,20 +40,6 @@ export default () => {
                 <span className="app-title">Brittle pins</span>
 
                 <span style={{ marginLeft: 'auto' }}>
-                  <ActionCableConsumer
-                    channel={{ channel: 'AppChannel' }}
-                    onConnected={() => setConnected(true)}
-                    onDisconnected={() => setConnected(false)}
-                  >
-                    <span style={{ margin: '0 1rem', opacity: '.8' }}>
-                      <img
-                        alt="connection indicator"
-                        src={connected ? iconConnected : iconDisconnected}
-                        style={{ maxHeight: '1.2rem'}}
-                      />
-                    </span>
-                  </ActionCableConsumer>
-
                   <LoggedInContext.Consumer>
                     {loggedIn => (
                       loggedIn ? (
@@ -60,7 +47,7 @@ export default () => {
                           Log out <Icon type="logout" />
                         </Button>
                       ) : (
-                        <Dropdown overlay={<LoginForm />} trigger={['hover']}>
+                        <Dropdown overlay={<LoginForm />} trigger={['click']}>
                           <Button type="dashed">
                             Log in <Icon type="down" />
                           </Button>
@@ -68,6 +55,17 @@ export default () => {
                       )
                     )}
                   </LoggedInContext.Consumer>
+
+                  <ActionCableConsumer
+                    channel={{ channel: 'AppChannel' }}
+                    onConnected={() => setConnected(true)}
+                    onDisconnected={() => setConnected(false)}
+                  >
+                    <span style={{ margin: '0 1rem', opacity: '.8' }}>
+                      { connected ? <ServerStatusConnected /> : <ServerStatusDisconnected /> }
+                    </span>
+                  </ActionCableConsumer>
+
                 </span>
               </Col>
             </Row>
