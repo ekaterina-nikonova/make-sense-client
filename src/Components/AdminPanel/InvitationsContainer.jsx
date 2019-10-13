@@ -21,6 +21,8 @@ const InvitationsContainer = () => {
       .catch(error => setError(error));
   }, []);
 
+  const handleAccept = invitation => {};
+
   const handleDeleteSilent = invitation => {
     deleteInvitationSilent(invitation.id)
       .then(dispatch({
@@ -50,20 +52,14 @@ const InvitationsContainer = () => {
           dataSource={invitations}
           renderItem={invitation => (
             <List.Item
-              actions={[
-                <Popconfirm
-                  placement="topRight"
-                  title={`Send rejection email to ${invitation.email}?`}
-                  onConfirm={ () => handleDeleteWithEmail(invitation) }
-                  onCancel={ () => handleDeleteSilent(invitation) }
-                  okText="Yes"
-                  cancelText="No"
-                >
-                  <Icon type="close-circle" />
-                </Popconfirm>,
-                <Icon type="check-circle" />
-              ]}>
+              actions={InvitationActions({
+                invitation,
+                accept: handleAccept,
+                deleteSilent: handleDeleteSilent,
+                deleteWithEmail: handleDeleteWithEmail
+              })}>
               <List.Item.Meta
+                avatar={invitation.used_at && <Icon type="check" />}
                 title={invitation.email}
                 description={invitation.code}
               />
@@ -73,6 +69,36 @@ const InvitationsContainer = () => {
       ) }
     </React.Fragment>
   );
+};
+
+const InvitationActions = ({ invitation, accept, deleteWithEmail, deleteSilent }) => {
+  const actions = [];
+
+  if (invitation.accepted_at) {
+    actions.push(<Icon type="ellipsis" />);
+  }
+
+  if (invitation.used_at) {
+    actions.push(<Icon type="close-circle" />);
+  }
+
+  if (!invitation.accepted_at && !invitation.used_at) {
+    actions.push(
+      <Popconfirm
+        placement="topRight"
+        title={`Send rejection email to ${invitation.email}?`}
+        onConfirm={ () => deleteWithEmail(invitation) }
+        onCancel={ () => deleteSilent(invitation) }
+        okText="Yes"
+        cancelText="No"
+      >
+        <Icon type="close-circle" />
+      </Popconfirm>
+    );
+    actions.push(<Icon type="check-circle" />);
+  }
+
+  return actions;
 };
 
 export default InvitationsContainer;

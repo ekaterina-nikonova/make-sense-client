@@ -23,7 +23,7 @@ const InvitationRequestForm = ({ form }) => {
           setFieldsValue({ email: '' });
         })
         .catch(_ =>
-          message.error(`${data.email} seems to be taken`)
+          message.error(`${data.email} is already used or invitation for this email has been requested`)
         )
       ;
     });
