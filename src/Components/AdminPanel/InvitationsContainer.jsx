@@ -79,7 +79,16 @@ const InvitationActions = ({ invitation, accept, deleteWithEmail, deleteSilent }
   }
 
   if (invitation.used_at) {
-    actions.push(<Icon type="close-circle" />);
+    actions.push(
+      <Popconfirm
+        placement="topRight"
+        title={`Delete invitation for ${invitation.email}?`}
+        onConfirm={ () => deleteSilent(invitation) }
+        okText="Yes"
+      >
+        <Icon type="close-circle" />
+      </Popconfirm>
+    );
   }
 
   if (!invitation.accepted_at && !invitation.used_at) {
