@@ -2,16 +2,19 @@ import React, { addCallback, addReducer, setGlobal } from 'reactn';
 import { useEffect, useState } from 'react';
 import { ActionCableProvider } from 'react-actioncable-provider';
 
-import { wsBaseUrl } from "./Services/api";
+import { me, wsBaseUrl } from "./Services/api";
 
 import Layout from './Components/Layout';
 
 import './App.less';
 
 export const LoggedInContext = React.createContext(localStorage.signedIn);
+export const UserContext = React.createContext();
 
 setGlobal({
   boards: [],
+  users: [],
+  invitations: [],
   status: null
 });
 
@@ -36,6 +39,40 @@ addReducer('boardReducer', (global, dispatch, action) => {
   return newState;
 });
 
+addReducer('userReducer', (global, dispatch, action) => {
+  const user = action.data;
+  let newState;
+
+  switch (action.action) {
+    case 'destroy':
+      newState = { users: global.users.filter(u => u.id !== user.id) };
+      break;
+    default:
+      newState = global.users;
+  }
+
+  return newState;
+});
+
+addReducer('invitationReducer', (global, dispatch, action) => {
+  const invitation = action.data;
+  let newState;
+
+  switch (action.action) {
+    case 'destroy':
+      newState = { invitations: global.invitations.filter(i => i.id !== invitation.id) };
+      break;
+    case 'update':
+      newState = { invitations: global.invitations.map(i =>
+        i.id === invitation.id ? invitation : i) };
+      break;
+    default:
+      newState = global.invitations;
+  }
+
+  return newState;
+});
+
 addCallback(global => {
   console.log("Callback called", global);
   return null;
@@ -43,6 +80,15 @@ addCallback(global => {
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(localStorage.signedIn);
+  const [currentUser, setCurrentUser] = useState();
+
+  useEffect(() => {
+    if (loggedIn) {
+      me()
+        .then(response => setCurrentUser(response.data))
+        .catch(err => console.log("ERR", err));
+    }
+  }, []);
 
   useEffect(() => {
     document.addEventListener(
@@ -53,12 +99,15 @@ const App = () => {
       'storage',
       e => setLoggedIn(localStorage.signedIn)
     );
+
   });
 
   return (
     <ActionCableProvider url={wsBaseUrl}>
       <LoggedInContext.Provider value={loggedIn}>
-        <Layout/>
+        <UserContext.Provider value={currentUser}>
+          <Layout/>
+        </UserContext.Provider>
       </LoggedInContext.Provider>
     </ActionCableProvider>
   );

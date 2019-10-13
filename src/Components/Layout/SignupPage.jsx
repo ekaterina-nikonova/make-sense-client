@@ -1,10 +1,12 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 
 import { Button, Card, Col, Form, Icon, Input, Row } from 'antd';
 
 import { authSignup } from '../../Services/auth';
+import { LoggedInContext } from '../../App';
 
-const SignupPage = ({ form }) => {
+const SignupPage = () => {
   const formWidth = {
     xs: 24,
     sm: 16,
@@ -105,4 +107,12 @@ const SignupForm = ({ form }) => {
 
 const WrappedForm = Form.create({ name: 'signup_form '})(SignupForm);
 
-export default SignupPage;
+const WrappedSignupPage = () => (
+  <LoggedInContext.Consumer>
+    {loggedIn => (
+      !loggedIn ? <SignupPage /> : <Redirect to='/' />
+    )}
+  </LoggedInContext.Consumer>
+);
+
+export default WrappedSignupPage;

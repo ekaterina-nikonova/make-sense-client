@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react';
-import { Button, Form, Icon, Input } from "antd";
+
+import { requestInvitation } from "../../../Services/api";
+
+import { Button, Form, Icon, Input, message } from "antd";
 
 const InvitationRequestForm = ({ form }) => {
-  const { getFieldDecorator, getFieldError, getFieldsError, isFieldTouched, validateFields } = form;
+  const { getFieldDecorator, getFieldError, getFieldsError, isFieldTouched, setFieldsValue } = form;
 
   const hasErrors = fieldsError => (
     Object.keys(fieldsError).some(field => fieldsError[field])
@@ -12,8 +15,17 @@ const InvitationRequestForm = ({ form }) => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    form.validateFields((err, values) => {
-      !err && console.log('Received values: ', values);
+    form.validateFields((err, data) => {
+      !err && requestInvitation(data)
+        .then(response => {
+          response.status === 201 &&
+          message.success(`Created invitation for ${data.email}`);
+          setFieldsValue({ email: '' });
+        })
+        .catch(_ =>
+          message.error(`${data.email} is already used or invitation for this email has been requested`)
+        )
+      ;
     });
   };
 
