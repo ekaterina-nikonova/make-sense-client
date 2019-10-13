@@ -59,7 +59,7 @@ const InvitationsContainer = () => {
                 deleteWithEmail: handleDeleteWithEmail
               })}>
               <List.Item.Meta
-                avatar={invitation.used_at && <Icon type="check" />}
+                avatar={ InvitationAvatar({ invitation }) }
                 title={invitation.email}
                 description={invitation.code}
               />
@@ -71,13 +71,16 @@ const InvitationsContainer = () => {
   );
 };
 
+const InvitationAvatar = ({ invitation }) => {
+  if (invitation.used_at) {
+    return <Icon type="check" />;
+  } else if (invitation.accepted_at) {
+    return <Icon type="ellipsis" />;
+  } else return <Icon type="question" />
+};
+
 const InvitationActions = ({ invitation, accept, deleteWithEmail, deleteSilent }) => {
   const actions = [];
-
-  if (invitation.accepted_at) {
-    actions.push(<Icon type="ellipsis" />);
-  }
-
   if (invitation.used_at) {
     actions.push(
       <Popconfirm
