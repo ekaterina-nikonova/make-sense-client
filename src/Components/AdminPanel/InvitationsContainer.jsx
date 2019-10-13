@@ -26,7 +26,7 @@ const InvitationsContainer = () => {
     acceptInvitation(invitation.id)
       .then(dispatch({
         action: 'update',
-        data: { ...invitation }
+        data: { ...invitation, accepted_at: new Date() }
       }));
   };
 
