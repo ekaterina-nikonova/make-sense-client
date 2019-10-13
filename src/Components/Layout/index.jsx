@@ -11,8 +11,6 @@ import { authLogout } from '../../Services/auth';
 import AdminPanelContainer from '../AdminPanel/AdminPanelContainer';
 import BoardsContainer from '../Boards/BoardsContainer';
 import EmptyFullPage from '../UI/EmptyFullPage';
-import iconConnected from '../../Assets/Icons/icon-connected.png';
-import iconDisconnected from '../../Assets/Icons/icon-disconnected.png';
 import logo from '../../Assets/Images/logo_square.png';
 import MainPageContent from './MainPageContent';
 import StartPageContent from "./StartPage/StartPageContent";

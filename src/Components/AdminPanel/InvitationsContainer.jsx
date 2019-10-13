@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useGlobal } from "reactn";
 
-import { deleteInvitationSilent,
+import { acceptInvitation,
+  deleteInvitationSilent,
   deleteInvitationWithEmail,
   getInvitations } from "../../Services/api";
 
@@ -21,7 +22,13 @@ const InvitationsContainer = () => {
       .catch(error => setError(error));
   }, []);
 
-  const handleAccept = invitation => {};
+  const handleAccept = invitation => {
+    acceptInvitation(invitation.id)
+      .then(dispatch({
+        action: 'update',
+        data: { ...invitation }
+      }));
+  };
 
   const handleDeleteSilent = invitation => {
     deleteInvitationSilent(invitation.id)
@@ -76,17 +83,21 @@ const InvitationsContainer = () => {
 };
 
 const tooltipTitle = ({ invitation }) => {
-  if (invitation.used_at) {
-    return `Used at ${ Date(invitation.used_at) }`;
-  } else if (invitation.accepted_at) {
-    return `Accepted at ${ Date(invitation.accepted_at) }`;
-  } else return `Requested at ${ Date(invitation.created_at) }`;
+  const { used_at, accepted_at, created_at } = invitation;
+
+  if (used_at) {
+    return `Used at ${ new Date(used_at) }`;
+  } else if (accepted_at) {
+    return `Accepted at ${ new Date(accepted_at) }`;
+  } else return `Requested at ${ new Date(created_at) }`;
 };
 
 const InvitationAvatar = ({ invitation }) => {
-  if (invitation.used_at) {
+  const { used_at, accepted_at } = invitation;
+
+  if (used_at) {
     return <Icon type="check" />;
-  } else if (invitation.accepted_at) {
+  } else if (accepted_at) {
     return <Icon type="ellipsis" />;
   } else return <Icon type="question" />
 };
@@ -119,7 +130,17 @@ const InvitationActions = ({ invitation, accept, deleteWithEmail, deleteSilent }
         <Icon type="close-circle" />
       </Popconfirm>
     );
-    actions.push(<Icon type="check-circle" />);
+    actions.push(
+      <Popconfirm
+        placement="topRight"
+        title={`Send invitation code to ${invitation.email}?`}
+        onConfirm={ () => accept(invitation) }
+        okText="Yes"
+        cancelText="No"
+      >
+        <Icon type="check-circle" />
+      </Popconfirm>
+    );
   }
 
   return actions;

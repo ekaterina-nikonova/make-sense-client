@@ -42,6 +42,8 @@ export const deleteUser = id => axios.secured.delete(`${baseUrl}/api/v1/admin/us
 
 export const getInvitations = () => axios.secured.get(`${baseUrl}/api/v1/admin/invitations`);
 
+export const acceptInvitation = id => axios.secured.patch(`${baseUrl}/api/v1/admin/invitation-accept/${id}`);
+
 export const deleteInvitationSilent = id => axios.secured.delete(`${baseUrl}/api/v1/admin/invitations/${id}`);
 
 export const deleteInvitationWithEmail = id => axios.secured.delete(`${baseUrl}/api/v1/admin/invitation-reject/${id}`);

@@ -99,6 +99,7 @@ const App = () => {
       'storage',
       e => setLoggedIn(localStorage.signedIn)
     );
+
   });
 
   return (
