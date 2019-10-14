@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Redirect } from 'react-router-dom';
 
-import { Button, Card, Col, Form, Icon, Input, Row } from 'antd';
+import { Button, Card, Col, Form, Icon, Input, Row, message } from 'antd';
 
 import { authSignup } from '../../Services/auth';
 import { LoggedInContext } from '../../App';
@@ -27,6 +27,10 @@ const SignupPage = () => {
 };
 
 const SignupForm = ({ form }) => {
+  const [error, setError] = useState();
+
+  useEffect(() => showErrorMessage(error), [error]);
+
   const { Item } = Form;
   const { getFieldDecorator, validateFields } = form;
 
@@ -41,11 +45,26 @@ const SignupForm = ({ form }) => {
     }
   };
 
+  const showErrorMessage = err => {
+    if (err) {
+      switch (err.response.status) {
+        case 403:
+          message.error('Wrong email address or invitation code.');
+          break;
+        case 422:
+          message.error('Could not sign up. Please try again.');
+          break;
+        default:
+          message.error('Something went wrong.');
+      }
+    }
+  };
+
   const signUp = e => {
     e.preventDefault();
-    validateFields((err, values) => {
-      if (!err) {
-        authSignup(values);
+    validateFields((validationError, values) => {
+      if (!validationError) {
+        authSignup(values, setError);
       }
     });
   };

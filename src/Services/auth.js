@@ -1,6 +1,6 @@
 import { signin, signout, signup } from './api';
 
-export const authSignup = data => {
+export const authSignup = (data, setError) => {
   const success = response => {
     if (!response.data.csrf) {
       failure(response);
@@ -13,6 +13,7 @@ export const authSignup = data => {
   const failure = error => {
     delete localStorage.csrf;
     delete localStorage.signedIn;
+    setError(error);
   };
 
   signup(data)
