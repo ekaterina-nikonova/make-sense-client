@@ -1,10 +1,12 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Redirect } from 'react-router-dom';
 
-import { Button, Card, Col, Form, Icon, Input, Row } from 'antd';
+import { Button, Card, Col, Form, Icon, Input, Row, message } from 'antd';
 
 import { authSignup } from '../../Services/auth';
 import { LoggedInContext } from '../../App';
+
+import BubbleBgr from "../UI/BubbleBgr";
 
 const SignupPage = () => {
   const formWidth = {
@@ -16,17 +18,23 @@ const SignupPage = () => {
   };
 
   return (
-    <Row type="flex" align="middle" justify="center">
-      <Col {...formWidth }>
-        <Card title="Sign up" className="signup-card">
-          <WrappedForm />
-        </Card>
-      </Col>
-    </Row>
+    <BubbleBgr>
+      <Row type="flex" align="middle" justify="center">
+        <Col {...formWidth }>
+          <Card title="Sign up" className="signup-card">
+            <WrappedForm />
+          </Card>
+        </Col>
+      </Row>
+    </BubbleBgr>
   );
 };
 
 const SignupForm = ({ form }) => {
+  const [error, setError] = useState();
+
+  useEffect(() => showErrorMessage(error), [error]);
+
   const { Item } = Form;
   const { getFieldDecorator, validateFields } = form;
 
@@ -41,11 +49,26 @@ const SignupForm = ({ form }) => {
     }
   };
 
+  const showErrorMessage = err => {
+    if (err) {
+      switch (err.response.status) {
+        case 403:
+          message.error('Wrong email address or invitation code.');
+          break;
+        case 422:
+          message.error('Could not sign up. Please try again.');
+          break;
+        default:
+          message.error('Something went wrong.');
+      }
+    }
+  };
+
   const signUp = e => {
     e.preventDefault();
-    validateFields((err, values) => {
-      if (!err) {
-        authSignup(values);
+    validateFields((validationError, values) => {
+      if (!validationError) {
+        authSignup(values, setError);
       }
     });
   };
@@ -55,6 +78,10 @@ const SignupForm = ({ form }) => {
       <Item label="Email">
         { getFieldDecorator('email', {
           rules: [
+            {
+              type: 'email',
+              message: 'This is not a valid email address.'
+            },
             {
               required: true,
               whitespace: true,
@@ -95,7 +122,13 @@ const SignupForm = ({ form }) => {
       </Item>
 
       <Item label="Invitation code">
-        { getFieldDecorator('invitation_code')(
+        { getFieldDecorator('invitation_code', {
+          rules: [{
+            required: true,
+            whitespace: true,
+            message: 'Invitation code is required.'
+          }]
+        })(
           <Input prefix={<Icon type="key" />} />
         ) }
       </Item>
