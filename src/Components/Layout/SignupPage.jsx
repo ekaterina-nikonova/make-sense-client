@@ -6,6 +6,8 @@ import { Button, Card, Col, Form, Icon, Input, Row, message } from 'antd';
 import { authSignup } from '../../Services/auth';
 import { LoggedInContext } from '../../App';
 
+import BubbleBgr from "../UI/BubbleBgr";
+
 const SignupPage = () => {
   const formWidth = {
     xs: 24,
@@ -16,13 +18,15 @@ const SignupPage = () => {
   };
 
   return (
-    <Row type="flex" align="middle" justify="center">
-      <Col {...formWidth }>
-        <Card title="Sign up" className="signup-card">
-          <WrappedForm />
-        </Card>
-      </Col>
-    </Row>
+    <BubbleBgr>
+      <Row type="flex" align="middle" justify="center">
+        <Col {...formWidth }>
+          <Card title="Sign up" className="signup-card">
+            <WrappedForm />
+          </Card>
+        </Col>
+      </Row>
+    </BubbleBgr>
   );
 };
 
