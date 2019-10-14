@@ -75,6 +75,10 @@ const SignupForm = ({ form }) => {
         { getFieldDecorator('email', {
           rules: [
             {
+              type: 'email',
+              message: 'This is not a valid email address.'
+            },
+            {
               required: true,
               whitespace: true,
               message: 'Please provide an email.'
@@ -114,7 +118,13 @@ const SignupForm = ({ form }) => {
       </Item>
 
       <Item label="Invitation code">
-        { getFieldDecorator('invitation_code')(
+        { getFieldDecorator('invitation_code', {
+          rules: [{
+            required: true,
+            whitespace: true,
+            message: 'Invitation code is required.'
+          }]
+        })(
           <Input prefix={<Icon type="key" />} />
         ) }
       </Item>
