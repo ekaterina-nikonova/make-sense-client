@@ -1,9 +1,33 @@
 import React from "react";
 
-import { Divider, Icon, Timeline, Typography } from "antd";
+import { Divider, Icon, List, Timeline, Typography } from "antd";
 
 const AboutPageContainer = () => {
-  const { Paragraph, Title } = Typography;
+  const { Paragraph, Text, Title } = Typography;
+
+  const links = {
+    antDesign: 'https://ant.design/',
+    netlify: 'https://www.netlify.com/',
+    react: 'https://create-react-app.dev/'
+  };
+
+  const reactLibraries = [{
+    title: 'Axios',
+    description: 'HTTP requests to the API, handling headers and credentials',
+    link: 'https://github.com/axios/axios'
+  }, {
+    title: 'React ActionCable Provider',
+    description: 'Connecting to the API\'s ActionCable channels using WebSockets to receive real-time updates across open browser windows and devices',
+    link: 'https://github.com/cpunion/react-actioncable-provider'
+  }, {
+    title: 'ReactN',
+    description: 'Global state management; together with React Context, replaces Redux',
+    link: 'https://github.com/CharlesStover/reactn'
+  }, {
+    title: 'Uniforms',
+    description: 'Schema-based form generation',
+    link: 'https://uniforms.tools/'
+  }];
 
   return (
     <div className="about-container">
@@ -20,7 +44,7 @@ const AboutPageContainer = () => {
 
         <Paragraph>
           The core of Brittle Pins is an API built with <strong>Ruby on Rails</strong> and a web client built with <strong>React</strong>.
-          The accompanying Android apps are written in <strong>Kotlin</strong>, but you can still find some older code in <strong>Java</strong>.
+          The accompanying Android apps are written in <strong>Kotlin</strong>, but you can still find some older <strong>Java</strong> code.
         </Paragraph>
 
         <div className="apps-timeline">
@@ -52,7 +76,36 @@ const AboutPageContainer = () => {
             <Timeline.Item
               dot={<Icon component={ReactIcon} />}
             >
-              Web Client - started Mar 6, 2019
+              <Title level={4}>
+                Web client
+              </Title>
+
+              <div className="subtitle">
+                <Text type="secondary">started Mar 6, 2019</Text>
+              </div>
+
+              <Paragraph>
+                The client app has been bootstrapped with <a href={links.react} target="_blank" rel="noopener noreferrer">create-react-app</a>.
+                It uses <a href={links.antDesign} target="_blank" rel="noopener noreferrer">Ant Design</a> as a UI library, and is hosted on <a href={links.netlify} target="_blank" rel="noopener noreferrer">Netlify</a>.
+                Instead of components' state and lifecycle methods, the local flow of data is based on <strong>hooks</strong>.
+              </Paragraph>
+
+              <Paragraph>
+                Some libraries used in the app:
+              </Paragraph>
+
+              <List
+                className="libraries-list"
+                dataSource={reactLibraries}
+                renderItem={item => (
+                  <List.Item>
+                    <List.Item.Meta
+                      title={<a href={item.link} target="_blank" rel="noopener noreferrer">{item.title}</a>}
+                      description={item.description}
+                    />
+                  </List.Item>
+                )}
+              />
             </Timeline.Item>
           </Timeline>
         </div>
