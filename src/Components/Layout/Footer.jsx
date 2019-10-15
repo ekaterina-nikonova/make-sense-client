@@ -20,11 +20,35 @@ const Footer = () => {
 
           <Col span={12}>
             <Title level={4}>Source code</Title>
-            <a href="#"><Text>Brittle Pins</Text></a>
+
+            <Icon type="android" />
+            <a href="https://github.com/ekaterina-nikonova/brittle-pins-android" target="_blank" rel="noopener noreferrer">
+              <Text> Brittle Pins</Text>
+            </a>
             <br/>
-            <a href="#"><Text>Brittle Up</Text></a>
+
+            <Icon type="android" />
+            <a href="https://github.com/ekaterina-nikonova/brittle-up" target="_blank" rel="noopener noreferrer">
+              <Text> Brittle Up</Text>
+            </a>
             <br/>
-            <a href="#"><Text>Brittle Eye</Text></a>
+
+            <Icon type="android" />
+            <a href="https://github.com/ekaterina-nikonova/brittle-eye" target="_blank" rel="noopener noreferrer">
+              <Text> Brittle Eye</Text>
+            </a>
+            <br/>
+
+            <Icon type="global" />
+            <a href="https://github.com/ekaterina-nikonova/brittle-pins-api" target="_blank" rel="noopener noreferrer">
+              <Text> Brittle Pins API</Text>
+            </a>
+            <br/>
+
+            <Icon type="global" />
+            <a href="https://github.com/ekaterina-nikonova/brittle-pins-web" target="_blank" rel="noopener noreferrer">
+              <Text> Brittle Pins web client</Text>
+            </a>
           </Col>
         </Row>
 
