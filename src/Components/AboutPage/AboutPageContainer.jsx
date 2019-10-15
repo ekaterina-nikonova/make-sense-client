@@ -17,6 +17,25 @@ const AboutPageContainer = () => {
     rails: 'https://rubyonrails.org/'
   };
 
+  const brittleEyeLibraries = [];
+  const brittleEyeDescription = (
+    <React.Fragment>
+    </React.Fragment>
+  );
+
+  const brittleUpLibraries = [];
+  const brittleUpDescription = (
+    <React.Fragment>
+    </React.Fragment>
+  );
+
+  const androidLibraries = [];
+  const androidDescription = (
+    <React.Fragment>
+    </React.Fragment>
+  );
+
+  const apiLibraries = [];
   const apiDescription = (
     <React.Fragment>
       The back-end is a <a href={links.rails} target="_blank" rel="noopener noreferrer">Ruby on Rails</a> app generated as an API.
@@ -71,27 +90,34 @@ const AboutPageContainer = () => {
 
         <div className="apps-timeline">
           <Timeline>
-            <Timeline.Item
-              dot={<Icon component={AndroidIcon} />}
-            >
-              Brittle Eye - started Sep 29, 2019
-            </Timeline.Item>
+            <TimelineSection
+              description={brittleEyeDescription}
+              icon={AndroidIcon}
+              libraries={brittleEyeLibraries}
+              title="Brittle Eye"
+              subtitle="started Sep 29, 2019"
+            />
 
-            <Timeline.Item
-              dot={<Icon component={JavaIcon} />}
-            >
-              Brittle Up - started Jun 1, 2019
-            </Timeline.Item>
+            <TimelineSection
+              description={brittleUpDescription}
+              icon={JavaIcon}
+              libraries={brittleUpLibraries}
+              title="Brittle Up"
+              subtitle="started Jun 1, 2019"
+            />
 
-            <Timeline.Item
-              dot={<Icon component={AndroidIcon} />}
-            >
-              Brittle Pins for Android - started May 14, 2019
-            </Timeline.Item>
+            <TimelineSection
+              description={androidDescription}
+              icon={AndroidIcon}
+              libraries={androidLibraries}
+              title="Brittle Pins for Android"
+              subtitle="started May 14, 2019"
+            />
 
             <TimelineSection
               description={apiDescription}
               icon={RubyIcon}
+              libraries={apiLibraries}
               subtitle="started Mar 9, 2019"
               title="API"
             />

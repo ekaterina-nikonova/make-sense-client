@@ -20,7 +20,7 @@ const TimelineSection = ({ description, icon, libraries, subtitle, title }) => {
 
       <Paragraph>{description}</Paragraph>
 
-      { libraries && <LibraryList datasource={libraries} /> }
+      { libraries.length ? <LibraryList datasource={libraries} /> : null }
 
     </Timeline.Item>
   );
