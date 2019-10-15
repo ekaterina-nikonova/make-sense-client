@@ -8,6 +8,7 @@ const AboutPageContainer = () => {
   const { Paragraph, Text, Title } = Typography;
 
   const links = {
+    androidX: 'https://developer.android.com/jetpack/androidx',
     antDesign: 'https://ant.design/',
     aws: 'https://aws.amazon.com/s3/',
     heroku: 'https://dashboard.heroku.com/',
@@ -29,13 +30,32 @@ const AboutPageContainer = () => {
     </React.Fragment>
   );
 
-  const androidLibraries = [];
   const androidDescription = (
     <React.Fragment>
+      The Android client has the same features as the web app.
+      It incorporates a few <a href={links.androidX} target="_blank" rel="noopener noreferrer">AndroidX</a> packages and manages user sessions internally.
+      The app is still under development.
     </React.Fragment>
   );
 
-  const apiLibraries = [];
+  const androidLibraries = [{
+    title: 'Retrofit',
+    description: 'Handle HTTP requests to the API',
+    link: 'https://square.github.io/retrofit/'
+  }, {
+    title: 'Persistent Cookie Jar',
+    description: 'Store cookies in SharedPreferences and handle CSRF token to keep the user logged in',
+    link: 'https://github.com/franmontiel/PersistentCookieJar'
+  }, {
+    title: 'Picasso',
+    description: 'Fetching images from the remote storage and rendering them in the ImageView',
+    link: 'https://square.github.io/picasso/'
+  }, {
+    title: 'Gson',
+    description: 'Process responses from the API; deserialize JSON to render in the activities',
+    link: 'https://github.com/google/gson'
+  }];
+
   const apiDescription = (
     <React.Fragment>
       The back-end is a <a href={links.rails} target="_blank" rel="noopener noreferrer">Ruby on Rails</a> app generated as an API.
@@ -43,6 +63,16 @@ const AboutPageContainer = () => {
       Uploaded files are stored at <a href={links.aws} target="_blank" rel="noopener noreferrer">Amazon S3</a>.
     </React.Fragment>
   );
+
+  const apiLibraries = [{
+    title: 'JWT Sessions',
+    description: 'Manage sessions using JSON Web Tokens',
+    link: 'https://github.com/tuwukee/jwt_sessions'
+  }, {
+    title: 'ActionCable',
+    description: 'Use WebSockets to broadcast changing data across clients in real time',
+    link: 'https://edgeguides.rubyonrails.org/action_cable_overview.html'
+  }];
 
   const webClientDescription = (
     <React.Fragment>
@@ -58,7 +88,7 @@ const AboutPageContainer = () => {
     link: 'https://github.com/axios/axios'
   }, {
     title: 'React ActionCable Provider',
-    description: 'Connecting to the API\'s ActionCable channels using WebSockets to receive real-time updates across open browser windows and devices',
+    description: 'Connect to the API\'s ActionCable channels using WebSockets to receive real-time updates across open browser windows and devices',
     link: 'https://github.com/cpunion/react-actioncable-provider'
   }, {
     title: 'ReactN',
