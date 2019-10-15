@@ -2,6 +2,8 @@ import React from "react";
 
 import { Divider, Icon, List, Timeline, Typography } from "antd";
 
+import TimelineSection from "./TimelineSection";
+
 const AboutPageContainer = () => {
   const { Paragraph, Text, Title } = Typography;
 
@@ -14,6 +16,22 @@ const AboutPageContainer = () => {
     react: 'https://create-react-app.dev/',
     rails: 'https://rubyonrails.org/'
   };
+
+  const apiDescription = (
+    <React.Fragment>
+      The back-end is a <a href={links.rails} target="_blank" rel="noopener noreferrer">Ruby on Rails</a> app generated as an API.
+      It uses <a href={links.postgresql} target="_blank" rel="noopener noreferrer">PostgreSQL</a> as the database and is hosted on <a href={links.heroku} target="_blank" rel="noopener noreferrer">Heroku</a>.
+      Uploaded files are stored at <a href={links.aws} target="_blank" rel="noopener noreferrer">Amazon S3</a>.
+    </React.Fragment>
+  );
+
+  const webClientDescription = (
+    <React.Fragment>
+      The client app has been bootstrapped with <a href={links.react} target="_blank" rel="noopener noreferrer">create-react-app</a>.
+      It uses <a href={links.antDesign} target="_blank" rel="noopener noreferrer">Ant Design</a> as a UI library, and is hosted on <a href={links.netlify} target="_blank" rel="noopener noreferrer">Netlify</a>.
+      Instead of components' state and lifecycle methods, the local flow of data is based on <strong>hooks</strong>.
+    </React.Fragment>
+  );
 
   const reactLibraries = [{
     title: 'Axios',
@@ -71,55 +89,20 @@ const AboutPageContainer = () => {
               Brittle Pins for Android - started May 14, 2019
             </Timeline.Item>
 
-            <Timeline.Item
-              dot={<Icon component={RubyIcon} />}
-            >
-              <Title level={4}>
-                API
-              </Title>
+            <TimelineSection
+              description={apiDescription}
+              icon={RubyIcon}
+              subtitle="started Mar 9, 2019"
+              title="API"
+            />
 
-              <div className="subtitle">
-                <Text type="secondary">started Mar 9, 2019</Text>
-              </div>
-
-              <Paragraph>
-                The back-end is a <a href={links.rails} target="_blank" rel="noopener noreferrer">Ruby on Rails</a> app generated as an API.
-                It uses <a href={links.postgresql} target="_blank" rel="noopener noreferrer">PostgreSQL</a> as the database and is hosted on <a href={links.heroku} target="_blank" rel="noopener noreferrer">Heroku</a>.
-                Uploaded files are stored at <a href={links.aws} target="_blank" rel="noopener noreferrer">Amazon S3</a>.
-              </Paragraph>
-            </Timeline.Item>
-
-            <Timeline.Item
-              dot={<Icon component={ReactIcon} />}
-            >
-              <Title level={4}>
-                Web client
-              </Title>
-
-              <div className="subtitle">
-                <Text type="secondary">started Mar 6, 2019</Text>
-              </div>
-
-              <Paragraph>
-                The client app has been bootstrapped with <a href={links.react} target="_blank" rel="noopener noreferrer">create-react-app</a>.
-                It uses <a href={links.antDesign} target="_blank" rel="noopener noreferrer">Ant Design</a> as a UI library, and is hosted on <a href={links.netlify} target="_blank" rel="noopener noreferrer">Netlify</a>.
-                Instead of components' state and lifecycle methods, the local flow of data is based on <strong>hooks</strong>.
-              </Paragraph>
-
-              <List
-                className="libraries-list"
-                dataSource={reactLibraries}
-                header="Internals"
-                renderItem={item => (
-                  <List.Item>
-                    <List.Item.Meta
-                      title={<a href={item.link} target="_blank" rel="noopener noreferrer">{item.title}</a>}
-                      description={item.description}
-                    />
-                  </List.Item>
-                )}
-              />
-            </Timeline.Item>
+            <TimelineSection
+              description={webClientDescription}
+              icon={ReactIcon}
+              libraries={reactLibraries}
+              subtitle="started Mar 6, 2019"
+              title="Web client"
+            />
           </Timeline>
         </div>
 
