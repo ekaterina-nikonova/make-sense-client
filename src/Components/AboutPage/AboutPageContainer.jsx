@@ -24,11 +24,32 @@ const AboutPageContainer = () => {
     </React.Fragment>
   );
 
-  const brittleUpLibraries = [];
   const brittleUpDescription = (
     <React.Fragment>
+      A little utility for uploading massive amounts of photos on Google Drive to be later used as training data for image labelling models.
+      To save space and bandwidth, the app allows to resize images, and since they are uploaded directly, without saving them on the device, the memory doesn't get cluttered.
+      You don't need to sort images later, since labels are assigned automatically.
+      The app is written in <strong>Java</strong>.
     </React.Fragment>
   );
+
+  const brittleUpLibraries = [{
+    title: 'Drive API v3',
+    description: 'Manage fetching folder structure from Google Drive, uploading photos, verifying credentials',
+    link: 'https://developers.google.com/api-client-library/java/apis/drive/v3'
+  }, {
+    title: 'Android Hardware Camera2',
+    description: 'Show preview, take pictures, turn the flash on and off',
+    link: 'https://developer.android.com/reference/android/hardware/camera2/package-summary'
+  }, {
+    title: 'Google Play Services',
+    description: 'Handle signing in with Google account to get access to Google Drive',
+    link: 'https://developers.google.com/android/guides/overview'
+  }, {
+    title: 'Mockito',
+    description: 'Mock DriveService in tests, stub Google Drive responses',
+    link: 'https://site.mockito.org/'
+  }];
 
   const androidDescription = (
     <React.Fragment>
