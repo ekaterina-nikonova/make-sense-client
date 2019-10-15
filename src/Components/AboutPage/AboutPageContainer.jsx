@@ -7,8 +7,12 @@ const AboutPageContainer = () => {
 
   const links = {
     antDesign: 'https://ant.design/',
+    aws: 'https://aws.amazon.com/s3/',
+    heroku: 'https://dashboard.heroku.com/',
     netlify: 'https://www.netlify.com/',
-    react: 'https://create-react-app.dev/'
+    postgresql: 'https://www.postgresql.org/',
+    react: 'https://create-react-app.dev/',
+    rails: 'https://rubyonrails.org/'
   };
 
   const reactLibraries = [{
@@ -70,7 +74,19 @@ const AboutPageContainer = () => {
             <Timeline.Item
               dot={<Icon component={RubyIcon} />}
             >
-              API - started Mar 9, 2019
+              <Title level={4}>
+                API
+              </Title>
+
+              <div className="subtitle">
+                <Text type="secondary">started Mar 9, 2019</Text>
+              </div>
+
+              <Paragraph>
+                The back-end is a <a href={links.rails} target="_blank" rel="noopener noreferrer">Ruby on Rails</a> app generated as an API.
+                It uses <a href={links.postgresql} target="_blank" rel="noopener noreferrer">PostgreSQL</a> as the database and is hosted on <a href={links.heroku} target="_blank" rel="noopener noreferrer">Heroku</a>.
+                Uploaded files are stored at <a href={links.aws} target="_blank" rel="noopener noreferrer">Amazon S3</a>.
+              </Paragraph>
             </Timeline.Item>
 
             <Timeline.Item
@@ -90,13 +106,10 @@ const AboutPageContainer = () => {
                 Instead of components' state and lifecycle methods, the local flow of data is based on <strong>hooks</strong>.
               </Paragraph>
 
-              <Paragraph>
-                Some libraries used in the app:
-              </Paragraph>
-
               <List
                 className="libraries-list"
                 dataSource={reactLibraries}
+                header="Internals"
                 renderItem={item => (
                   <List.Item>
                     <List.Item.Meta
