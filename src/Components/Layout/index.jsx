@@ -13,7 +13,8 @@ import BoardsContainer from '../Boards/BoardsContainer';
 import EmptyFullPage from '../UI/EmptyFullPage';
 import logo from '../../Assets/Images/logo_square.png';
 import MainPageContent from './MainPageContent';
-import StartPageContent from "./StartPage/StartPageContent";
+import StartPageContent from "../StartPage/StartPageContent";
+import AboutPageContainer from "../AboutPage/AboutPageContainer";
 import SettingsContainer from '../Settings/SettingsContainer';
 import LoginForm from './LoginForm';
 import SignupPage from './SignupPage';
@@ -72,6 +73,7 @@ export default () => {
           <Content className="page-content">
             <Route exact path="/" component={MainPageContent} />
             <Route path="/start" component={StartPageContent} />
+            <Route path="/about" component={AboutPageContainer} />
             <Route path="/boards" component={BoardsContainer} />
             <Route path="/settings" component={SettingsContainer} />
             <Route path="/admin" component={AdminPanelContainer} />
