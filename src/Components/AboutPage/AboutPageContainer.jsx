@@ -18,7 +18,7 @@ const AboutPageContainer = () => {
     brittlePinsAPILink: 'https://github.com/ekaterina-nikonova/brittle-pins-api',
     brittlePinsWebLink: 'https://github.com/ekaterina-nikonova/brittle-pins-web',
 
-    heroku: 'https://dashboard.heroku.com/',
+    heroku: 'https://heroku.com/',
     netlify: 'https://www.netlify.com/',
     postgresql: 'https://www.postgresql.org/',
     react: 'https://create-react-app.dev/',
@@ -39,8 +39,8 @@ const AboutPageContainer = () => {
     link: 'https://developer.android.com/training/camerax'
   }, {
     title: 'Firebase Vision',
-    description: 'https://firebase.google.com/docs/reference/android/com/google/firebase/ml/vision/FirebaseVision',
-    link: 'Detect the most prominent object in the preview, track it\'s position and dimensions'
+    description: 'Detect the most prominent object in the preview, track it\'s position and dimensions',
+    link: 'https://firebase.google.com/docs/reference/android/com/google/firebase/ml/vision/FirebaseVision'
   }, {
     title: 'Firebase AutoML',
     description: 'Recognise the object in the preview using a cloud-hosted re-trained model',
@@ -50,7 +50,7 @@ const AboutPageContainer = () => {
   const brittleUpDescription = (
     <React.Fragment>
       A little utility for uploading massive amounts of photos on Google Drive to be later used as training data for image labelling models.
-      To save space and bandwidth, the app allows to resize images, and since they are uploaded directly, without saving them on the device, the memory doesn't get cluttered.
+      To save space and bandwidth, the app allows to resize images, and since they are uploaded directly, without storing on the device, the memory doesn't get cluttered.
       You don't need to sort images later, since labels are assigned automatically.
       The app is written in <strong>Java</strong>.
     </React.Fragment>
@@ -77,8 +77,7 @@ const AboutPageContainer = () => {
   const androidDescription = (
     <React.Fragment>
       The Android client has the same features as the web app.
-      It incorporates a few <a href={links.androidX} target="_blank" rel="noopener noreferrer">AndroidX</a> packages and manages user sessions internally.
-      <strong>The app is still under development</strong>.
+      It incorporates a few <a href={links.androidX} target="_blank" rel="noopener noreferrer">AndroidX</a> packages and manages user sessions internally. <strong>The app is still under development</strong>.
     </React.Fragment>
   );
 
@@ -92,7 +91,7 @@ const AboutPageContainer = () => {
     link: 'https://github.com/franmontiel/PersistentCookieJar'
   }, {
     title: 'Picasso',
-    description: 'Fetching images from the remote storage and rendering them in the ImageView',
+    description: 'Fetch images from the remote storage and render them in the ImageView',
     link: 'https://square.github.io/picasso/'
   }, {
     title: 'Gson',
@@ -128,7 +127,7 @@ const AboutPageContainer = () => {
 
   const reactLibraries = [{
     title: 'Axios',
-    description: 'HTTP requests to the API, handling headers and credentials',
+    description: 'Send HTTP requests to the API, handle headers and credentials',
     link: 'https://github.com/axios/axios'
   }, {
     title: 'React ActionCable Provider',
