@@ -5,14 +5,22 @@ import { Icon, Timeline, Typography } from "antd";
 
 import LibraryList from "./LibraryList";
 
-const TimelineSection = ({ description, icon, libraries, subtitle, title }) => {
+const TimelineSection = ({ description, icon, libraries, repoLink, subtitle, title }) => {
   const { Paragraph, Text, Title } = Typography;
 
   return (
     <Timeline.Item
       dot={<Icon component={icon} />}
     >
-      <Title level={4}>{title}</Title>
+      <a href={repoLink} target="_blank" rel="noopener noreferrer">
+        <Title level={4}>
+          {title}
+          <Icon
+            type="export"
+            style={{ color: '#71a4ea', fontSize: '.8rem', marginLeft: '1rem', verticalAlign: 'super' }}
+          />
+        </Title>
+      </a>
 
       <div className="subtitle">
         <Text type="secondary">{subtitle}</Text>
@@ -27,9 +35,9 @@ const TimelineSection = ({ description, icon, libraries, subtitle, title }) => {
 };
 
 TimelineSection.propTypes = {
-  description: PropTypes.string,
-  icon: PropTypes.object.isRequired,
-  libraries: PropTypes.object,
+  description: PropTypes.object,
+  icon: PropTypes.func.isRequired,
+  libraries: PropTypes.arrayOf(PropTypes.object),
   subtitle: PropTypes.string,
   title: PropTypes.string.isRequired
 };

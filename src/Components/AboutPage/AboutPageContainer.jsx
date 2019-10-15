@@ -11,6 +11,13 @@ const AboutPageContainer = () => {
     androidX: 'https://developer.android.com/jetpack/androidx',
     antDesign: 'https://ant.design/',
     aws: 'https://aws.amazon.com/s3/',
+
+    brittleEyeLink: 'https://github.com/ekaterina-nikonova/brittle-eye',
+    brittleUpLink: 'https://github.com/ekaterina-nikonova/brittle-up',
+    brittlePinsAndroidLink: 'https://github.com/ekaterina-nikonova/brittle-pins-android',
+    brittlePinsAPILink: 'https://github.com/ekaterina-nikonova/brittle-pins-api',
+    brittlePinsWebLink: 'https://github.com/ekaterina-nikonova/brittle-pins-web',
+
     heroku: 'https://dashboard.heroku.com/',
     netlify: 'https://www.netlify.com/',
     postgresql: 'https://www.postgresql.org/',
@@ -161,6 +168,7 @@ const AboutPageContainer = () => {
               description={brittleEyeDescription}
               icon={KotlinIcon}
               libraries={brittleEyeLibraries}
+              repoLink={links.brittleEyeLink}
               title="Brittle Eye"
               subtitle="started Sep 29, 2019"
             />
@@ -169,6 +177,7 @@ const AboutPageContainer = () => {
               description={brittleUpDescription}
               icon={AndroidIcon}
               libraries={brittleUpLibraries}
+              repoLink={links.brittleUpLink}
               title="Brittle Up"
               subtitle="started Jun 1, 2019"
             />
@@ -177,6 +186,7 @@ const AboutPageContainer = () => {
               description={androidDescription}
               icon={AndroidIcon}
               libraries={androidLibraries}
+              repoLink={links.brittlePinsAndroidLink}
               title="Brittle Pins for Android"
               subtitle="started May 14, 2019"
             />
@@ -185,6 +195,7 @@ const AboutPageContainer = () => {
               description={apiDescription}
               icon={RubyIcon}
               libraries={apiLibraries}
+              repoLink={links.brittlePinsAPILink}
               subtitle="started Mar 9, 2019"
               title="API"
             />
@@ -193,6 +204,7 @@ const AboutPageContainer = () => {
               description={webClientDescription}
               icon={ReactIcon}
               libraries={reactLibraries}
+              repoLink={links.brittlePinsWebLink}
               subtitle="started Mar 6, 2019"
               title="Web client"
             />
@@ -250,13 +262,13 @@ const KotlinIcon = () => (
     viewBox="0 0 60 60"
     id="kotlin"
   >
-    <linearGradient id="kotlin_a" gradientUnits="userSpaceOnUse" x1="15.959" y1="-13.014" x2="44.307" y2="15.333" gradientTransform="matrix(1 0 0 -1 0 61)"><stop offset=".097" stop-color="#0095D5" /><stop offset=".301" stop-color="#238AD9" /><stop offset=".621" stop-color="#557BDE" /><stop offset=".864" stop-color="#7472E2" /><stop offset="1" stop-color="#806EE3" /></linearGradient>
+    <linearGradient id="kotlin_a" gradientUnits="userSpaceOnUse" x1="15.959" y1="-13.014" x2="44.307" y2="15.333" gradientTransform="matrix(1 0 0 -1 0 61)"><stop offset=".097" stopColor="#0095D5" /><stop offset=".301" stopColor="#238AD9" /><stop offset=".621" stopColor="#557BDE" /><stop offset=".864" stopColor="#7472E2" /><stop offset="1" stopColor="#806EE3" /></linearGradient>
     <path fill="url(#kotlin_a)" d="M0 60L30.1 29.9 60 60z" />
 
-    <linearGradient id="kotlin_b" gradientUnits="userSpaceOnUse" x1="4.209" y1="48.941" x2="20.673" y2="65.405" gradientTransform="matrix(1 0 0 -1 0 61)"><stop offset=".118" stop-color="#0095D5" /><stop offset=".418" stop-color="#3C83DC" /><stop offset=".696" stop-color="#6D74E1" /><stop offset=".833" stop-color="#806EE3" /></linearGradient>
+    <linearGradient id="kotlin_b" gradientUnits="userSpaceOnUse" x1="4.209" y1="48.941" x2="20.673" y2="65.405" gradientTransform="matrix(1 0 0 -1 0 61)"><stop offset=".118" stopColor="#0095D5" /><stop offset=".418" stopColor="#3C83DC" /><stop offset=".696" stopColor="#6D74E1" /><stop offset=".833" stopColor="#806EE3" /></linearGradient>
     <path fill="url(#kotlin_b)" d="M0 0L30.1 0 0 32.5z" />
 
-    <linearGradient id="kotlin_c" gradientUnits="userSpaceOnUse" x1="-10.102" y1="5.836" x2="45.731" y2="61.669" gradientTransform="matrix(1 0 0 -1 0 61)"><stop offset=".107" stop-color="#C757BC" /><stop offset=".214" stop-color="#D0609A" /><stop offset=".425" stop-color="#E1725C" /><stop offset=".605" stop-color="#EE7E2F" /><stop offset=".743" stop-color="#F58613" /><stop offset=".823" stop-color="#F88909" /></linearGradient>
+    <linearGradient id="kotlin_c" gradientUnits="userSpaceOnUse" x1="-10.102" y1="5.836" x2="45.731" y2="61.669" gradientTransform="matrix(1 0 0 -1 0 61)"><stop offset=".107" stopColor="#C757BC" /><stop offset=".214" stopColor="#D0609A" /><stop offset=".425" stopColor="#E1725C" /><stop offset=".605" stopColor="#EE7E2F" /><stop offset=".743" stopColor="#F58613" /><stop offset=".823" stopColor="#F88909" /></linearGradient>
     <path fill="url(#kotlin_c)" d="M30.1 0L0 31.7 0 60 30.1 29.9 60 0z" /></svg>
 );
 
