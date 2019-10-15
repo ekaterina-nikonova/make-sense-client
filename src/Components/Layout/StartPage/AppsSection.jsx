@@ -31,6 +31,7 @@ const AppsSection = () => {
             imgAlt="Screenshot of Brittle Pins Android client"
             title="Brittle Pins Android"
             text="Manage data for your hardware and projects"
+            repoLink="https://github.com/ekaterina-nikonova/brittle-pins-android"
           />
         </Col>
 
@@ -41,6 +42,7 @@ const AppsSection = () => {
             title="Brittle Up Android"
             text="Collect training data for your image labelling models"
             link="https://play.google.com/store/apps/details?id=com.brittlepins.brittleup"
+            repoLink="https://github.com/ekaterina-nikonova/brittle-up"
           />
         </Col>
 
@@ -51,6 +53,7 @@ const AppsSection = () => {
             title="Brittle Eye Android"
             text="Classify electronic components using image recognition"
             link="https://play.google.com/store/apps/details?id=com.brittlepins.brittleeye"
+            repoLink="https://github.com/ekaterina-nikonova/brittle-eye"
           />
         </Col>
       </Row>
