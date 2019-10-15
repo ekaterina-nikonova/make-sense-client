@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { requestInvitation } from "../../../Services/api";
+import { requestInvitation } from "../../Services/api";
 
 import { Button, Form, Icon, Input, message } from "antd";
 

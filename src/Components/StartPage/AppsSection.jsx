@@ -2,9 +2,9 @@ import React from "react";
 
 import { Col, Divider, Row, Typography } from "antd";
 
-import BrittlePinsAndroidScreenshot from "../../../Assets/Images/brittle-pins-android-screenshot.png";
-import BrittleUpAndroidScreenshot from "../../../Assets/Images/brittle-up-android-screenshot.png";
-import BrittleEyeAndroidScreenshot from "../../../Assets/Images/brittle-eye-android-screenshot.png";
+import BrittlePinsAndroidScreenshot from "../../Assets/Images/brittle-pins-android-screenshot.png";
+import BrittleUpAndroidScreenshot from "../../Assets/Images/brittle-up-android-screenshot.png";
+import BrittleEyeAndroidScreenshot from "../../Assets/Images/brittle-eye-android-screenshot.png";
 
 import AppsSectionCard from "./AppsSectionCard";
 

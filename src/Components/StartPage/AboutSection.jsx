@@ -2,8 +2,8 @@ import React from "react";
 
 import { Col, Divider, Row, Typography } from "antd";
 
-import aboutLogo from "../../../Assets/Icons/icon-about-round.png";
-import blogLogo from "../../../Assets/Icons/icon-blog-round.png";
+import aboutLogo from "../../Assets/Icons/icon-about-round.png";
+import blogLogo from "../../Assets/Icons/icon-blog-round.png";
 
 import AboutSectionCard from "./AboutSectionCard";
 

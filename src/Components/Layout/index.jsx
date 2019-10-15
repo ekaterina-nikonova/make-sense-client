@@ -13,7 +13,7 @@ import BoardsContainer from '../Boards/BoardsContainer';
 import EmptyFullPage from '../UI/EmptyFullPage';
 import logo from '../../Assets/Images/logo_square.png';
 import MainPageContent from './MainPageContent';
-import StartPageContent from "./StartPage/StartPageContent";
+import StartPageContent from "../StartPage/StartPageContent";
 import SettingsContainer from '../Settings/SettingsContainer';
 import LoginForm from './LoginForm';
 import SignupPage from './SignupPage';
