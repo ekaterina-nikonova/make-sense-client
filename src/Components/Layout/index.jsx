@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Link, Redirect, Route } from 'react-router-dom
 
 import { ActionCableConsumer } from 'react-actioncable-provider';
 
-import {Button, Col, Dropdown, Icon, Layout, Row} from 'antd';
+import { Button, Col, Drawer, Icon, Layout, Row } from 'antd';
 
 import { LoggedInContext } from "../../App";
 import { authLogout } from '../../Services/auth';
@@ -25,6 +25,7 @@ export default () => {
   const { Content, Header } = Layout;
 
   const [ connected, setConnected ] = useState(false);
+  const [ drawerOpen, setDrawerOpen ] = useState(false);
 
   return (
     <Layout>
@@ -40,19 +41,45 @@ export default () => {
 
                 <span style={{ marginLeft: 'auto' }}>
                   <LoggedInContext.Consumer>
-                    {loggedIn => (
-                      loggedIn ? (
-                        <Button type="dashed" onClick={authLogout}>
-                          Log out <Icon type="logout" />
-                        </Button>
-                      ) : (
-                        <Dropdown overlay={<LoginForm />} trigger={['click']}>
-                          <Button type="dashed">
-                            Log in <Icon type="down" />
+                    {loggedIn => {
+                      const openDrawer = () => {
+                        if (!loggedIn) {
+                          setDrawerOpen(true);
+                        }
+                      };
+
+                      const closeDrawer = () => {
+                        setDrawerOpen(false);
+                      };
+
+                      const logOut = () => {
+                        setDrawerOpen(false);
+                        authLogout();
+                      };
+
+                      return (
+                        loggedIn ? (
+                          <Button type="dashed" onClick={logOut}>
+                            Log out <Icon type="logout" />
                           </Button>
-                        </Dropdown>
-                      )
-                    )}
+                        ) : (
+                          <React.Fragment>
+                            <Button type="dashed" onClick={openDrawer}>
+                              Log in <Icon type="down" />
+                            </Button>
+
+                            <Drawer
+                              title="Log in"
+                              visible={drawerOpen}
+                              onClose={closeDrawer}
+                              width="fit-content"
+                              className="login-drawer"
+                            >
+                              <LoginForm />
+                            </Drawer>
+                          </React.Fragment>
+                        ));
+                    }}
                   </LoggedInContext.Consumer>
 
                   <ActionCableConsumer
