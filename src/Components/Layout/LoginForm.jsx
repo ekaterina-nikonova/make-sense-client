@@ -26,7 +26,12 @@ const LoginForm = ({ form, closeDrawer }) => {
     <Form { ...formLayout } onSubmit={logIn} className="login-form-container">
       {error &&
         error.response.status === 401 &&
-          <Alert type="error" message="Wrong username/email or password" />
+          <Alert
+            type="error"
+            message="Wrong username/email or password"
+            showIcon
+            icon={<Icon type="close-circle"/>}
+          />
       }
 
       <Item>
