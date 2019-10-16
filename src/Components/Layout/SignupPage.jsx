@@ -89,7 +89,7 @@ const SignupForm = ({ form }) => {
             }
           ]
         })(
-          <Input prefix={<Icon type="mail" />} />
+          <Input prefix={<Icon type="mail" />} autoFocus />
         ) }
       </Item>
 

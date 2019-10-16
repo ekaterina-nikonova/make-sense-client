@@ -5,7 +5,7 @@ import { Alert, Button, Form, Icon, Input } from 'antd';
 
 import { authLogin } from '../../Services/auth';
 
-const LoginForm = ({ form }) => {
+const LoginForm = ({ form, closeDrawer }) => {
   const [error, setError] = useState();
 
   const { Item } = Form;
@@ -26,7 +26,12 @@ const LoginForm = ({ form }) => {
     <Form { ...formLayout } onSubmit={logIn} className="login-form-container">
       {error &&
         error.response.status === 401 &&
-          <Alert type="error" message="Wrong username/email or password" />
+          <Alert
+            type="error"
+            message="Wrong username/email or password"
+            showIcon
+            icon={<Icon type="close-circle"/>}
+          />
       }
 
       <Item>
@@ -70,7 +75,7 @@ const LoginForm = ({ form }) => {
 
       <div style={{ margin: '1rem 0' }}>
         <span>Haven't registered yet? </span>
-        <Link to="/signup">Sign up</Link>
+        <Link onClick={closeDrawer} to="/signup">Sign up</Link>
       </div>
     </Form>
   );

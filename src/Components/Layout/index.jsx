@@ -3,10 +3,9 @@ import { BrowserRouter as Router, Link, Redirect, Route } from 'react-router-dom
 
 import { ActionCableConsumer } from 'react-actioncable-provider';
 
-import {Button, Col, Dropdown, Icon, Layout, Row} from 'antd';
+import { Col, Layout, Row } from 'antd';
 
 import { LoggedInContext } from "../../App";
-import { authLogout } from '../../Services/auth';
 
 import AdminPanelContainer from '../AdminPanel/AdminPanelContainer';
 import BoardsContainer from '../Boards/BoardsContainer';
@@ -16,10 +15,11 @@ import MainPageContent from './MainPageContent';
 import StartPageContent from "../StartPage/StartPageContent";
 import AboutPageContainer from "../AboutPage/AboutPageContainer";
 import SettingsContainer from '../Settings/SettingsContainer';
-import LoginForm from './LoginForm';
+
 import SignupPage from './SignupPage';
 import Footer from './Footer';
-import {ServerStatusConnected, ServerStatusDisconnected} from "../UI/ServerStatusIcon";
+import { ServerStatusConnected, ServerStatusDisconnected } from "../UI/ServerStatusIcon";
+import LogInOutButton from "./LogInOutButton";
 
 export default () => {
   const { Content, Header } = Layout;
@@ -40,19 +40,7 @@ export default () => {
 
                 <span style={{ marginLeft: 'auto' }}>
                   <LoggedInContext.Consumer>
-                    {loggedIn => (
-                      loggedIn ? (
-                        <Button type="dashed" onClick={authLogout}>
-                          Log out <Icon type="logout" />
-                        </Button>
-                      ) : (
-                        <Dropdown overlay={<LoginForm />} trigger={['click']}>
-                          <Button type="dashed">
-                            Log in <Icon type="down" />
-                          </Button>
-                        </Dropdown>
-                      )
-                    )}
+                    { loggedIn => <LogInOutButton loggedIn={loggedIn} /> }
                   </LoggedInContext.Consumer>
 
                   <ActionCableConsumer
