@@ -65,7 +65,8 @@ export default () => {
                         ) : (
                           <React.Fragment>
                             <Button type="dashed" onClick={openDrawer}>
-                              Log in <Icon type="down" />
+                              <Icon type="login" />
+                              Log in
                             </Button>
 
                             <Drawer
@@ -75,7 +76,7 @@ export default () => {
                               width="fit-content"
                               className="login-drawer"
                             >
-                              <LoginForm />
+                              <LoginForm closeDrawer={closeDrawer} />
                             </Drawer>
                           </React.Fragment>
                         ));
