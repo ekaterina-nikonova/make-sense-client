@@ -5,7 +5,7 @@ import { Card } from 'antd';
 
 import { LoggedInContext, UserContext } from "../../App";
 
-import ProjectIcon from "../../Assets/Icons/icon-admin.svg";
+import ProjectIcon from "../../Assets/Icons/icon-project.svg";
 import BoardIcon from "../../Assets/Icons/icon-board.svg";
 import ComponentIcon from "../../Assets/Icons/icon-component.svg";
 import ProfileIcon from "../../Assets/Icons/icon-profile.svg";
