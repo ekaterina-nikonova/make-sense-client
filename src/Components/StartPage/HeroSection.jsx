@@ -9,11 +9,11 @@ const HeroSection = () => {
 
   return (
     <Typography className="hero-section">
-      <Title>Keep 'em pins in order</Title>
+      <Title>Sort 'em pins out</Title>
       <Paragraph className="subtitle">
         To sign up, you'll need an invitation code.
         <Tooltip
-          title="The service is working in a closed testing mode, and is not yet open for the general public."
+          title="The service is working in a closed testing mode, and is not yet open for the general public. Please contact the admin before requesting an invitation."
         >
           <Icon type="info-circle" style={{ paddingLeft: "1rem" }} />
         </Tooltip>
