@@ -1,7 +1,7 @@
 import React from "react";
 
 import TopLevelMenu from "../Layout/TopLevelMenu";
-import EmptyFullPage from "../UI/EmptyFullPage";
+import ProjectList from "./ProjectList";
 
 const ProjectsContainer = ({ location, match }) => {
   const { pathname } = location;
@@ -11,7 +11,7 @@ const ProjectsContainer = ({ location, match }) => {
     <React.Fragment>
       <TopLevelMenu url={url} currentPath={pathname} item="projects" />
 
-      <EmptyFullPage description="The Projects page is under construction." />
+      <ProjectList />
     </React.Fragment>
   );
 };
