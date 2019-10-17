@@ -6,6 +6,12 @@ import { UserContext } from "../../App";
 
 import { Icon, Menu } from 'antd';
 
+import AdminIcon from "../../Assets/Icons/AdminIcon";
+import BoardIcon from "../../Assets/Icons/BoardIcon";
+import ComponentIcon from "../../Assets/Icons/ComponentIcon";
+import ProfileIcon from "../../Assets/Icons/ProfileIcon";
+import ProjectIcon from "../../Assets/Icons/ProjectIcon";
+
 const TopLevelMenu = ({ currentPath, user, item, url }) => {
   const [activeMenuItem, setActiveMenuItem] = useState(item);
 
@@ -21,23 +27,30 @@ const TopLevelMenu = ({ currentPath, user, item, url }) => {
       selectedKeys={[activeMenuItem]}
       className="top-level-menu"
     >
+      <Menu.Item key="projects">
+        <Link to="/projects">
+          <Icon component={ProjectIcon} />
+          <span>Projects</span>
+        </Link>
+      </Menu.Item>
+
       <Menu.Item key="boards">
         <Link to="/boards">
-          <Icon type="hdd" />
+          <Icon component={BoardIcon} />
           <span>Boards</span>
         </Link>
       </Menu.Item>
 
-      <Menu.Item key="settings">
-        <Link to="/settings">
-          <Icon type="sliders" />
-          <span>Settings</span>
+      <Menu.Item key="components">
+        <Link to="/components">
+          <Icon component={ComponentIcon} />
+          <span>Components</span>
         </Link>
       </Menu.Item>
 
       <Menu.Item key="profile">
         <Link to="/profile">
-          <Icon type="user" />
+          <Icon component={ProfileIcon} />
           <span>Profile</span>
         </Link>
       </Menu.Item>
@@ -46,7 +59,7 @@ const TopLevelMenu = ({ currentPath, user, item, url }) => {
         (user === 'admin' || user === 'manager') &&
           <Menu.Item key="admin">
             <Link to="/admin">
-              <Icon type="setting" />
+              <Icon component={AdminIcon} />
               <span>Admin panel</span>
             </Link>
           </Menu.Item>

@@ -1,43 +1,72 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 
-import { Col, Row } from 'antd';
+import { Card } from 'antd';
 
-import MainPageCard from '../UI/MainPageCard';
-import {LoggedInContext} from "../../App";
+import { LoggedInContext, UserContext } from "../../App";
 
-const MainPageContent = () => {
+import ProjectIcon from "../../Assets/Icons/icon-project.svg";
+import BoardIcon from "../../Assets/Icons/icon-board.svg";
+import ComponentIcon from "../../Assets/Icons/icon-component.svg";
+import ProfileIcon from "../../Assets/Icons/icon-profile.svg";
+import AdminIcon from "../../Assets/Icons/icon-admin.svg";
+
+const MainPageContent = ({ user }) => {
+  const navs = [{
+    title: 'Projects',
+    link: 'projects',
+    icon: <img src={ProjectIcon} alt="Project icon"  />
+  }, {
+    title: 'Boards',
+    link: 'boards',
+    icon: <img src={BoardIcon} alt="Board icon" />
+  }, {
+    title: 'Components',
+    link: 'components',
+    icon: <img src={ComponentIcon} alt="Components icon" />
+  }, {
+    title: 'Profile',
+    link: 'profile',
+    icon: <img src={ProfileIcon} alt="Profile icon" />
+  }];
+
+  if (user && user.role === 'admin') {
+    navs.push({
+      title: 'Admin panel',
+      link: 'admin',
+      icon: <img src={AdminIcon} alt="Admin panel icon" />
+    });
+  }
+
   return (
-    <React.Fragment>
-      <Row gutter={24} type="flex">
-        <Col md={12} xs={24}>
-          <Link to="/boards">
-            <MainPageCard
-              alt="boards"
-              img="board-200.svg"
-              title="Boards"
-            />
-          </Link>
-        </Col>
-
-        <Col md={12} xs={24}>
-          <Link to="/settings">
-            <MainPageCard
-              alt="settings"
-              img="settings-200.svg"
-              title="Settings"
-            />
-          </Link>
-        </Col>
-      </Row>
-    </React.Fragment>
+    <div className="main-page-nav-container">
+      { navs.map(nav => <MainPageCard item={nav} />) }
+    </div>
   )
+};
+
+const MainPageCard = ({ item }) => {
+  const { Meta } = Card;
+
+  return (
+    <Link to={item.link}>
+      <Card cover={item.icon} hoverable>
+        <Meta title={item.title} />
+      </Card>
+    </Link>
+  );
 };
 
 const WrappedMainPage = () => (
   <LoggedInContext.Consumer>
     {loggedIn => (
-      loggedIn ? <MainPageContent /> : <Redirect to='/start' />
+      loggedIn ? (
+        <UserContext.Consumer>
+          {user => (
+            <MainPageContent user={user} />
+          )}
+        </UserContext.Consumer>
+        ) : <Redirect to='/start' />
     )}
   </LoggedInContext.Consumer>
 );
