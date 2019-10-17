@@ -7,14 +7,16 @@ import { Col, Layout, Row } from 'antd';
 
 import { LoggedInContext } from "../../App";
 
-import AdminPanelContainer from '../AdminPanel/AdminPanelContainer';
-import BoardsContainer from '../Boards/BoardsContainer';
-import EmptyFullPage from '../UI/EmptyFullPage';
-import logo from '../../Assets/Images/logo_square.png';
-import MainPageContent from './MainPageContent';
 import StartPageContent from "../StartPage/StartPageContent";
 import AboutPageContainer from "../AboutPage/AboutPageContainer";
-import SettingsContainer from '../Settings/SettingsContainer';
+import MainPageContent from './MainPageContent';
+import ProjectsContainer from "../Projects/ProjectsContainer";
+import BoardsContainer from '../Boards/BoardsContainer';
+import ComponentsContainer from '../Components/ComponentsContainer';
+import ProfileContainer from "../Profile/ProfileContainer";
+import AdminPanelContainer from '../AdminPanel/AdminPanelContainer';
+import EmptyFullPage from '../UI/EmptyFullPage';
+import logo from '../../Assets/Images/logo_square.png';
 
 import SignupPage from './SignupPage';
 import Footer from './Footer';
@@ -62,11 +64,12 @@ export default () => {
             <Route exact path="/" component={MainPageContent} />
             <Route path="/start" component={StartPageContent} />
             <Route path="/about" component={AboutPageContainer} />
+            <Route path="/projects" component={ProjectsContainer} />
             <Route path="/boards" component={BoardsContainer} />
-            <Route path="/settings" component={SettingsContainer} />
+            <Route path="/components" component={ComponentsContainer} />
+            <Route path="/profile" component={ProfileContainer} />
             <Route path="/admin" component={AdminPanelContainer} />
             <Route path="/signup" component={SignupPage} />
-            <Route exact path="/components" component={MainPageContent} />
 
             <Route path="/components/:id" component={({ match }) => (
               <LoggedInContext.Consumer>
@@ -77,7 +80,6 @@ export default () => {
                     />
                   ) : <Redirect to='/start' />
                 )}
-
               </LoggedInContext.Consumer>
             )} />
 

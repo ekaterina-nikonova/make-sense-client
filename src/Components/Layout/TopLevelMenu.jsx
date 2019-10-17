@@ -21,6 +21,13 @@ const TopLevelMenu = ({ currentPath, user, item, url }) => {
       selectedKeys={[activeMenuItem]}
       className="top-level-menu"
     >
+      <Menu.Item key="projects">
+        <Link to="/projects">
+          <Icon type="cluster" />
+          <span>Projects</span>
+        </Link>
+      </Menu.Item>
+
       <Menu.Item key="boards">
         <Link to="/boards">
           <Icon type="hdd" />
@@ -28,10 +35,10 @@ const TopLevelMenu = ({ currentPath, user, item, url }) => {
         </Link>
       </Menu.Item>
 
-      <Menu.Item key="settings">
-        <Link to="/settings">
+      <Menu.Item key="components">
+        <Link to="/components">
           <Icon type="sliders" />
-          <span>Settings</span>
+          <span>Components</span>
         </Link>
       </Menu.Item>
 

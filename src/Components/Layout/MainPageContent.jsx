@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 
-import { Card, Col, List, Row } from 'antd';
+import { Card } from 'antd';
 
 import { LoggedInContext, UserContext } from "../../App";
 
@@ -14,21 +14,26 @@ import AdminIcon from "../../Assets/Icons/icon-admin.svg";
 const MainPageContent = ({ user }) => {
   const navs = [{
     title: 'Projects',
+    link: 'projects',
     icon: <img src={ProjectIcon} alt="Project icon"  />
   }, {
     title: 'Boards',
+    link: 'boards',
     icon: <img src={BoardIcon} alt="Board icon" />
   }, {
     title: 'Components',
+    link: 'components',
     icon: <img src={ComponentIcon} alt="Components icon" />
   }, {
     title: 'Profile',
+    link: 'profile',
     icon: <img src={ProfileIcon} alt="Profile icon" />
   }];
 
   if (user && user.role === 'admin') {
     navs.push({
       title: 'Admin panel',
+      link: 'admin',
       icon: <img src={AdminIcon} alt="Admin panel icon" />
     });
   }
@@ -44,9 +49,11 @@ const MainPageCard = ({ item }) => {
   const { Meta } = Card;
 
   return (
-    <Card cover={item.icon}>
-      <Meta title={item.title} />
-    </Card>
+    <Link to={item.link}>
+      <Card cover={item.icon} hoverable>
+        <Meta title={item.title} />
+      </Card>
+    </Link>
   );
 };
 

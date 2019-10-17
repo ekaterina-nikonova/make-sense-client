@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { updateComponent } from '../../Services/api';
+import { updateComponent } from '../../../Services/api';
 
 import AutoForm from 'uniforms-antd/AutoForm';
 import LongTextField from 'uniforms-antd/LongTextField';
@@ -33,7 +33,7 @@ const Component = ({ component }) => {
       {component.image &&
         <img
           alt={component.name}
-          src={component.image || require('../../Assets/Images/component-generic.svg')}
+          src={component.image || require('../../../Assets/Images/component-generic.svg')}
           className="component-image"
         />
       }

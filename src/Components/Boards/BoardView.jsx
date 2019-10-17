@@ -6,7 +6,7 @@ import { baseUrl } from '../../Services/api';
 import { Col, Icon, Row, Tabs, Upload, message } from 'antd';
 
 import BoardDescriptionForm from './BoardDescriptionForm';
-import ComponentsContainer from '../Components/ComponentsContainer';
+import ComponentsContainer from './Components/ComponentsContainer';
 import EmptyFullPage from '../UI/EmptyFullPage';
 
 const BoardView = ({ board }) => {
