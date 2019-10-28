@@ -1,22 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { useGlobal } from "reactn";
+import React from "react";
+import { useQuery } from "@apollo/react-hooks";
 
-import {getProjects} from "../../Services/api";
+import { queries } from "../../Services/graphql";
 
 const ProjectList = () => {
-  const [projects, setProjects] = useGlobal('projects');
-  const [error, setError] = useState();
-
-  useEffect(() => getProjectsAsync(), []);
-
-  const getProjectsAsync = async () => {
-    await getProjects()
-      .then(projects => setProjects(projects.data))
-      .catch(error => setError(error));
-  };
+  const { loading, error, data } = useQuery(queries.projects);
 
   return (
-    projects ? projects.map(project => <div>{project.name} - {project.description}</div>) : null
+    <div>Check Network tab for graphql response</div>
   );
 };
 
