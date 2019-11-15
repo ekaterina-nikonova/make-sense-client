@@ -30,10 +30,14 @@
 
 .app-title {
   color: @black;
-  display: inline;
+  display: none;
   font-size: 1.5rem;
   font-weight: 400;
   margin-left: 1.5rem;
+
+  @media (min-width: @mobile-display-width) {
+    display: inline;
+  }
 }
 
 .board-col {
@@ -174,6 +178,10 @@
   background: @white;
   box-shadow: @shadow-large;
   z-index: 1000;
+
+  @media (max-width: @mobile-display-width) {
+    padding: 0 1.5rem;
+  }
 }
 
 .top-level-menu .ant-menu-item {
