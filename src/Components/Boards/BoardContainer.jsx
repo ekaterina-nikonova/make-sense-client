@@ -7,7 +7,6 @@ import { getBoards } from '../../Services/api';
 import { Alert } from 'antd';
 
 import BoardView from './BoardView';
-import BoardMenu from "../Layout/BoardMenu";
 
 const BoardContainer = ({ match }) => {
   const [board, setBoard] = useState();
@@ -34,10 +33,6 @@ const BoardContainer = ({ match }) => {
 
   return (
     <div style={{ width: '100%', display: 'flex', minHeight: 'calc(100vh - 48px - 64px' }}>
-      {board &&
-        <BoardMenu currentBoardId={board.id} />
-      }
-
       {error &&
         <div style={{ flexShrink: '1' }}>
           <Alert description="Could not fetch board info." message="Error" showIcon type="error" />
