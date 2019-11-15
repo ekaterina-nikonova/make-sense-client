@@ -146,9 +146,7 @@ const AboutPageContainer = () => {
   return (
     <div className="about-container">
       <div className="about-section">
-        <Divider>
-          <Title>About Brittle Pins</Title>
-        </Divider>
+        <Title>About Brittle Pins</Title>
 
         <Paragraph>
           This project is a playground where I experiment with technologies that catch my eye.
