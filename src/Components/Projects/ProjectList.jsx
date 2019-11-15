@@ -7,7 +7,9 @@ const ProjectList = () => {
   const { loading, error, data } = useQuery(queries.projects);
 
   return (
-    <div>Check Network tab for graphql response</div>
+    <div>
+      { data && data.projects.map(prj => <div key={prj.id}>{prj.name}</div>) }
+    </div>
   );
 };
 
