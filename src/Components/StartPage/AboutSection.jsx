@@ -23,8 +23,8 @@ const AboutSection = () => {
         that you already have or just planning to lay your hands on.
       </Paragraph>
 
-      <Row gutter={16}>
-        <Col span={12}>
+      <Row gutter={[16, 16]}>
+        <Col xs={24} sm={12}>
           <AboutSectionCard
             image={aboutLogo}
             link="/about"
@@ -36,7 +36,7 @@ const AboutSection = () => {
           />
         </Col>
 
-        <Col span={12}>
+        <Col xs={24} sm={12}>
           <AboutSectionCard
             image={blogLogo}
             link="https://blog.brittle-pins.com"

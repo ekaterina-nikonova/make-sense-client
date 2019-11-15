@@ -10,7 +10,7 @@ const Footer = () => {
   return (
     <Footer>
       <div className="footer-container">
-        <Row gutter={16}>
+        <Row gutter={[16, 24]}>
           <Col xs={24} sm={8}>
             <Title level={4}>Resources</Title>
             <a href="/about"><Text>About</Text></a>

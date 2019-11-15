@@ -45,6 +45,18 @@
       padding: 5rem 2rem;
     }
 
-    .app-section-card-body {}
+    .ant-card {
+      @media (min-width: @mobile-display-width) and (max-width: @tablet-display-width) {
+        max-width: 30rem;
+        margin: auto;
+      }
+    }
+
+    .ant-card-cover {
+      @media (max-width: @mobile-display-width) {
+        height: 20rem;
+        overflow: hidden;
+      }
+    }
   }
 }
