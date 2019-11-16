@@ -32,18 +32,14 @@ const BoardContainer = ({ match }) => {
   };
 
   return (
-    <div style={{ width: '100%', display: 'flex', minHeight: 'calc(100vh - 48px - 64px' }}>
+    <div className="board-container">
       {error &&
         <div style={{ flexShrink: '1' }}>
           <Alert description="Could not fetch board info." message="Error" showIcon type="error" />
         </div>
       }
 
-      {!error && board &&
-        <div style={{ flexGrow: '1' }}>
-          <BoardView board={board} />
-        </div>
-      }
+      { !error && board && <BoardView board={board} /> }
     </div>
   );
 };

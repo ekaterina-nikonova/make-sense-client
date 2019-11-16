@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { baseUrl } from '../../Services/api';
 
-import { Col, Icon, Row, Tabs, Upload, message } from 'antd';
+import { Col, Divider, Empty, Icon, Row, Tabs, Typography, Upload, message } from 'antd';
 
 import BoardDescriptionForm from './BoardDescriptionForm';
 import ComponentsContainer from './Components/ComponentsContainer';
@@ -15,6 +15,7 @@ const BoardView = ({ board }) => {
 
   const Dragger = Upload.Dragger;
   const { TabPane } = Tabs;
+  const { Title } = Typography;
 
   const draggerProps = {
     action: `${baseUrl}/api/v1/uploads`,
@@ -47,7 +48,7 @@ const BoardView = ({ board }) => {
 
   return (
     <React.Fragment>
-      <div style={{ width: '100%', paddingBottom: '80px' }}>
+      <div className="board-view">
         <Row>
           <Col offset={6} span={12}>
             <Dragger {...draggerProps} className="board-image-upload-overlay">
@@ -66,13 +67,31 @@ const BoardView = ({ board }) => {
         </Row>
 
         <Row>
-          <Col span={24}>
+          <Col xs={22} md={0} offset={1}>
+            <BoardDescriptionForm board={board} />
+
+            <Divider className="board-section-title">
+              <Title level={3}>
+                Projects
+              </Title>
+            </Divider>
+            <Empty />
+
+            <Divider className="board-section-title">
+              <Title level={3}>
+                Components
+              </Title>
+            </Divider>
+            <ComponentsContainer boardId={board.id} />
+          </Col>
+
+          <Col xs={0} md={24}>
             <Tabs>
               <TabPane tab="Description" key="1">
                 <BoardDescriptionForm board={board} />
               </TabPane>
 
-              <TabPane tab="Tech specs" key="2">
+              <TabPane tab="Projects" key="2">
                 <EmptyFullPage />
               </TabPane>
 
