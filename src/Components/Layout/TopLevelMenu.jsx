@@ -34,7 +34,12 @@ const TopLevelMenu = ({ currentPath, user, item }) => {
 
   window.addEventListener(
     'resize',
-    () => setMobileScreen(window.innerWidth < 576)
+    () => {
+      if (window.innerWidth < 576) {
+        setOpenSubMenu('');
+      }
+      setMobileScreen(window.innerWidth < 576);
+    }
   );
 
   const { SubMenu } = Menu;
