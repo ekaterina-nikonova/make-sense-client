@@ -24,8 +24,8 @@ const AppsSection = () => {
         to manage your stash. Currently, they are only available for Android.
       </Paragraph>
 
-      <Row gutter={32}>
-        <Col span={8}>
+      <Row gutter={[32, 24]}>
+        <Col md={8}>
           <AppsSectionCard
             image={BrittlePinsAndroidScreenshot}
             imgAlt="Screenshot of Brittle Pins Android client"
@@ -35,7 +35,7 @@ const AppsSection = () => {
           />
         </Col>
 
-        <Col span={8}>
+        <Col md={8}>
           <AppsSectionCard
             image={BrittleUpAndroidScreenshot}
             imgAlt="Screenshot of Brittle Up for Android"
@@ -46,7 +46,7 @@ const AppsSection = () => {
           />
         </Col>
 
-        <Col span={8}>
+        <Col md={8}>
           <AppsSectionCard
             image={BrittleEyeAndroidScreenshot}
             imgAlt="Screenshot of Brittle Eye for Android"

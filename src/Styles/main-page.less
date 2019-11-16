@@ -6,9 +6,21 @@
   max-width: 900px;
   margin: auto;
 
+  a {
+    @media (max-width: @mobile-display-width) {
+      width: 100%;
+      padding: 1rem;
+    }
+  }
+
   .ant-card {
     margin: 4rem;
     width: 10rem;
+
+    @media (max-width: @mobile-display-width) {
+      margin: 0;
+      width: 100%;
+    }
 
     .ant-card-cover {
       height: 10rem;

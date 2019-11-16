@@ -17,7 +17,10 @@ const LoginForm = ({ form, closeDrawer }) => {
     e.preventDefault();
     validateFields((err, values) => {
       if (!err) {
-        authLogin(values, setError);
+        authLogin(
+          { ...values, email: values.email.trim() },
+          setError
+        );
       }
     });
   };

@@ -30,19 +30,13 @@
 
 .app-title {
   color: @black;
-  display: inline;
+  display: none;
   font-size: 1.5rem;
   font-weight: 400;
   margin-left: 1.5rem;
-}
 
-.board-col {
-  @media (min-width: 769px) {
-    margin: 0 1rem;
-    padding: 2rem;
-  }
-  @media (max-width: 768px) {
-    padding: 1rem;
+  @media (min-width: @mobile-display-width) {
+    display: inline;
   }
 }
 
@@ -54,6 +48,10 @@
 .top-level-menu {
   padding: 2rem 0 80px 0;
   width: auto;
+
+  .submenu-label {
+    margin-right: 1rem;
+  }
 
   svg {
     width: 1.5rem;
@@ -83,6 +81,7 @@
     justify-content: space-around;
     margin: auto;
     padding-top: 2rem;
+    width: 100%;
 
     svg {
       font-size: 1.5rem;
@@ -101,32 +100,6 @@
 }
 
 /* Visuals */
-
-.board-image-upload {
-  display: block;
-  margin: 2rem auto;
-  max-height: fit-content;
-}
-
-.board-image-upload-overlay {
-  .board-image-upload();
-  position: absolute;
-  top: 0;
-  opacity: 0;
-
-  &:hover {
-    transition: opacity ease-out 800ms;
-    opacity: .8;
-  }
-}
-
-.board-main-image {
-  display: block;
-  margin: 2rem auto;
-  max-height: 200px;
-  max-width: 100%;
-  min-width: 200px;
-}
 
 .component-image {
   display: block;
@@ -160,6 +133,14 @@
 
 /* Overrides */
 
+h1.ant-typography {
+  font-weight: normal;
+
+  @media (max-width: @mobile-display-width) {
+    font-size: 2rem;
+  }
+}
+
 .ant-alert {
   height: fit-content;
   margin: auto;
@@ -174,6 +155,10 @@
   background: @white;
   box-shadow: @shadow-large;
   z-index: 1000;
+
+  @media (max-width: @mobile-display-width) {
+    padding: 0 1.5rem;
+  }
 }
 
 .top-level-menu .ant-menu-item {

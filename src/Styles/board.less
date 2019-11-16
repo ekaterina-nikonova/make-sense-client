@@ -1,0 +1,56 @@
+.board-container {
+  width: 100%;
+  display: flex;
+  min-height: calc(100vh - 48px - 64px);
+
+  .board-view {
+    flex-grow: 1;
+    width: 100%;
+    padding: 2rem 0 80px 0;
+
+    .board-section-title {
+      margin-top: 2rem;
+      text-align: center;
+      font-weight: normal;
+      color: @black;
+    }
+  }
+
+  .board-main-image {
+    display: block;
+    margin: auto;
+    max-width: 100%;
+
+    @media (min-width: @tablet-display-width) {
+      max-height: 200px;
+      min-width: 200px;
+    }
+  }
+
+  .board-image-upload-container {
+    position: absolute;
+    margin: auto;
+    width: 100%;
+    height: 100%;
+  }
+
+  .board-image-upload {
+    display: block;
+    margin: 2rem auto;
+    max-height: fit-content;
+  }
+
+  .board-image-upload-overlay {
+    .board-image-upload();
+    position: relative;
+    margin: 0;
+    height: 100%;
+    top: 0;
+    opacity: 0;
+
+    &:hover {
+      transition: opacity ease-out 800ms;
+      opacity: .8;
+    }
+  }
+}

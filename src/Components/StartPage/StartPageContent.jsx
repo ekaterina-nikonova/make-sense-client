@@ -10,7 +10,7 @@ const StartPageContent = () => {
   return (
     <LoggedInContext.Consumer>
       {loggedIn => (
-        loggedIn ? <Redirect to='/boards' /> : (
+        loggedIn ? <Redirect to='/' /> : (
           <React.Fragment>
             <div className="start-container">
               <div className="hero-container">
