@@ -49,15 +49,21 @@ const BoardView = ({ board }) => {
   return (
     <React.Fragment>
       <div className="board-view">
-        <Row>
-          <Col offset={6} span={12}>
-            <Dragger {...draggerProps} className="board-image-upload-overlay">
-              <p className="ant-upload-drag-icon">
-                <Icon type="cloud-upload" />
-              </p>
-              <p className="ant-upload-text">Click or drag and drop an image file to upload</p>
-              <p className="ant-upload-hint">Only JPG, JPEG, and PNG formats are supported.</p>
-            </Dragger>
+        <Row style={{ paddingBottom: '2rem' }}>
+          <Col
+            md={{ span: 12, offset: 6 }}
+            sm={{ span: 18, offset: 3 }}
+            xs={{ span: 22, offset: 1 }}
+          >
+            <div className="board-image-upload-container">
+              <Dragger {...draggerProps} className="board-image-upload-overlay">
+                <p className="ant-upload-drag-icon">
+                  <Icon type="cloud-upload" />
+                </p>
+                <p className="ant-upload-text">Click or drag and drop an image file to upload</p>
+                <p className="ant-upload-hint">Only JPG, JPEG, and PNG formats are supported.</p>
+              </Dragger>
+            </div>
             <img
               alt="board main"
               src={board.image || require('../../Assets/Images/board-generic.svg')}
