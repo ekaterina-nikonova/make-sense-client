@@ -52,37 +52,38 @@ const BoardList = function() {
   };
 
   return (
-    <Row
-      gutter={12}
-      type="flex"
-      align={boards && boards.length? 'top' : 'middle'}
-      style={{ height: '100%', alignContent: boards.length ? 'flex-start' : 'stretch' }}
-    >
-      {!error && (!boards || !boards.length) &&
-        <Col span={24}>
-          <Empty description="No boards." />
-        </Col>
-      }
+    <div className="board-list-container">
+      <Row
+        gutter={[24, 24]}
+        type="flex"
+        align={boards && boards.length? 'top' : 'middle'}
+      >
+        {!error && (!boards || !boards.length) &&
+          <Col span={24}>
+            <Empty description="No boards." />
+          </Col>
+        }
 
-      {!error && boards &&
-        <ActionCableConsumer
-          channel={{ channel: 'BoardsChannel' }}
-          onReceived={response => handleReceivedBoard(response)}
-        >
-          {boards.map(board => (
-            <Col xs={24} sm={12} md={6} key={board.id} className="board-col">
-              <BoardCard board={board} />
-            </Col>
-          ))}
-        </ActionCableConsumer>
-      }
+        {!error && boards &&
+          <ActionCableConsumer
+            channel={{ channel: 'BoardsChannel' }}
+            onReceived={response => handleReceivedBoard(response)}
+          >
+            {boards.map(board => (
+              <Col xs={24} sm={12} md={8} lg={6} key={board.id} className="board-col">
+                <BoardCard board={board} />
+              </Col>
+            ))}
+          </ActionCableConsumer>
+        }
 
-      {error &&
-        <Col xs={{ span: 22, offset: 1 }} sm={{ span: 12, offset: 6 }}>
-          <Alert description="Could not fetch boards." message="Error" showIcon type="error" />
-        </Col>
-      }
-    </Row>
+        {error &&
+          <Col xs={{ span: 22, offset: 1 }} sm={{ span: 12, offset: 6 }}>
+            <Alert description="Could not fetch boards." message="Error" showIcon type="error" />
+          </Col>
+        }
+      </Row>
+    </div>
   );
 };
 
