@@ -26,9 +26,8 @@ const ProjectsContainer = ({ location, match }) => {
 
         <ProjectList />
 
-        <Button type="primary" shape="round" className="floating-action-button" onClick={openModal}>
+        <Button type="primary" shape="circle" className="floating-action-button" onClick={openModal}>
           <Icon type="plus-circle" />
-          Create
         </Button>
 
         <Modal title="New project" visible={visible} onOk={createProject} onCancel={closeModal}>
