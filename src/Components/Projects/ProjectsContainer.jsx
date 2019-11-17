@@ -1,24 +1,14 @@
-import React, { useState } from "react";
-
+import React  from "react";
 import { Apollo } from "../../Services/graphql";
+
 import TopLevelMenu from "../Layout/TopLevelMenu";
 import ProjectList from "./ProjectList";
-import { Button, Icon, Modal } from "antd";
+import NewProjectDrawer from "./NewProjectDrawer";
 
 const ProjectsContainer = ({ location, match }) => {
   const { pathname } = location;
   const { url } = match;
 
-  const [visible, setVisible] = useState(false);
-
-  const openModal = () => setVisible(true);
-
-  const closeModal = () => setVisible(false);
-
-  const createProject = () => {
-    // create project mutation
-    closeModal();
-  };
 
   return (
       <Apollo>
@@ -26,13 +16,7 @@ const ProjectsContainer = ({ location, match }) => {
 
         <ProjectList />
 
-        <Button type="primary" shape="circle" className="floating-action-button" onClick={openModal}>
-          <Icon type="plus-circle" />
-        </Button>
-
-        <Modal title="New project" visible={visible} onOk={createProject} onCancel={closeModal}>
-          <p>Create</p>
-        </Modal>
+        <NewProjectDrawer />
       </Apollo>
   );
 };
