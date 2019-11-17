@@ -1,5 +1,9 @@
 import React, { useState } from "react";
-import { Button, Drawer, Form, Icon, Input, Select } from "antd";
+import { useQuery } from "@apollo/react-hooks";
+
+import { queries } from "../../Services/graphql";
+
+import { Button, Drawer, Form, Icon, Input, Select, Spin } from "antd";
 
 const NewProjectDrawer = () => {
   const [ drawerOpen, setDrawerOpen ] = useState(false);
@@ -32,6 +36,8 @@ const NewProjectDrawer = () => {
 };
 
 const NewProjectForm = ({ form, close }) => {
+  const { loading, error, data } = useQuery(queries.boardNames);
+
   const { Item } = Form;
   const { TextArea } = Input;
   const { Option } = Select;
@@ -86,14 +92,31 @@ const NewProjectForm = ({ form, close }) => {
         })(
           <Select
             showSearch
-            placeholder="Board for this project"
+            disabled={loading || error}
+            placeholder={
+              (error && (
+                <span>
+                  <Icon
+                    type="exclamation-circle"
+                    theme="twoTone"
+                    twoToneColor="red"
+                  /> Could not load
+                </span>)
+              ) || (
+                loading && (
+                  <span><Icon type="loading" /> Loading...</span>
+                )
+              ) || (
+                data && "Select a board"
+              ) || <span><Icon type="frown" /> Something went wrong</span>
+            }
             filterOption={(input, option) =>
               option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
             }
           >
-            <Option value="board1">Board 1</Option>
-            <Option value="board2">Board 2</Option>
-            <Option value="board3">Board 3</Option>
+            { data && data.boards && data.boards.map(board =>
+              <Option key={board.id} value={board.id}>{board.name}</Option>
+            ) }
           </Select>
         )}
       </Item>
