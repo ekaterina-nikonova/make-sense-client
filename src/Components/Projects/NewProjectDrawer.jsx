@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { useQuery } from "@apollo/react-hooks";
+import React, { useState } from "react";
+import { useMutation, useQuery } from "@apollo/react-hooks";
 
 import { queries } from "../../Services/graphql";
 
-import { Button, Drawer, Form, Icon, Input, Select, Spin } from "antd";
+import { Button, Drawer, Form, Icon, Input, Select } from "antd";
 
 const NewProjectDrawer = () => {
   const [ drawerOpen, setDrawerOpen ] = useState(false);
@@ -37,6 +37,7 @@ const NewProjectDrawer = () => {
 
 const NewProjectForm = ({ form, close }) => {
   const { loading, error, data } = useQuery(queries.boardNames);
+  const [createProject] = useMutation(queries.createProject);
   const [selectedBoard, setSelectedBoard] = useState();
 
   const { Item } = Form;
@@ -44,14 +45,22 @@ const NewProjectForm = ({ form, close }) => {
   const { Option } = Select;
   const { getFieldDecorator, validateFields } = form;
 
-  const createProject = e => {
+  const submit = e => {
     e.preventDefault();
     validateFields((err, values) => {
       if(!err) {
-        form.resetFields();
         console.log(values);
-        // submit(values);
-        close();
+        createProject({ variables: {
+          boardId: values.board,
+          name: values.name,
+          description: values.description,
+          components: values.components
+        } })
+        .then(res => {
+          console.log(res);
+          form.resetFields();
+          close();
+        });
       }
     });
   };
@@ -62,7 +71,7 @@ const NewProjectForm = ({ form, close }) => {
   };
 
   return (
-    <Form onSubmit={createProject}>
+    <Form onSubmit={submit}>
       <Item label="Name">
         { getFieldDecorator('name', {
           rules: [{

@@ -28,9 +28,32 @@ export const queries = {
   projects: gql`{
     projects { id, name }
   }`,
+
+  createProject: gql`
+    mutation createProject(
+        $boardId: ID!,
+        $name: String!,
+        $description: String,
+        $components: [String!]
+    ) {
+      createProject(
+          boardId: $boardId,
+          name: $name,
+          description: $description,
+          components: $components
+      ) {
+        project {
+          id
+          name
+        }
+      }
+    }
+  `,
+
   boardNames: gql` {
     boards { id, name }
   }`,
+
   componentsForBoard: gql`
     query getComponentsForBoard($boardId: ID!) {
       componentsForBoard(boardId: $boardId) { id, name }
