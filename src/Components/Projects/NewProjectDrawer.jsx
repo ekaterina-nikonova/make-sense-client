@@ -3,7 +3,7 @@ import { useMutation, useQuery } from "@apollo/react-hooks";
 
 import { queries } from "../../Services/graphql";
 
-import { Button, Drawer, Form, Icon, Input, Select } from "antd";
+import { Alert, Button, Drawer, Form, Icon, Input, Select, message } from "antd";
 
 const NewProjectDrawer = () => {
   const [ drawerOpen, setDrawerOpen ] = useState(false);
@@ -39,6 +39,7 @@ const NewProjectForm = ({ form, close }) => {
   const { loading, error, data } = useQuery(queries.boardNames);
   const [createProject] = useMutation(queries.createProject);
   const [selectedBoard, setSelectedBoard] = useState();
+  const [saveError, setSaveError] = useState('');
 
   const { Item } = Form;
   const { TextArea } = Input;
@@ -58,9 +59,11 @@ const NewProjectForm = ({ form, close }) => {
         } })
         .then(res => {
           console.log(res);
+          message.success(`Created project '${values.name}'.`);
           form.resetFields();
           close();
-        });
+        })
+        .catch(error => setSaveError(error.message));
       }
     });
   };
@@ -71,7 +74,18 @@ const NewProjectForm = ({ form, close }) => {
   };
 
   return (
+    <React.Fragment>
     <Form onSubmit={submit}>
+      { saveError &&
+        <Alert
+          type="error"
+          message="Could not save the project"
+          description={saveError}
+          showIcon
+          style={{ marginBottom: '1rem' }}
+        />
+      }
+
       <Item label="Name">
         { getFieldDecorator('name', {
           rules: [{
@@ -144,6 +158,7 @@ const NewProjectForm = ({ form, close }) => {
         </Button>
       </div>
     </Form>
+    </React.Fragment>
   );
 };
 
