@@ -25,6 +25,12 @@ export const Apollo = ({children}) => (
 );
 
 export const queries = {
+  projectsBoardsComponents: gql`{
+      projects { id, name }
+      boards { id, name }
+      components { id, name }
+  }`,
+
   projects: gql`{
     projects { id, name }
   }`,

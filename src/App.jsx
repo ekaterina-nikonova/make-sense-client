@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { ActionCableProvider } from 'react-actioncable-provider';
 
 import { me, wsBaseUrl } from "./Services/api";
+import { Apollo } from "./Services/graphql";
 
 import Layout from './Components/Layout';
 
@@ -103,13 +104,15 @@ const App = () => {
   });
 
   return (
-    <ActionCableProvider url={wsBaseUrl}>
-      <LoggedInContext.Provider value={loggedIn}>
-        <UserContext.Provider value={currentUser}>
-          <Layout/>
-        </UserContext.Provider>
-      </LoggedInContext.Provider>
-    </ActionCableProvider>
+    <Apollo>
+      <ActionCableProvider url={wsBaseUrl}>
+        <LoggedInContext.Provider value={loggedIn}>
+          <UserContext.Provider value={currentUser}>
+            <Layout/>
+          </UserContext.Provider>
+        </LoggedInContext.Provider>
+      </ActionCableProvider>
+    </Apollo>
   );
 };
 

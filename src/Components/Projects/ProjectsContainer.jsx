@@ -1,5 +1,4 @@
 import React  from "react";
-import { Apollo } from "../../Services/graphql";
 
 import TopLevelMenu from "../Layout/TopLevelMenu";
 import ProjectList from "./ProjectList";
@@ -11,13 +10,13 @@ const ProjectsContainer = ({ location, match }) => {
 
 
   return (
-      <Apollo>
+      <React.Fragment>
         <TopLevelMenu url={url} currentPath={pathname} item="projects" />
 
         <ProjectList />
 
         <NewProjectDrawer />
-      </Apollo>
+      </React.Fragment>
   );
 };
 
