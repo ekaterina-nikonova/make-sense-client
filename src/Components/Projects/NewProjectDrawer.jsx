@@ -7,12 +7,18 @@ import { Alert, Button, Drawer, Form, Icon, Input, Select, message } from "antd"
 
 const NewProjectDrawer = () => {
   const [ drawerOpen, setDrawerOpen ] = useState(false);
+  const [ destroy, setDestroy ] = useState(false);
 
   const openDrawer = () => {
     setDrawerOpen(true);
   };
 
   const closeDrawer = () => {
+    setDrawerOpen(false);
+  };
+
+  const closeAndDestroy = () => {
+    setDestroy(true);
     setDrawerOpen(false);
   };
 
@@ -26,10 +32,11 @@ const NewProjectDrawer = () => {
         title="New project"
         visible={drawerOpen}
         onClose={closeDrawer}
+        destroyOnClose={destroy}
         width="fit-content"
         className="new-project-container"
       >
-        <WrappedForm close={closeDrawer} />
+        <WrappedForm close={closeAndDestroy} />
       </Drawer>
     </React.Fragment>
   );
@@ -50,7 +57,6 @@ const NewProjectForm = ({ form, close }) => {
     e.preventDefault();
     validateFields((err, values) => {
       if(!err) {
-        console.log(values);
         createProject({ variables: {
           boardId: values.board,
           name: values.name,
@@ -58,8 +64,9 @@ const NewProjectForm = ({ form, close }) => {
           components: values.components
         } })
         .then(res => {
-          console.log(res);
-          message.success(`Created project '${values.name}'.`);
+          message.success(
+            `Created project '${res.data.createProject.project.name}'.`
+          );
           form.resetFields();
           close();
         })
@@ -175,7 +182,7 @@ const ComponentsSelect = ({ board, decorator }) => {
       { decorator('components', {})(
         <Select
           mode="multiple"
-          disabled={loading || error}
+          disabled={!data}
           placeholder="Components used in the project"
         >
           { data && data.componentsForBoard && data.componentsForBoard.map(c =>
