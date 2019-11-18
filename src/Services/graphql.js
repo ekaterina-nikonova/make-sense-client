@@ -31,4 +31,9 @@ export const queries = {
   boardNames: gql` {
     boards { id, name }
   }`,
+  componentsForBoard: gql`
+    query getComponentsForBoard($boardId: ID!) {
+      componentsForBoard(boardId: $boardId) { id, name }
+    }
+  `,
 };

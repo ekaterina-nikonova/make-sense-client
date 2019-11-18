@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useQuery } from "@apollo/react-hooks";
 
 import { queries } from "../../Services/graphql";
@@ -37,6 +37,7 @@ const NewProjectDrawer = () => {
 
 const NewProjectForm = ({ form, close }) => {
   const { loading, error, data } = useQuery(queries.boardNames);
+  const [selectedBoard, setSelectedBoard] = useState();
 
   const { Item } = Form;
   const { TextArea } = Input;
@@ -93,6 +94,7 @@ const NewProjectForm = ({ form, close }) => {
           <Select
             showSearch
             disabled={loading || error}
+            onSelect={b => setSelectedBoard(b)}
             placeholder={
               (error && (
                 <span>
@@ -121,19 +123,7 @@ const NewProjectForm = ({ form, close }) => {
         )}
       </Item>
 
-      <Item label="Select components">
-        { getFieldDecorator('components', {})(
-          <Select
-            mode="multiple"
-            placeholder="Components used in the project"
-          >
-            <Option value="comp1">Component 1</Option>
-            <Option value="comp2">Component 2</Option>
-            <Option value="comp3">Component 3</Option>
-            <Option value="comp4">Component 4</Option>
-          </Select>
-        )}
-      </Item>
+      { selectedBoard && <ComponentsSelect board={selectedBoard} decorator={getFieldDecorator} /> }
 
       <div className="new-project-form-buttons">
         <Button onClick={cancel}>
@@ -145,6 +135,31 @@ const NewProjectForm = ({ form, close }) => {
         </Button>
       </div>
     </Form>
+  );
+};
+
+const ComponentsSelect = ({ board, decorator }) => {
+  const { loading, error, data } = useQuery(
+    queries.componentsForBoard,
+    { variables: { boardId: board } }
+  );
+  const { Item } = Form;
+  const { Option } = Select;
+
+  return (
+    <Item label="Select components">
+      { decorator('components', {})(
+        <Select
+          mode="multiple"
+          disabled={loading || error}
+          placeholder="Components used in the project"
+        >
+          { data && data.componentsForBoard && data.componentsForBoard.map(c =>
+            <Option key={c.id} value={c.id}>{c.name}</Option>
+          ) }
+        </Select>
+      )}
+    </Item>
   );
 };
 
