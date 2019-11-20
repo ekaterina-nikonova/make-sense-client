@@ -1,11 +1,14 @@
 import React from "react";
-import { ApolloProvider } from "@apollo/react-hooks";
+import ActionCable from "actioncable";
+import ActionCableLink from "graphql-ruby-client/subscriptions/ActionCableLink";
 import { ApolloClient } from "apollo-client";
+import { ApolloLink } from "apollo-link";
+import { ApolloProvider } from "react-apollo";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { createHttpLink } from "apollo-link-http";
-import { gql } from "apollo-boost";
+import gql from "graphql-tag";
 
-import { baseUrl } from "./api";
+import { baseUrl, wsBaseUrl } from "./api";
 
 const httpLink = createHttpLink({
   uri: `${baseUrl}/api/v1/graphql`,
@@ -13,8 +16,22 @@ const httpLink = createHttpLink({
   headers: { 'X-CSRF-TOKEN': localStorage.csrf }
 });
 
+const cable = ActionCable.createConsumer(`${wsBaseUrl}`);
+
+const hasSubscriptionOperation = ({ query: { definitions } }) => {
+  return definitions.some(
+    ({ kind, operation }) => kind === 'OperationDefinition' && operation === 'subscription',
+  )
+};
+
+const link = ApolloLink.split(
+  hasSubscriptionOperation,
+  new ActionCableLink({cable}),
+  httpLink
+);
+
 export const client = new ApolloClient({
-  link: httpLink,
+  link: link,
   cache: new InMemoryCache()
 });
 
@@ -31,6 +48,7 @@ export const queries = {
       components { id, name }
   }`,
 
+  // Projects
   projects: gql`{
     projects { id, name }
   }`,
@@ -52,6 +70,15 @@ export const queries = {
           id
           name
         }
+      }
+    }
+  `,
+
+  projectAdded: gql`
+    subscription {
+      projectAdded {
+        id
+        name
       }
     }
   `,

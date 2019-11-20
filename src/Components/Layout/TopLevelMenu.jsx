@@ -27,7 +27,6 @@ const TopLevelMenu = ({ currentPath, user, item }) => {
 
   const { loading, error, data } = useQuery(
     queries.projectsBoardsComponents,
-    { pollInterval: 1000 }
   );
 
   useEffect(
