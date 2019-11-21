@@ -97,10 +97,7 @@ export const queries = {
 
   projectDeleted: gql`
     subscription {
-      projectDeleted {
-        id
-        name
-      }
+      projectDeleted
     }
   `,
 

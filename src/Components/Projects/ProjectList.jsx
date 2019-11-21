@@ -26,6 +26,20 @@ const ProjectList = ({ projects, subscribeToMore }) => {
           __typename: prev.projects.__typename
         })
       }
+    });
+
+    subscribeToMore({
+      document: queries.projectDeleted,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev;
+
+        const deletedProject = subscriptionData.data.projectDeleted;
+
+        return Object.assign({}, prev, {
+          projects: prev.projects.filter(prj => prj.id !== deletedProject),
+          __typename: prev.projects.__typename
+        })
+      }
     })
   };
 
