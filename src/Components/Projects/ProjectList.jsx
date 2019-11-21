@@ -1,9 +1,13 @@
 import React, { useEffect } from "react";
-
+import { Link } from "react-router-dom";
 import { queries } from "../../Services/graphql";
+
+import { Collapse, Icon } from "antd";
 
 const ProjectList = ({ projects, subscribeToMore }) => {
   useEffect(() => subscribe(subscribeToMore), []);
+
+  const { Panel } = Collapse;
 
   const subscribe = subscribeToMore => {
     subscribeToMore({
@@ -22,8 +26,29 @@ const ProjectList = ({ projects, subscribeToMore }) => {
   };
 
   return (
+    <Collapse
+      bordered={false}
+    >
+      { projects.map(project => (
+        <Panel
+          header={project.name}
+          key={`prj-${project.id}`}
+          extra={<Icon type="delete" /> }
+        >
+          <Details project={project} />
+        </Panel>
+      ))}
+    </Collapse>
+  );
+};
+
+const Details = ({ project }) => {
+  return (
     <div>
-      { projects && projects.map(prj => <div key={prj.id}>{prj.name}</div>) }
+      {project.description}
+      <Link to={`projects/${project.id}`}>
+        <Icon type="arrow-right" />
+      </Link>
     </div>
   );
 };

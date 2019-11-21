@@ -23,10 +23,12 @@ const ProjectsContainer = ({ location, match }) => {
             if (error) return <div>Error :-(</div>;
 
             return (
-              <ProjectList
-                projects={data.projects}
-                subscribeToMore={subscribeToMore}
-              />
+              <div className="projects-container">
+                <ProjectList
+                  projects={data.projects}
+                  subscribeToMore={subscribeToMore}
+                />
+              </div>
             );
           }}
         </Query>
