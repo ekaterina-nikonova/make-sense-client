@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useGlobal } from 'reactn';
 import { useQuery } from "@apollo/react-hooks";
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
@@ -159,7 +158,6 @@ const TopLevelMenu = ({ currentPath, user, item }) => {
 TopLevelMenu.propTypes = {
   currentPath: PropTypes.string.isRequired,
   item: PropTypes.string.isRequired,
-  url: PropTypes.string.isRequired
 };
 
 const WrappedTopLevelMenu = ({ currentPath, item }) => (

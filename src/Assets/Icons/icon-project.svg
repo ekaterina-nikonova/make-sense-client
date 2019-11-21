@@ -18,8 +18,8 @@
 <rect x="20" y="7" width="10" height="1" fill="#46454C"/>
 <rect x="13" y="3" width="10" height="1" fill="#46454C"/>
 <rect x="13" y="5" width="10" height="1" fill="#46454C"/>
-<path d="M4.5 3L2.5 4.5L4.5 5.5" stroke="#FBFBFB" stroke-linejoin="round"/>
-<path d="M8 3L10 4.5L8 5.5" stroke="#FBFBFB" stroke-linejoin="round"/>
+<path d="M4.5 3L2.5 4.5L4.5 5.5" stroke="#FBFBFB" strokeLinejoin="round"/>
+<path d="M8 3L10 4.5L8 5.5" stroke="#FBFBFB" strokeLinejoin="round"/>
 <path d="M7 2L5.5 6" stroke="#FBFBFB"/>
 <path d="M16.5 12C16.5 11.7239 16.7239 11.5 17 11.5H36C36.2761 11.5 36.5 11.7239 36.5 12V17.5H16.5V12Z" fill="#9FA0B3" stroke="#46454C"/>
 <circle cx="20.5" cy="14.5" r="1.5" fill="#FBFBFB" stroke="#46454C"/>

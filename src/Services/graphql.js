@@ -79,6 +79,7 @@ export const queries = {
       projectAdded {
         id
         name
+        description
       }
     }
   `,
