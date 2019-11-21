@@ -1,11 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Redirect } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 
 import { LoggedInContext } from "../../App";
 
 import EmptyFullPage from '../UI/EmptyFullPage';
-import TopLevelMenu from '../Layout/TopLevelMenu';
+import TopLevelMenu from "../Layout/TopLevelMenu";
 
 const ComponentsContainer = ({ location, match }) => {
   const { pathname } = location;
@@ -13,23 +12,30 @@ const ComponentsContainer = ({ location, match }) => {
 
   return (
     <React.Fragment>
-      <TopLevelMenu currentPath={pathname} item="components" url={url} />
+      <TopLevelMenu url={url} currentPath={pathname} item="components" />
 
-      <EmptyFullPage description="The Components page is under construction." />
+      <Switch>
+        <Route path="/components/:id" component={ComponentPlaceholder} />
+        <Route path="/components" component={ComponentsPlaceholder} />
+      </Switch>
     </React.Fragment>
   );
 };
 
-ComponentsContainer.propTypes = {
-  location: PropTypes.object.isRequired,
-  match: PropTypes.object.isRequired
-};
+const ComponentsPlaceholder = () =>
+  <EmptyFullPage description="The Components page is under construction." />;
+
+const ComponentPlaceholder = ({ match }) =>
+  <EmptyFullPage
+    description={`A page for the component with id ${match.params.id} will be here soon.`}
+  />;
 
 const WrappedComponentsContainer = ({ location, match }) => (
   <LoggedInContext.Consumer>
-    {loggedIn => (
-      loggedIn ? <ComponentsContainer location={location} match={match} /> : <Redirect to='/start' />
-    )}
+    { loggedIn => loggedIn
+      ? <ComponentsContainer location={location} match={match} />
+      : <Redirect to="/start" />
+    }
   </LoggedInContext.Consumer>
 );
 

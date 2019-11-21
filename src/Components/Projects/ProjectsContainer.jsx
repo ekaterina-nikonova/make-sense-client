@@ -1,8 +1,9 @@
 import React  from "react";
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 
 import { Query } from "react-apollo";
 
+import { LoggedInContext } from "../../App";
 import { queries } from "../../Services/graphql";
 
 import TopLevelMenu from "../Layout/TopLevelMenu";
@@ -13,7 +14,6 @@ import ProjectContainer from "./ProjectContainer";
 const ProjectsContainer = ({ location, match }) => {
   const { pathname } = location;
   const { url } = match;
-
 
   return (
       <React.Fragment>
@@ -45,4 +45,12 @@ const ProjectsContainer = ({ location, match }) => {
   );
 };
 
-export default ProjectsContainer;
+const WrappedProjectsContainer = ({ location, match }) => (
+  <LoggedInContext.Consumer>
+    {loggedIn => (
+      loggedIn ? <ProjectsContainer location={location} match={match} /> : <Redirect to='/start' />
+    )}
+  </LoggedInContext.Consumer>
+);
+
+export default WrappedProjectsContainer;
