@@ -74,12 +74,32 @@ export const queries = {
     }
   `,
 
+  deleteProject: gql`
+    mutation deleteProject($id: ID!) {
+      deleteProject(id: $id) {
+        project {
+          id
+          name
+        }
+      }
+    }
+  `,
+
   projectAdded: gql`
     subscription {
       projectAdded {
         id
         name
         description
+      }
+    }
+  `,
+
+  projectDeleted: gql`
+    subscription {
+      projectDeleted {
+        id
+        name
       }
     }
   `,

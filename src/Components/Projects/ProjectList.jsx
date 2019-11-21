@@ -1,10 +1,14 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useMutation } from "@apollo/react-hooks";
+
 import { queries } from "../../Services/graphql";
 
-import { Collapse, Icon } from "antd";
+import { Collapse, Icon, Popconfirm, message } from "antd";
 
 const ProjectList = ({ projects, subscribeToMore }) => {
+  const [deleteProject] = useMutation(queries.deleteProject);
+
   useEffect(() => subscribe(subscribeToMore), []);
 
   const { Panel } = Collapse;
@@ -25,6 +29,17 @@ const ProjectList = ({ projects, subscribeToMore }) => {
     })
   };
 
+  const handleDelete = (e, id) => {
+    e.stopPropagation();
+    deleteProject({ variables: { id } })
+      .then(res => message.success(
+        `Deleted project '${res.data.deleteProject.project.name}'.`
+      ))
+      .catch(err => message.error(
+        `Could not delete project.`
+      ));
+  };
+
   return (
     <Collapse
       bordered={false}
@@ -33,7 +48,14 @@ const ProjectList = ({ projects, subscribeToMore }) => {
         <Panel
           header={project.name}
           key={`prj-${project.id}`}
-          extra={<Icon type="delete" /> }
+          extra={
+            <Popconfirm
+              title="Delete project?"
+              onConfirm={e => handleDelete(e, project.id)}
+            >
+              <Icon type="delete" onClick={e => e.stopPropagation()} />
+            </Popconfirm>
+          }
         >
           <Details project={project} />
         </Panel>
