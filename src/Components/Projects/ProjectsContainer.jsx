@@ -1,4 +1,5 @@
 import React  from "react";
+import { Route, Switch } from 'react-router-dom';
 
 import { Query } from "react-apollo";
 
@@ -7,6 +8,7 @@ import { queries } from "../../Services/graphql";
 import TopLevelMenu from "../Layout/TopLevelMenu";
 import ProjectList from "./ProjectList";
 import NewProjectDrawer from "./NewProjectDrawer";
+import ProjectContainer from "./ProjectContainer";
 
 const ProjectsContainer = ({ location, match }) => {
   const { pathname } = location;
@@ -24,10 +26,15 @@ const ProjectsContainer = ({ location, match }) => {
 
             return (
               <div className="projects-container">
-                <ProjectList
-                  projects={data.projects}
-                  subscribeToMore={subscribeToMore}
-                />
+                <Switch>
+                  <Route path="/projects/:id" component={ProjectContainer} />
+                  <Route path="/projects" component={() => (
+                    <ProjectList
+                      projects={data.projects}
+                      subscribeToMore={subscribeToMore}
+                    />
+                  )} />
+                </Switch>
               </div>
             );
           }}
