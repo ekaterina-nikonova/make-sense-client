@@ -1,4 +1,7 @@
 import React from "react";
+import { Redirect } from "react-router-dom";
+
+import { LoggedInContext } from "../../App";
 
 import HeroSection from "./HeroSection";
 import AboutSection from "./AboutSection";
@@ -22,4 +25,10 @@ const StartPageContent = () => {
   );
 };
 
-export default StartPageContent;
+const WrappedStartPageContent = () => (
+  <LoggedInContext.Consumer>
+    { loggedIn => loggedIn ? <Redirect to="/" /> : <StartPageContent /> }
+  </LoggedInContext.Consumer>
+);
+
+export default WrappedStartPageContent;
