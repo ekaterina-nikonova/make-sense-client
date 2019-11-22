@@ -7,15 +7,43 @@
 
 .projects-container {
   width: 100%;
-  max-width: 60rem;
-  margin: 2rem auto;
+  word-break: break-word;
 
   .ant-collapse-item:first-child {
     padding-top: 4rem;
   }
 
+  .ant-collapse-header {
+    display: flex;
+  }
+
+  .list-project-title {
+    width: calc(100% - 2rem);
+  }
+
+  .list-project-title-extras {
+    width: 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    a, i {
+      flex-grow: 1;
+      text-align: end;
+    }
+
+    i {
+
+    }
+  }
+
   .ant-page-header-heading-title {
     font-size: 1rem;
+  }
+
+  .project-container {
+    max-width: 60rem;
+    margin: 2rem auto;
   }
 }
 

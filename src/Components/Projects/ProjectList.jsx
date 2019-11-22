@@ -60,15 +60,22 @@ const ProjectList = ({ projects, subscribeToMore }) => {
     >
       { projects.map(project => (
         <Panel
-          header={project.name}
+          header={<div className="list-project-title">{ project.name }</div>}
           key={`prj-${project.id}`}
           extra={
-            <Popconfirm
-              title="Delete project?"
-              onConfirm={e => handleDelete(e, project.id)}
-            >
-              <Icon type="delete" onClick={e => e.stopPropagation()} />
-            </Popconfirm>
+            <div className="list-project-title-extras">
+              <Link to={`projects/${project.id}`}>
+                <Icon type="arrow-right" />
+              </Link>
+
+              <Popconfirm
+                title="Delete project?"
+                onConfirm={e => handleDelete(e, project.id)}
+                onCancel={e => e.stopPropagation()}
+              >
+                <Icon type="delete" onClick={e => e.stopPropagation()} />
+              </Popconfirm>
+            </div>
           }
         >
           <Details project={project} />
@@ -82,9 +89,6 @@ const Details = ({ project }) => {
   return (
     <div>
       {project.description}
-      <Link to={`projects/${project.id}`}>
-        <Icon type="arrow-right" />
-      </Link>
     </div>
   );
 };
