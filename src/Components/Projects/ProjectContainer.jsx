@@ -3,11 +3,14 @@ import { Query } from "react-apollo";
 
 import { queries } from "../../Services/graphql";
 
-import { PageHeader } from "antd";
+import { Col, List, PageHeader, Row, Typography } from "antd";
 
 const ProjectContainer = ({ history, match }) => {
   const { params } = match;
   const { id } = params;
+
+  const { Item } = List;
+  const { Text } = Typography;
 
   return (
     <Query query={queries.project} variables={{ id }}>
@@ -24,14 +27,30 @@ const ProjectContainer = ({ history, match }) => {
               title={project.name}
             >
               <div>{project.description}</div>
-              <div>Board: {project.board.name}</div>
-              <div>Components:</div>
-              <div>
-                { project.components &&
-                  project.components.map(c => (
-                    <div key={c.id}>{ c.name }</div>
-                  )) }
-              </div>
+
+              <Row gutter={[16, 16]}>
+                <Col xs={24} md={12}>
+                  <List
+                    size="small"
+                    header={<Text strong>Board</Text>}
+                    dataSource={[project.board]}
+                    renderItem={item => (
+                      <Item key={item.id}>{item.name}</Item>
+                    )}
+                  />
+                </Col>
+
+                <Col xs={24} md={12}>
+                  <List
+                    size="small"
+                    header={<Text strong>Components</Text>}
+                    dataSource={project.components}
+                    renderItem={item => (
+                      <Item key={item.id}>{item.name}</Item>
+                    )}
+                  />
+                </Col>
+              </Row>
             </PageHeader>
           </React.Fragment>
         );
