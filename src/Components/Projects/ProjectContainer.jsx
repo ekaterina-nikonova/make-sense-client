@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Query } from "react-apollo";
 
 import { queries } from "../../Services/graphql";
@@ -6,12 +6,19 @@ import { queries } from "../../Services/graphql";
 import { Col, List, PageHeader, Row, Tabs, Typography } from "antd";
 
 const ProjectContainer = ({ history, match }) => {
+  const [mobileScreen, setMobileScreen] = useState(window.innerWidth < 576);
+
   const { params } = match;
   const { id } = params;
 
   const { Item } = List;
   const { TabPane } = Tabs;
   const { Text } = Typography;
+
+  window.addEventListener(
+    'resize',
+    () => setMobileScreen(window.innerWidth < 576)
+  );
 
   return (
     <Query query={queries.project} variables={{ id }}>
@@ -58,7 +65,7 @@ const ProjectContainer = ({ history, match }) => {
             { chapters && chapters.length && (
               <Tabs
                 defaultActiveKey="1"
-                tabPosition="left"
+                tabPosition={ mobileScreen ? "top" : "left" }
               >
                 {chapters.map(chapter => (
                   <TabPane key={chapter.id} tab={chapter.name}>
