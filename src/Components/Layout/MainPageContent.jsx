@@ -40,7 +40,7 @@ const MainPageContent = ({ user }) => {
 
   return (
     <div className="main-page-nav-container">
-      { navs.map(nav => <MainPageCard item={nav} />) }
+      { navs.map(nav => <MainPageCard key={`card-${nav.link}`} item={nav} />) }
     </div>
   )
 };

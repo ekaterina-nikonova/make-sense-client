@@ -74,6 +74,7 @@ const TopLevelMenu = ({ currentPath, user, item }) => {
       >
         <Menu.Item key="projects">
           <Link to="/projects">
+            <Icon type="appstore" />
             <span className="submenu-label">All projects</span>
           </Link>
         </Menu.Item>
@@ -98,6 +99,7 @@ const TopLevelMenu = ({ currentPath, user, item }) => {
       >
         <Menu.Item key="boards">
           <Link to="/boards">
+            <Icon type="appstore" />
             <span className="submenu-label">All boards</span>
           </Link>
         </Menu.Item>
@@ -122,6 +124,7 @@ const TopLevelMenu = ({ currentPath, user, item }) => {
       >
         <Menu.Item key="components">
           <Link to="/components">
+            <Icon type="appstore" />
             <span className="submenu-label">All components</span>
           </Link>
         </Menu.Item>
