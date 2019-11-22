@@ -6,7 +6,7 @@ import { queries } from "../../Services/graphql";
 import { Col, List, PageHeader, Row, Tabs, Typography } from "antd";
 
 const ProjectContainer = ({ history, match }) => {
-  const [mobileScreen, setMobileScreen] = useState(window.innerWidth < 576);
+  const [mobileScreen, setMobileScreen] = useState(window.innerWidth < 1000);
 
   const { params } = match;
   const { id } = params;
@@ -17,7 +17,7 @@ const ProjectContainer = ({ history, match }) => {
 
   window.addEventListener(
     'resize',
-    () => setMobileScreen(window.innerWidth < 576)
+    () => setMobileScreen(window.innerWidth < 1000)
   );
 
   return (
@@ -69,6 +69,7 @@ const ProjectContainer = ({ history, match }) => {
               >
                 {chapters.map(chapter => (
                   <TabPane key={chapter.id} tab={chapter.name}>
+                    { chapter.name }
                     { chapter.intro }
                     { chapter.sections && chapter.sections.map(section => (
                       <React.Fragment>
