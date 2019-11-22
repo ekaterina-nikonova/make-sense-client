@@ -28,6 +28,7 @@ export const authLogin = (data, setError) => {
     } else {
       localStorage.csrf = response.data.csrf;
       localStorage.setItem('signedIn', 'true');
+      window.location.reload();
     }
   };
   const failure = error => {
