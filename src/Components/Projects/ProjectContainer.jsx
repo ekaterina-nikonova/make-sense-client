@@ -1,4 +1,7 @@
 import React from "react";
+import { Query } from "react-apollo";
+
+import { queries } from "../../Services/graphql";
 
 import { PageHeader } from "antd";
 
@@ -7,13 +10,33 @@ const ProjectContainer = ({ history, match }) => {
   const { id } = params;
 
   return (
-    <div>
-      <PageHeader
-        onBack={() => history.push('/projects')}
-        title={id}
-      />
-      {`Details of project ${id} will be shown here.`}
-    </div>
+    <Query query={queries.project} variables={{ id }}>
+      {({ loading, error, data}) => {
+        if (loading) return <div>Loading...</div>
+        if (error) return <div>Error :-(</div>
+
+        const project = data.project;
+
+        return(
+          <React.Fragment>
+            <PageHeader
+              onBack={() => history.push('/projects')}
+              title={project.name}
+            >
+              <div>{project.description}</div>
+              <div>Board: {project.board.name}</div>
+              <div>Components:</div>
+              <div>
+                { project.components &&
+                  project.components.map(c => (
+                    <div key={c.id}>{ c.name }</div>
+                  )) }
+              </div>
+            </PageHeader>
+          </React.Fragment>
+        );
+      }}
+    </Query>
   );
 };
 

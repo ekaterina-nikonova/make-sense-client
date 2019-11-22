@@ -53,6 +53,27 @@ export const queries = {
     projects { id, name, description }
   }`,
 
+  project: gql`query ($id: ID!){
+    project(id: $id) {
+      id
+      name
+      description
+      board { id, name }
+      components { id, name }
+      chapters {
+        id
+        name
+        intro
+        sections {
+          id
+          paragraph
+          code
+          image
+        }
+      }
+    }
+  }`,
+
   createProject: gql`
     mutation createProject(
         $boardId: ID!,
