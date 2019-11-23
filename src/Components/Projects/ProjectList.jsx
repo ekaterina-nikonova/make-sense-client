@@ -4,7 +4,7 @@ import { useMutation } from "@apollo/react-hooks";
 
 import { queries } from "../../Services/graphql";
 
-import { Collapse, Icon, Popconfirm, message } from "antd";
+import { Collapse, Icon, Popconfirm, Typography, message } from "antd";
 
 const ProjectList = ({ projects, subscribeToMore }) => {
   const [deleteProject] = useMutation(queries.deleteProject);
@@ -12,6 +12,7 @@ const ProjectList = ({ projects, subscribeToMore }) => {
   useEffect(() => subscribe(subscribeToMore), []);
 
   const { Panel } = Collapse;
+  const { Paragraph } = Typography;
 
   const subscribe = subscribeToMore => {
     subscribeToMore({
@@ -57,17 +58,28 @@ const ProjectList = ({ projects, subscribeToMore }) => {
   return (
     <Collapse
       bordered={false}
+      expandIconPosition="right"
+      expandIcon={
+        ({ isActive }) =>
+          <Icon type="eye" theme={isActive ? "filled" : "outlined"} />
+      }
     >
       { projects.map(project => (
         <Panel
-          header={<div className="list-project-title">{ project.name }</div>}
-          key={`prj-${project.id}`}
-          extra={
-            <div className="list-project-title-extras">
+          header={
+            <div className="list-project-title">
               <Link to={`projects/${project.id}`}>
                 <Icon type="arrow-right" />
               </Link>
 
+              <Paragraph className="list-project-name">
+                { project.name }
+              </Paragraph>
+            </div>
+          }
+          key={`prj-${project.id}`}
+          extra={
+            <div className="list-project-title-extras">
               <Popconfirm
                 title="Delete project?"
                 onConfirm={e => handleDelete(e, project.id)}
@@ -86,10 +98,12 @@ const ProjectList = ({ projects, subscribeToMore }) => {
 };
 
 const Details = ({ project }) => {
+  const { Paragraph } = Typography;
+
   return (
-    <div>
+    <Paragraph>
       {project.description}
-    </div>
+    </Paragraph>
   );
 };
 

@@ -15,22 +15,25 @@
 
   .ant-collapse-header {
     display: flex;
+    align-items: center;
   }
 
   .list-project-title {
-    width: calc(100% - 2rem);
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+
+    a {
+      padding-right: 1rem;
+    }
+
+    .list-project-name {
+      margin-bottom: 0;
+    }
   }
 
   .list-project-title-extras {
-    width: 3rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    a, i {
-      flex-grow: 1;
-      text-align: end;
-    }
+    padding: 0 .5rem;
   }
 
   .ant-page-header-heading-title {
