@@ -3,7 +3,7 @@ import { Query } from "react-apollo";
 
 import { queries } from "../../Services/graphql";
 
-import { Col, List, PageHeader, Row, Tabs, Typography } from "antd";
+import { Button, Col, Empty, List, PageHeader, Row, Select, Tabs, Typography } from "antd";
 
 const ProjectContainer = ({ history, match }) => {
   const [mobileScreen, setMobileScreen] = useState(window.innerWidth < 1000);
@@ -13,6 +13,7 @@ const ProjectContainer = ({ history, match }) => {
 
   const { Item } = List;
   const { TabPane } = Tabs;
+  const { Option } = Select;
   const { Paragraph, Text, Title } = Typography;
 
   window.addEventListener(
@@ -27,6 +28,8 @@ const ProjectContainer = ({ history, match }) => {
         if (error) return <div>Error :-(</div>
 
         const project = data.project;
+        const board = data.project.board;
+        const components = data.project.components;
         const chapters = data.project.chapters;
 
         return(
@@ -35,7 +38,18 @@ const ProjectContainer = ({ history, match }) => {
               onBack={() => history.push('/projects')}
               title={project.name}
             >
-              <div>{project.description}</div>
+              { !project.description && (
+                <Empty
+                  image={Empty.PRESENTED_IMAGE_SIMPLE}
+                  description={false}
+                >
+                  <Button>Add a description</Button>
+                </Empty>
+              ) }
+
+              { project.description && (
+                <div>{project.description}</div>
+              ) }
 
               <Row gutter={[16, 16]}>
                 <Col xs={24} md={12}>
@@ -57,12 +71,30 @@ const ProjectContainer = ({ history, match }) => {
                     renderItem={item => (
                       <Item key={item.id}>{item.name}</Item>
                     )}
-                  />
+                  >
+                    <Select
+                      placeholder="Select components"
+                      style={{ width: '100%', marginTop: '1rem' }}
+                    >
+                      {project.board.components && project.board.components.map(c => (
+                        <Option key={c.id}>{c.name}</Option>
+                      ))}
+                    </Select>
+                  </List>
                 </Col>
               </Row>
             </PageHeader>
 
-            { chapters && chapters.length && (
+            {(!chapters || chapters.length === 0) && (
+              <Empty
+                image={Empty.PRESENTED_IMAGE_SIMPLE}
+                description={false}
+              >
+                <Button>Add a chapter</Button>
+              </Empty>
+            )}
+
+            { chapters && (
               <Tabs
                 defaultActiveKey="1"
                 tabPosition={ mobileScreen ? "top" : "left" }
