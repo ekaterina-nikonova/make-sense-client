@@ -50,7 +50,7 @@ export const queries = {
 
   // Projects
   projects: gql`{
-    projects { id, name, description }
+    projects { id, name, description, chapterCount, componentCount }
   }`,
 
   project: gql`query ($id: ID!){

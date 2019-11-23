@@ -4,7 +4,7 @@ import { useMutation } from "@apollo/react-hooks";
 
 import { queries } from "../../Services/graphql";
 
-import { Collapse, Icon, Popconfirm, Typography, message } from "antd";
+import { Col, Collapse, Empty, Icon, Popconfirm, Row, Typography, message } from "antd";
 
 const ProjectList = ({ projects, subscribeToMore }) => {
   const [deleteProject] = useMutation(queries.deleteProject);
@@ -98,12 +98,32 @@ const ProjectList = ({ projects, subscribeToMore }) => {
 };
 
 const Details = ({ project }) => {
-  const { Paragraph } = Typography;
+  const { Paragraph, Text } = Typography;
 
   return (
-    <Paragraph>
-      {project.description}
-    </Paragraph>
+    <React.Fragment>
+      { !project.description &&
+        <Empty
+          image={Empty.PRESENTED_IMAGE_SIMPLE}
+          description="No description" />
+      }
+
+      <Paragraph>
+        {project.description}
+      </Paragraph>
+
+      <Row gutter={[16, 16]}>
+        <Col xs={24} sm={12}>
+          <Icon type="pic-left" className="project-details-icon" />
+          <Text>Chapters: {project.chapterCount}</Text>
+        </Col>
+
+        <Col xs={24} sm={12}>
+          <Icon type="appstore" className="project-details-icon" />
+          <Text>Components: {project.componentCount}</Text>
+        </Col>
+      </Row>
+    </React.Fragment>
   );
 };
 
