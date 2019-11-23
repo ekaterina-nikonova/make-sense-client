@@ -68,7 +68,7 @@ export const queries = {
           id
           paragraph
           code
-          image
+          imageUrl
         }
       }
     }

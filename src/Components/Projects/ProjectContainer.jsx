@@ -13,7 +13,7 @@ const ProjectContainer = ({ history, match }) => {
 
   const { Item } = List;
   const { TabPane } = Tabs;
-  const { Text } = Typography;
+  const { Paragraph, Text, Title } = Typography;
 
   window.addEventListener(
     'resize',
@@ -69,20 +69,10 @@ const ProjectContainer = ({ history, match }) => {
               >
                 {chapters.map(chapter => (
                   <TabPane key={chapter.id} tab={chapter.name}>
-                    { chapter.name }
-                    { chapter.intro }
+                    <Title level={4}>{ chapter.name }</Title>
+                    <Paragraph>{ chapter.intro }</Paragraph>
                     { chapter.sections && chapter.sections.map(section => (
-                      <React.Fragment>
-                        { section.image && (
-                          <img
-                            alt="image attached to the section"
-                            src={section.image}
-                            className="board-main-image"
-                          />
-                        )}
-                        <div>{ section.paragraph }</div>
-                        <div>{ section.code }</div>
-                      </React.Fragment>
+                      <Section key={section.id} section={section} />
                     ))}
                   </TabPane>
                 ))}
@@ -92,6 +82,26 @@ const ProjectContainer = ({ history, match }) => {
         );
       }}
     </Query>
+  );
+};
+
+const Section = ({ section }) => {
+  const { Paragraph } = Typography;
+
+  return (
+    <div className="project-section">
+      { section.image && (
+        <img
+          alt="illustration for the section"
+          src={section.imageUrl}
+          className="board-main-image"
+        />
+      )}
+      <Paragraph>{ section.paragraph }</Paragraph>
+      <Paragraph copyable className="project-section-code">
+        { section.code }
+      </Paragraph>
+    </div>
   );
 };
 
