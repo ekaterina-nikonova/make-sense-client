@@ -12,9 +12,7 @@ const ProjectContainer = ({ history, match }) => {
   const { params } = match;
   const { id } = params;
 
-  const { Item } = List;
   const { TabPane } = Tabs;
-  const { Option } = Select;
   const { Paragraph, Text, Title } = Typography;
 
   window.addEventListener(
@@ -57,28 +55,19 @@ const ProjectContainer = ({ history, match }) => {
                   <Text strong className="subtitle-small">Board</Text>
                   <BoardSelect
                     id={project.id}
-                    projectBoard={project.board}
+                    board={board}
                   />
                 </Col>
 
                 <Col xs={24} md={12}>
-                  <List
-                    size="small"
-                    header={<Text strong>Components</Text>}
-                    dataSource={project.components}
-                    renderItem={item => (
-                      <Item key={item.id}>{item.name}</Item>
-                    )}
-                  >
-                    <Select
-                      placeholder="Select components"
-                      style={{ width: '100%', marginTop: '1rem' }}
-                    >
-                      {project.board.components && project.board.components.map(c => (
-                        <Option key={c.id}>{c.name}</Option>
-                      ))}
-                    </Select>
-                  </List>
+                  <Text strong className="subtitle-small">
+                    Components
+                  </Text>
+
+                  <ComponentSelect
+                    project={project}
+                    boardId={project.board.id}
+                  />
                 </Col>
               </Row>
             </PageHeader>
@@ -115,18 +104,18 @@ const ProjectContainer = ({ history, match }) => {
   );
 };
 
-const BoardSelect = ({ projectBoard, id }) => {
+const BoardSelect = ({ board, id }) => {
   const { loading, error, data } = useQuery(queries.boardNames);
   const [ updateProject ] = useMutation(queries.updateProject);
 
   const { Option } = Select;
 
-  const handleUpdate = board =>
-    updateProject({ variables: { board, id } });
+  const handleUpdate = selection =>
+    updateProject({ variables: { board: selection, id } });
 
   return (
     <Select
-      defaultValue={projectBoard.id}
+      defaultValue={board.id}
       onChange={handleUpdate}
       placeholder={
         (error && (
@@ -147,9 +136,54 @@ const BoardSelect = ({ projectBoard, id }) => {
       }
       style={{ width: '100%' }}
     >
-      { data && data.boards && data.boards.map(board =>
-        <Option key={board.id} value={board.id}>{ board.name }</Option>
+      { data && data.boards && data.boards.map(b =>
+        <Option key={b.id} value={b.id}>{ b.name }</Option>
       )}
+    </Select>
+  );
+};
+
+const ComponentSelect = ({ boardId, project }) => {
+  const { loading, error, data } = useQuery(
+    queries.componentsForBoard,
+    { variables: { boardId } }
+  );
+  const [ updateProject ] = useMutation(queries.updateProject);
+
+  const { Option } = Select;
+
+  const components = data && project.components.map(c => c.id);
+
+  const handleUpdate = selection => {
+    const id = project.id;
+    updateProject({ variables: { id, components: selection} })
+  };
+
+  return (
+    <Select
+      mode="multiple"
+      disabled={!data}
+      value={components}
+      onChange={handleUpdate}
+      placeholder={
+        (error && (
+          <span>
+            <Icon type="exclamation-circle"
+                  theme="twoTone"
+                  twoToneColor="red"
+            /> Could not load
+          </span>
+        )) || (loading && (
+          <span><Icon type="loading" /> Loading...</span>
+        )) || (data && "Select components") || (
+          <span><Icon type="frown" /> Something went wrong</span>
+        )
+      }
+      style={{ width: '100%' }}
+    >
+      { data && data.componentsForBoard && data.componentsForBoard.map(c =>
+        <Option key={c.id} value={c.id}>{c.name}</Option>
+      ) }
     </Select>
   );
 };
