@@ -134,9 +134,18 @@ const BoardSelect = ({ board, id }) => {
           <span><Icon type="frown" /> Something went wrong</span>
         )
       }
+      dropdownRender={menu => (
+        <React.Fragment>
+          <div onMouseDown={e => e.preventDefault()} className="select-dropdown-header">
+            <Icon type="warning" /> All components will be removed
+          </div>
+          { menu }
+        </React.Fragment>
+      )}
       filterOption={(input, option) =>
         option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
       }
+      dropdownClassName="project-attrs-select"
       style={{ width: '100%' }}
     >
       { data && data.boards && data.boards.map(b =>
@@ -164,6 +173,7 @@ const ComponentSelect = ({ board, project }) => {
       value={components}
       onChange={handleUpdate}
       placeholder="Select components"
+      dropdownClassName="project-attrs-select"
       style={{ width: '100%' }}
     >
       { board && board.components && board.components.map(c =>
