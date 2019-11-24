@@ -95,6 +95,33 @@ export const queries = {
     }
   `,
 
+  updateProject: gql`
+    mutation updateProject(
+      $id: ID!
+      $board: ID
+      $name: String
+      $description: String
+      $components: [String!]
+    ) {
+      updateProject(
+        id: $id
+        attributes: {
+          board: $board
+          name: $name
+          description: $description
+          components: $components
+        }
+      ) {
+        project {
+          board { id, name }
+          name
+          description
+          components { id, name }
+        }
+      }
+    }
+  `,
+
   deleteProject: gql`
     mutation deleteProject($id: ID!) {
       deleteProject(id: $id) {

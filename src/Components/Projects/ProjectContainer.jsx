@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Query } from "react-apollo";
+import { useMutation, useQuery } from "@apollo/react-hooks";
 
 import { queries } from "../../Services/graphql";
 
-import { Button, Col, Empty, List, PageHeader, Row, Select, Tabs, Typography } from "antd";
+import { Button, Col, Empty, Icon, List, PageHeader, Row, Select, Tabs, Typography } from "antd";
 
 const ProjectContainer = ({ history, match }) => {
   const [mobileScreen, setMobileScreen] = useState(window.innerWidth < 1000);
@@ -53,13 +54,10 @@ const ProjectContainer = ({ history, match }) => {
 
               <Row gutter={[16, 16]}>
                 <Col xs={24} md={12}>
-                  <List
-                    size="small"
-                    header={<Text strong>Board</Text>}
-                    dataSource={[project.board]}
-                    renderItem={item => (
-                      <Item key={item.id}>{item.name}</Item>
-                    )}
+                  <Text strong className="subtitle-small">Board</Text>
+                  <BoardSelect
+                    id={project.id}
+                    projectBoard={project.board}
                   />
                 </Col>
 
@@ -114,6 +112,45 @@ const ProjectContainer = ({ history, match }) => {
         );
       }}
     </Query>
+  );
+};
+
+const BoardSelect = ({ projectBoard, id }) => {
+  const { loading, error, data } = useQuery(queries.boardNames);
+  const [ updateProject ] = useMutation(queries.updateProject);
+
+  const { Option } = Select;
+
+  const handleUpdate = board =>
+    updateProject({ variables: { board, id } });
+
+  return (
+    <Select
+      defaultValue={projectBoard.id}
+      onChange={handleUpdate}
+      placeholder={
+        (error && (
+          <span>
+            <Icon type="exclamation-circle"
+                  theme="twoTone"
+                  twoToneColor="red"
+            /> Could not load
+          </span>
+        )) || (loading && (
+          <span><Icon type="loading" /> Loading...</span>
+        )) || (data && "Select a board") || (
+          <span><Icon type="frown" /> Something went wrong</span>
+        )
+      }
+      filterOption={(input, option) =>
+        option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      }
+      style={{ width: '100%' }}
+    >
+      { data && data.boards && data.boards.map(board =>
+        <Option key={board.id} value={board.id}>{ board.name }</Option>
+      )}
+    </Select>
   );
 };
 
