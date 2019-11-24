@@ -58,7 +58,7 @@ export const queries = {
       id
       name
       description
-      board { id, name }
+      board { id, name, components { id, name } }
       components { id, name }
       chapters {
         id
@@ -113,10 +113,13 @@ export const queries = {
         }
       ) {
         project {
-          board { id, name }
+          id
           name
           description
+          board { id, name, components { id, name } }
           components { id, name }
+          chapterCount
+          componentCount
         }
       }
     }
@@ -149,8 +152,14 @@ export const queries = {
     }
   `,
 
+  // Boards
+
   boardNames: gql` {
     boards { id, name }
+  }`,
+
+  boards: gql` {
+    boards { id, name, components { id, name } }
   }`,
 
   componentsForBoard: gql`

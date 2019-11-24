@@ -4,7 +4,7 @@ import { useMutation, useQuery } from "@apollo/react-hooks";
 
 import { queries } from "../../Services/graphql";
 
-import { Button, Col, Empty, Icon, List, PageHeader, Row, Select, Tabs, Typography } from "antd";
+import { Button, Col, Empty, Icon, PageHeader, Row, Select, Tabs, Typography } from "antd";
 
 const ProjectContainer = ({ history, match }) => {
   const [mobileScreen, setMobileScreen] = useState(window.innerWidth < 1000);
@@ -28,7 +28,6 @@ const ProjectContainer = ({ history, match }) => {
 
         const project = data.project;
         const board = data.project.board;
-        const components = data.project.components;
         const chapters = data.project.chapters;
 
         return(
@@ -66,7 +65,7 @@ const ProjectContainer = ({ history, match }) => {
 
                   <ComponentSelect
                     project={project}
-                    boardId={project.board.id}
+                    board={project.board}
                   />
                 </Col>
               </Row>
@@ -105,13 +104,17 @@ const ProjectContainer = ({ history, match }) => {
 };
 
 const BoardSelect = ({ board, id }) => {
-  const { loading, error, data } = useQuery(queries.boardNames);
+  const { loading, error, data } = useQuery(queries.boards);
   const [ updateProject ] = useMutation(queries.updateProject);
 
   const { Option } = Select;
 
   const handleUpdate = selection =>
-    updateProject({ variables: { board: selection, id } });
+    updateProject({ variables: {
+      id,
+      board: selection,
+      components: []
+    }});
 
   return (
     <Select
@@ -143,16 +146,12 @@ const BoardSelect = ({ board, id }) => {
   );
 };
 
-const ComponentSelect = ({ boardId, project }) => {
-  const { loading, error, data } = useQuery(
-    queries.componentsForBoard,
-    { variables: { boardId } }
-  );
+const ComponentSelect = ({ board, project }) => {
   const [ updateProject ] = useMutation(queries.updateProject);
 
   const { Option } = Select;
 
-  const components = data && project.components.map(c => c.id);
+  const components = project.components.map(c => c.id);
 
   const handleUpdate = selection => {
     const id = project.id;
@@ -162,26 +161,12 @@ const ComponentSelect = ({ boardId, project }) => {
   return (
     <Select
       mode="multiple"
-      disabled={!data}
       value={components}
       onChange={handleUpdate}
-      placeholder={
-        (error && (
-          <span>
-            <Icon type="exclamation-circle"
-                  theme="twoTone"
-                  twoToneColor="red"
-            /> Could not load
-          </span>
-        )) || (loading && (
-          <span><Icon type="loading" /> Loading...</span>
-        )) || (data && "Select components") || (
-          <span><Icon type="frown" /> Something went wrong</span>
-        )
-      }
+      placeholder="Select components"
       style={{ width: '100%' }}
     >
-      { data && data.componentsForBoard && data.componentsForBoard.map(c =>
+      { board && board.components && board.components.map(c =>
         <Option key={c.id} value={c.id}>{c.name}</Option>
       ) }
     </Select>
