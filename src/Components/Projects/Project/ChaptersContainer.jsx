@@ -1,13 +1,35 @@
 import React, { useState } from "react";
+import { useMutation } from "@apollo/react-hooks";
 
-import { Button, Empty, Input, Tabs, Typography } from "antd";
+import { queries } from "../../../Services/graphql";
+
+import { Button, Empty, Input, Tabs, Typography, message } from "antd";
 
 import Chapter from "./Chapter";
 
-const ChaptersContainer = ({ chapters, mobileScreen }) => {
+const ChaptersContainer = ({ chapters, mobileScreen, projectId }) => {
   const [ firstChapterEdit, setFirstChapterEdit ] = useState(false);
   const [ firstChapterTitle, setFirstChapterTitle ] = useState('');
   const [ firstChapterIntro, setFirstChapterIntro ] = useState('');
+
+  const [ createChapter ] = useMutation(
+    queries.createChapter,
+    { update(cache, { data: { createChapter }}) {
+      const { chapter } = createChapter;
+      const { project } = cache.readQuery({
+        query: queries.project, variables: { id: projectId }
+      });
+
+      cache.writeQuery({
+        query: queries.project,
+        variables: { id: projectId },
+        data: { project: {
+          ...project,
+            chapters: project.chapters.concat([chapter])
+        } }
+      })
+    } }
+  );
 
   const { TextArea } = Input;
   const { TabPane } = Tabs;
@@ -16,7 +38,16 @@ const ChaptersContainer = ({ chapters, mobileScreen }) => {
   const toggleFirstChapterEdit = () =>
     setFirstChapterEdit(!firstChapterEdit);
 
-  const createFirstChapter = () => {};
+  const createFirstChapter = () => createChapter({
+    variables: {
+      projectId,
+      name: firstChapterTitle,
+      intro: firstChapterIntro
+    }
+  }).then(res => {
+    message.success('Project saved.');
+    toggleFirstChapterEdit();
+  }).catch(err => message.error('Could not create a chapter.'));
 
   return (
     <React.Fragment>

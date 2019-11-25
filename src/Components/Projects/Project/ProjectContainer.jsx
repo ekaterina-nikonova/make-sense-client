@@ -19,7 +19,11 @@ const ProjectContainer = ({ project, board, chapters, history }) => {
         board={board}
       />
 
-      <ChaptersContainer chapters={chapters} mobileScreen={mobileScreen} />
+      <ChaptersContainer
+        chapters={chapters}
+        mobileScreen={mobileScreen}
+        projectId={project.id}
+      />
     </div>
   );
 };
