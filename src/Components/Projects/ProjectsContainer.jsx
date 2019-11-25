@@ -9,7 +9,7 @@ import { queries } from "../../Services/graphql";
 import TopLevelMenu from "../Layout/TopLevelMenu";
 import ProjectList from "./ProjectList";
 import NewProjectDrawer from "./NewProjectDrawer";
-import ProjectContainer from "./ProjectContainer";
+import ProjectWrapper from "./Project/ProjectWrapper";
 
 const ProjectsContainer = ({ location, match }) => {
   const { pathname } = location;
@@ -27,7 +27,7 @@ const ProjectsContainer = ({ location, match }) => {
             return (
               <div className="projects-container">
                 <Switch>
-                  <Route path="/projects/:id" component={ProjectContainer} />
+                  <Route path="/projects/:id" component={ProjectWrapper} />
                   <Route path="/projects" component={() => (
                     <ProjectList
                       projects={data.projects}
