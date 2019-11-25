@@ -1,9 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useMutation, useQuery } from "@apollo/react-hooks";
+import React, { useState } from "react";
 
-import { queries } from "../../../Services/graphql";
-
-import { Button, Col, Empty, Icon, PageHeader, Row, Select, Tabs, Typography, message } from "antd";
+import { Button, Empty, Tabs } from "antd";
 
 import ProjectHeader from "./ProjectHeader";
 import Chapter from "./Chapter";

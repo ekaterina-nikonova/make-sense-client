@@ -25,7 +25,6 @@ const ProjectWrapper = ({ history, match }) => {
               project={project}
               board={board}
               chapters={chapters}
-              subscribeToMore={subscribeToMore}
               history={history}
             />
             <Subscription subscribeToMore={subscribeToMore} />
@@ -38,7 +37,7 @@ const ProjectWrapper = ({ history, match }) => {
 
 const Subscription = ({ subscribeToMore }) => {
   useEffect(() => {
-    return subscribeToMore({
+    const subscription = subscribeToMore({
       document: queries.projectSubscription,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData) return prev;
@@ -53,6 +52,10 @@ const Subscription = ({ subscribeToMore }) => {
         }
       }
     });
+
+    subscription();
+
+    return () => subscription();
   }, []);
   return null;
 };
