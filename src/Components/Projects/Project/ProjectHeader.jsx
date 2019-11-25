@@ -1,18 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 
 import { queries } from "../../../Services/graphql";
 
-import { Button, Col, Empty, Icon, message, PageHeader, Row, Select, Typography } from "antd";
+import { Button, Col, Empty, Icon, Input, message, PageHeader, Row, Select, Typography } from "antd";
 
 const ProjectHeader = ({ board, history, project }) => {
+  const [ descriptionEdit, setDescriptionEdit ] = useState(false);
+  const [ newDescription, setNewDescription ] = useState('');
   const [ updateProject ] = useMutation(queries.updateProject);
 
   const { Text, Title } = Typography;
+  const { TextArea } = Input;
 
   const updateName = str => updateProject({
     variables: { id: project.id, name: str }
   });
+
+  const updateDescription = e =>
+    updateProject({
+      variables: { id: project.id, description: newDescription }
+    })
+      .then(res => {
+        toggleDescriptionEdit();
+        message.success('Project saved.');
+      })
+      .catch(err => message.error('Could not update the project'));
+
+  const toggleDescriptionEdit = () =>
+    setDescriptionEdit(!descriptionEdit);
 
   return (
     <PageHeader
@@ -21,16 +37,30 @@ const ProjectHeader = ({ board, history, project }) => {
         {project.name}
       </Title>}
     >
-      { !project.description && (
+      { !project.description && !descriptionEdit && (
         <Empty
           image={Empty.PRESENTED_IMAGE_SIMPLE}
           description={false}
         >
-          <Button>Add a description</Button>
+          <Button onClick={toggleDescriptionEdit}>Add a description</Button>
         </Empty>
       ) }
 
-      { project.description && (
+      { descriptionEdit && (
+        <div className="project-description-edit-container">
+          <TextArea
+            rows={5}
+            defaultValue={project.description}
+            onChange={e => setNewDescription(e.target.value)}
+            placeholder="Write a description for your project."
+            allowClear
+          />
+          <Button onClick={toggleDescriptionEdit}>Cancel</Button>
+          <Button type="primary" onClick={updateDescription}>Save</Button>
+        </div>
+      ) }
+
+      { project.description && !descriptionEdit && (
         <div>{project.description}</div>
       ) }
 
