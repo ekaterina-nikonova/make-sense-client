@@ -10,14 +10,18 @@ const ProjectHeader = ({ board, history, project }) => {
   const [ newDescription, setNewDescription ] = useState('');
   const [ updateProject ] = useMutation(queries.updateProject);
 
-  const { Text, Title } = Typography;
+  const { Paragraph, Text, Title } = Typography;
   const { TextArea } = Input;
 
   const updateName = str => updateProject({
     variables: { id: project.id, name: str }
   });
 
-  const updateDescription = e =>
+  const updateDescription = str => updateProject({
+    variables: { id: project.id, description: str }
+  });
+
+  const createDescription = e =>
     updateProject({
       variables: { id: project.id, description: newDescription }
     })
@@ -33,9 +37,11 @@ const ProjectHeader = ({ board, history, project }) => {
   return (
     <PageHeader
       onBack={() => history.push('/projects')}
-      title={<Title level={4} editable={{ onChange: updateName }}>
-        {project.name}
-      </Title>}
+      title={
+        <Title level={4} editable={{ onChange: updateName }}>
+          {project.name}
+        </Title>
+      }
     >
       { !project.description && !descriptionEdit && (
         <Empty
@@ -56,12 +62,17 @@ const ProjectHeader = ({ board, history, project }) => {
             allowClear
           />
           <Button onClick={toggleDescriptionEdit}>Cancel</Button>
-          <Button type="primary" onClick={updateDescription}>Save</Button>
+          <Button type="primary" onClick={createDescription}>Save</Button>
         </div>
       ) }
 
       { project.description && !descriptionEdit && (
-        <div>{project.description}</div>
+        <Paragraph
+          editable={{ onChange: updateDescription }}
+          className="description-edit-textarea"
+        >
+          {project.description}
+        </Paragraph>
       ) }
 
       <Row gutter={[16, 16]}>
