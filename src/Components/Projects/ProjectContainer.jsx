@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Query } from "react-apollo";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 
@@ -7,99 +7,120 @@ import { queries } from "../../Services/graphql";
 import { Button, Col, Empty, Icon, PageHeader, Row, Select, Tabs, Typography } from "antd";
 
 const ProjectContainer = ({ history, match }) => {
-  const [mobileScreen, setMobileScreen] = useState(window.innerWidth < 1000);
-
   const { params } = match;
   const { id } = params;
 
-  const { TabPane } = Tabs;
-  const { Paragraph, Text, Title } = Typography;
-
-  window.addEventListener(
-    'resize',
-    () => setMobileScreen(window.innerWidth < 1000)
-  );
-
   return (
     <Query query={queries.project} variables={{ id }}>
-      {({ loading, error, data}) => {
-        if (loading) return <div>Loading...</div>
-        if (error) return <div>Error :-(</div>
+      {({ loading, error, data, subscribeToMore }) => {
+        if (loading) return <div>Loading...</div>;
+        if (error) return <div>Error :-(</div>;
 
         const project = data.project;
         const board = data.project.board;
         const chapters = data.project.chapters;
 
         return(
-          <div className="project-container">
-            <PageHeader
-              onBack={() => history.push('/projects')}
-              title={project.name}
-            >
-              { !project.description && (
-                <Empty
-                  image={Empty.PRESENTED_IMAGE_SIMPLE}
-                  description={false}
-                >
-                  <Button>Add a description</Button>
-                </Empty>
-              ) }
-
-              { project.description && (
-                <div>{project.description}</div>
-              ) }
-
-              <Row gutter={[16, 16]}>
-                <Col xs={24} md={12}>
-                  <Text strong className="subtitle-small">Board</Text>
-                  <BoardSelect
-                    id={project.id}
-                    board={board}
-                  />
-                </Col>
-
-                <Col xs={24} md={12}>
-                  <Text strong className="subtitle-small">
-                    Components
-                  </Text>
-
-                  <ComponentSelect
-                    project={project}
-                    board={project.board}
-                  />
-                </Col>
-              </Row>
-            </PageHeader>
-
-            {(!chapters || chapters.length === 0) && (
-              <Empty
-                image={Empty.PRESENTED_IMAGE_SIMPLE}
-                description={false}
-              >
-                <Button>Add a chapter</Button>
-              </Empty>
-            )}
-
-            { chapters && (
-              <Tabs
-                defaultActiveKey="1"
-                tabPosition={ mobileScreen ? "top" : "left" }
-              >
-                {chapters.map(chapter => (
-                  <TabPane key={chapter.id} tab={chapter.name}>
-                    <Title level={4}>{ chapter.name }</Title>
-                    <Paragraph>{ chapter.intro }</Paragraph>
-                    { chapter.sections && chapter.sections.map(section => (
-                      <Section key={section.id} section={section} />
-                    ))}
-                  </TabPane>
-                ))}
-              </Tabs>
-            )}
-          </div>
+          <React.Fragment>
+            <Project
+              project={project}
+              board={board}
+              chapters={chapters}
+              subscribeToMore={subscribeToMore}
+              history={history}
+            />
+            <Subscription subscribeToMore={subscribeToMore} />
+          </React.Fragment>
         );
       }}
     </Query>
+  );
+};
+
+const Project = ({ project, board, chapters, history }) => {
+  const [mobileScreen, setMobileScreen] = useState(window.innerWidth < 1000);
+  const [ updateProject ] = useMutation(queries.updateProject);
+
+  const { TabPane } = Tabs;
+  const { Paragraph, Text, Title } = Typography;
+
+
+  window.addEventListener(
+    'resize',
+    () => setMobileScreen(window.innerWidth < 1000)
+  );
+
+  const updateName = str => updateProject({
+    variables: { id: project.id, name: str }
+  });
+
+  return (
+    <div className="project-container">
+      <PageHeader
+        onBack={() => history.push('/projects')}
+        title={<Title level={4} editable={{ onChange: updateName }}>{project.name}</Title>}
+      >
+        { !project.description && (
+          <Empty
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
+            description={false}
+          >
+            <Button>Add a description</Button>
+          </Empty>
+        ) }
+
+        { project.description && (
+          <div>{project.description}</div>
+        ) }
+
+        <Row gutter={[16, 16]}>
+          <Col xs={24} md={12}>
+            <Text strong className="subtitle-small">Board</Text>
+            <BoardSelect
+              id={project.id}
+              board={board}
+            />
+          </Col>
+
+          <Col xs={24} md={12}>
+            <Text strong className="subtitle-small">
+              Components
+            </Text>
+
+            <ComponentSelect
+              project={project}
+              board={project.board}
+            />
+          </Col>
+        </Row>
+      </PageHeader>
+
+      {(!chapters || chapters.length === 0) && (
+        <Empty
+          image={Empty.PRESENTED_IMAGE_SIMPLE}
+          description={false}
+        >
+          <Button>Add a chapter</Button>
+        </Empty>
+      )}
+
+      { chapters && (
+        <Tabs
+          defaultActiveKey="1"
+          tabPosition={ mobileScreen ? "top" : "left" }
+        >
+          {chapters.map(chapter => (
+            <TabPane key={chapter.id} tab={chapter.name}>
+              <Title level={4}>{ chapter.name }</Title>
+              <Paragraph>{ chapter.intro }</Paragraph>
+              { chapter.sections && chapter.sections.map(section => (
+                <Section key={section.id} section={section} />
+              ))}
+            </TabPane>
+          ))}
+        </Tabs>
+      )}
+    </div>
   );
 };
 
@@ -201,6 +222,27 @@ const Section = ({ section }) => {
       </Paragraph>
     </div>
   );
+};
+
+const Subscription = ({ subscribeToMore }) => {
+  useEffect(() => {
+    return subscribeToMore({
+      document: queries.projectSubscription,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData) return prev;
+        const { projectUpdated } = subscriptionData.data;
+        const project = projectUpdated;
+
+        if (projectUpdated) {
+          return {
+            ...prev,
+            projects: prev.projects.map(p => p.id === project.id ? { ...p, ...project } : p)
+          }
+        }
+      }
+    });
+  }, []);
+  return null;
 };
 
 export default ProjectContainer;

@@ -32,7 +32,9 @@ const link = ApolloLink.split(
 
 export const client = new ApolloClient({
   link: link,
-  cache: new InMemoryCache()
+  cache: new InMemoryCache({
+    dataIdFromObject: o => o.id ? `${o.__typename}-${o.id}` : `${o.__typename}-${o.cursor}`,
+  })
 });
 
 export const Apollo = ({children}) => (
@@ -136,12 +138,40 @@ export const queries = {
     }
   `,
 
+  projectSubscription: gql`
+    subscription {
+        projectAdded {
+            id
+            name
+            description
+            chapterCount
+            componentCount
+        }
+        
+        projectDeleted
+
+        projectUpdated {
+            project {
+                id
+                name
+                description
+                board { id, name, components { id, name } }
+                components { id, name }
+                chapterCount
+                componentCount
+            }
+        }
+    }
+  `,
+
   projectAdded: gql`
     subscription {
       projectAdded {
         id
         name
         description
+        chapterCount
+        componentCount
       }
     }
   `,
@@ -149,6 +179,22 @@ export const queries = {
   projectDeleted: gql`
     subscription {
       projectDeleted
+    }
+  `,
+
+  projectUpdated: gql`
+    subscription {
+      projectUpdated {
+        project {
+          id
+          name
+          description
+          board { id, name, components { id, name } }
+          components { id, name }
+          chapterCount
+          componentCount
+        }
+      }
     }
   `,
 
