@@ -210,6 +210,7 @@ export const queries = {
         intro: $intro
       ) {
         chapter { id, name, intro, sections { id } }
+        project { id, chapterCount }
       }
     }
   `,

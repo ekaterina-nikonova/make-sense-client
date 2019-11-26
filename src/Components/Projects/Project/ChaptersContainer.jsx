@@ -1,16 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useMutation } from "@apollo/react-hooks";
 
 import { queries } from "../../../Services/graphql";
 
-import { Button, Empty, Input, Tabs, Typography, message } from "antd";
+import { Button, Empty, Icon, Input, Tabs, Typography, message } from "antd";
 
 import Chapter from "./Chapter";
 
-const ChaptersContainer = ({ chapters, mobileScreen, projectId }) => {
-  const [ firstChapterEdit, setFirstChapterEdit ] = useState(false);
-  const [ firstChapterTitle, setFirstChapterTitle ] = useState('');
-  const [ firstChapterIntro, setFirstChapterIntro ] = useState('');
+const ChaptersContainer = ({ chapters, projectId }) => {
+  const [ mobileScreen, setMobileScreen ] = useState(window.innerWidth < 1000);
+  const [ newChapterEdit, setNewChapterEdit ] = useState(false);
+  const [ newChapterTitle, setNewChapterTitle ] = useState('');
+  const [ newChapterIntro, setNewChapterIntro ] = useState('');
+  const [ activeTab, setActiveTab ] = useState();
+  const [ previousActiveTab, setPreviousActiveTab ] = useState();
+  const [ newTabShows, setNewTabShows ] = useState();
+
+  useEffect(() => {
+    if (chapters && chapters.length) setActiveTab(chapters[0].id)
+  }, [projectId]);
+
+  window.addEventListener(
+    'resize',
+    () => setMobileScreen(window.innerWidth < 1000)
+  );
 
   const [ createChapter ] = useMutation(
     queries.createChapter,
@@ -31,27 +44,43 @@ const ChaptersContainer = ({ chapters, mobileScreen, projectId }) => {
     } }
   );
 
-  const { TextArea } = Input;
   const { TabPane } = Tabs;
-  const { Title } = Typography;
 
   const toggleFirstChapterEdit = () =>
-    setFirstChapterEdit(!firstChapterEdit);
+    setNewChapterEdit(!newChapterEdit);
 
   const createFirstChapter = () => createChapter({
     variables: {
       projectId,
-      name: firstChapterTitle,
-      intro: firstChapterIntro
+      name: newChapterTitle,
+      intro: newChapterIntro
     }
   }).then(res => {
     message.success('Project saved.');
+    setNewChapterTitle('');
+    setNewChapterIntro('');
+    if (!newChapterEdit) toggleNewTab();
     toggleFirstChapterEdit();
+    changeActiveTab(res.data.createChapter.chapter.id);
   }).catch(err => message.error('Could not create a chapter.'));
+
+  const toggleNewTab = () => {
+    setNewTabShows(!newTabShows);
+    if (!newTabShows) {
+      changeActiveTab('newTab');
+    } else if (activeTab === 'newTab') {
+      changeActiveTab(previousActiveTab);
+    }
+  };
+
+  const changeActiveTab = tab => {
+    setPreviousActiveTab(activeTab);
+    setActiveTab(tab);
+  };
 
   return (
     <React.Fragment>
-      {(!chapters || !chapters.length) && !firstChapterEdit && (
+      {(!chapters || !chapters.length) && !newChapterEdit && (
         <Empty
           image={Empty.PRESENTED_IMAGE_SIMPLE}
           description={false}
@@ -62,43 +91,80 @@ const ChaptersContainer = ({ chapters, mobileScreen, projectId }) => {
         </Empty>
       )}
 
-      {(!chapters || !chapters.length) && firstChapterEdit && (
-        <div className="create-first-chapter-container">
-          <Title level={4}>New chapter</Title>
-          <Input
-            placeholder="Title"
-            onChange={e => setFirstChapterTitle(e.target.value)}
-          />
-          <TextArea
-            rows={5}
-            placeholder="Intro"
-            onChange={e => setFirstChapterIntro(e.target.value)}
-          />
-          <div>
-            <Button onClick={toggleFirstChapterEdit}>
-              Cancel
-            </Button>
-
-            <Button type="primary" onClick={createFirstChapter}>
-              Save
-            </Button>
-          </div>
-        </div>
+      {(!chapters || !chapters.length) && newChapterEdit && (
+        <NewChapterForm
+          setTitle={setNewChapterTitle}
+          setIntro={setNewChapterIntro}
+          toggle={toggleFirstChapterEdit}
+          create={createFirstChapter}
+        />
       )}
 
       { chapters && (
         <Tabs
-          defaultActiveKey="1"
+          activeKey={activeTab}
+          onChange={changeActiveTab}
           tabPosition={ mobileScreen ? "top" : "left" }
+          tabBarExtraContent={
+            <Icon
+              type="plus-circle"
+              className="add-chapter-icon"
+              onClick={toggleNewTab}
+            />
+          }
         >
           {chapters.map(chapter => (
-            <TabPane key={chapter.id} tab={chapter.name}>
+            <TabPane
+              key={chapter.id}
+              tab={chapter.name}
+              className="chapter-tab-pane"
+            >
               <Chapter chapter={chapter} />
             </TabPane>
           ))}
+
+          { newTabShows &&
+            <TabPane key="newTab" tab="New chapter">
+              <NewChapterForm
+                setTitle={setNewChapterTitle}
+                setIntro={setNewChapterIntro}
+                toggle={toggleNewTab}
+                create={createFirstChapter}
+              />
+            </TabPane>
+          }
         </Tabs>
       )}
     </React.Fragment>
+  );
+};
+
+const NewChapterForm = ({ setTitle, setIntro, toggle, create }) => {
+  const { Title } = Typography;
+  const { TextArea } = Input;
+
+  return (
+    <div className="create-first-chapter-container">
+      <Title level={4}>New chapter</Title>
+      <Input
+        placeholder="Title"
+        onChange={e => setTitle(e.target.value)}
+      />
+      <TextArea
+        rows={5}
+        placeholder="Intro"
+        onChange={e => setIntro(e.target.value)}
+      />
+      <div>
+        <Button onClick={toggle}>
+          Cancel
+        </Button>
+
+        <Button type="primary" onClick={create}>
+          Save
+        </Button>
+      </div>
+    </div>
   );
 };
 

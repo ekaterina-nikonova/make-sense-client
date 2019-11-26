@@ -4,13 +4,6 @@ import ProjectHeader from "./ProjectHeader";
 import ChaptersContainer from "./ChaptersContainer";
 
 const ProjectContainer = ({ project, board, chapters, history }) => {
-  const [mobileScreen, setMobileScreen] = useState(window.innerWidth < 1000);
-
-  window.addEventListener(
-    'resize',
-    () => setMobileScreen(window.innerWidth < 1000)
-  );
-
   return (
     <div className="project-container">
       <ProjectHeader
@@ -21,7 +14,6 @@ const ProjectContainer = ({ project, board, chapters, history }) => {
 
       <ChaptersContainer
         chapters={chapters}
-        mobileScreen={mobileScreen}
         projectId={project.id}
       />
     </div>
