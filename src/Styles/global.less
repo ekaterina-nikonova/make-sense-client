@@ -135,6 +135,18 @@
   width: 3rem;
 }
 
+.icons-show-on-hover {
+  svg {
+    opacity: 0;
+  }
+  &:hover {
+    svg {
+      transition: opacity ease-out 800ms;
+      opacity: .8;
+    }
+  }
+}
+
 /* Controls */
 
 .button-right {

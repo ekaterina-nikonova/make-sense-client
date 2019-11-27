@@ -216,6 +216,21 @@ export const queries = {
     }
   `,
 
+  deleteChapter: gql`
+    mutation deleteChapter(
+      $projectId: ID!,
+      $chapterId: ID!
+    ) {
+      deleteChapter(
+        projectId: $projectId,
+        chapterId: $chapterId
+      ) {
+        chapter { id, name }
+        project { id, chapterCount }
+      }
+    }
+  `,
+
   // Sections
 
   createSection: gql`

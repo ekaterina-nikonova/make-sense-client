@@ -3,7 +3,7 @@ import { useMutation } from "@apollo/react-hooks";
 
 import { queries } from "../../../Services/graphql";
 
-import { Button, Empty, Icon, Input, Tabs, Typography, message } from "antd";
+import { Button, Empty, Icon, Input, Popconfirm, Tabs, Typography, message } from "antd";
 
 import Chapter from "./Chapter";
 
@@ -38,9 +38,28 @@ const ChaptersContainer = ({ chapters, projectId }) => {
         variables: { id: projectId },
         data: { project: {
           ...project,
-            chapters: project.chapters.concat([chapter])
+          chapters: project.chapters.concat([chapter])
         } }
       })
+    } }
+  );
+
+  const [ deleteChapter ] = useMutation(
+    queries.deleteChapter,
+    { update(cache, { data: { deleteChapter }}) {
+      const { chapter } = deleteChapter;
+      const { project } = cache.readQuery({
+        query: queries.project, variables: { id: projectId }
+      });
+
+      cache.writeQuery({
+        query: queries.project,
+        variables: { id: projectId },
+        data: { project: {
+          ...project,
+          chapters: project.chapters.filter(ch => ch.id !== chapter.id)
+        } }
+      });
     } }
   );
 
@@ -76,6 +95,15 @@ const ChaptersContainer = ({ chapters, projectId }) => {
   const changeActiveTab = tab => {
     setPreviousActiveTab(activeTab);
     setActiveTab(tab);
+  };
+
+  const handleDelete = chapterId => {
+    deleteChapter({ variables: { projectId, chapterId }})
+      .then(res => {
+        changeActiveTab(previousActiveTab);
+        message.success('Chapter deleted.')
+      })
+      .catch(err => message.error('Could not delete the chapter.'))
   };
 
   return (
@@ -116,7 +144,16 @@ const ChaptersContainer = ({ chapters, projectId }) => {
           {chapters.map(chapter => (
             <TabPane
               key={chapter.id}
-              tab={chapter.name}
+              tab={
+                <span className="icons-show-on-hover">
+                  <Popconfirm
+                    title={`Delete chapter ${chapter.name}?`}
+                    onConfirm={() => handleDelete(chapter.id)}
+                  >
+                    <Icon className="icon-show-on-hover" type="close" />
+                  </Popconfirm>  { chapter.name }
+                </span>
+              }
               className="chapter-tab-pane"
             >
               <Chapter chapter={chapter} />
