@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useMutation } from "@apollo/react-hooks";
+import {useMutation, useQuery} from "@apollo/react-hooks";
 
 import { queries } from "../../../Services/graphql";
 
@@ -7,7 +7,7 @@ import { Button, Empty, Icon, Input, Popconfirm, Tabs, Typography, message } fro
 
 import Chapter from "./Chapter";
 
-const ChaptersContainer = ({ chapters, projectId }) => {
+const ChaptersContainer = ({ projectId }) => {
   const [ mobileScreen, setMobileScreen ] = useState(window.innerWidth < 1000);
   const [ newChapterEdit, setNewChapterEdit ] = useState(false);
   const [ newChapterTitle, setNewChapterTitle ] = useState('');
@@ -16,8 +16,15 @@ const ChaptersContainer = ({ chapters, projectId }) => {
   const [ previousActiveTab, setPreviousActiveTab ] = useState();
   const [ newTabShows, setNewTabShows ] = useState();
 
+  const { loading, error, data } = useQuery(
+    queries.chapters,
+    { variables: { projectId } }
+  );
+
   useEffect(() => {
-    if (chapters && chapters.length) setActiveTab(chapters[0].id)
+    if (data && data.chapters && data.chapters.length) {
+      setActiveTab(data.chapters[0].id)
+    }
   }, [projectId]);
 
   window.addEventListener(
@@ -29,17 +36,14 @@ const ChaptersContainer = ({ chapters, projectId }) => {
     queries.createChapter,
     { update(cache, { data: { createChapter }}) {
       const { chapter } = createChapter;
-      const { project } = cache.readQuery({
-        query: queries.project, variables: { id: projectId }
+      const { chapters } = cache.readQuery({
+        query: queries.chapters, variables: { projectId }
       });
 
       cache.writeQuery({
-        query: queries.project,
-        variables: { id: projectId },
-        data: { project: {
-          ...project,
-          chapters: project.chapters.concat([chapter])
-        } }
+        query: queries.chapters,
+        variables: { projectId },
+        data: { chapters: chapters.concat([chapter]) }
       })
     } }
   );
@@ -48,17 +52,14 @@ const ChaptersContainer = ({ chapters, projectId }) => {
     queries.deleteChapter,
     { update(cache, { data: { deleteChapter }}) {
       const { chapter } = deleteChapter;
-      const { project } = cache.readQuery({
-        query: queries.project, variables: { id: projectId }
+      const { chapters } = cache.readQuery({
+        query: queries.chapters, variables: { projectId }
       });
 
       cache.writeQuery({
-        query: queries.project,
-        variables: { id: projectId },
-        data: { project: {
-          ...project,
-          chapters: project.chapters.filter(ch => ch.id !== chapter.id)
-        } }
+        query: queries.chapters,
+        variables: { projectId },
+        data: { chapters: chapters.filter(ch => ch.id !== chapter.id) }
       });
     } }
   );
@@ -75,7 +76,7 @@ const ChaptersContainer = ({ chapters, projectId }) => {
       intro: newChapterIntro
     }
   }).then(res => {
-    message.success('Project saved.');
+    message.success('Chapter created.');
     setNewChapterTitle('');
     setNewChapterIntro('');
     if (!newChapterEdit) toggleNewTab();
@@ -108,7 +109,7 @@ const ChaptersContainer = ({ chapters, projectId }) => {
 
   return (
     <React.Fragment>
-      {(!chapters || !chapters.length) && !newChapterEdit && (
+      {(!data || !data.chapters || !data.chapters.length) && !newChapterEdit && (
         <Empty
           image={Empty.PRESENTED_IMAGE_SIMPLE}
           description={false}
@@ -119,7 +120,7 @@ const ChaptersContainer = ({ chapters, projectId }) => {
         </Empty>
       )}
 
-      {(!chapters || !chapters.length) && newChapterEdit && (
+      {(!data || !data.chapters || !data.chapters.length) && newChapterEdit && (
         <NewChapterForm
           setTitle={setNewChapterTitle}
           setIntro={setNewChapterIntro}
@@ -128,7 +129,7 @@ const ChaptersContainer = ({ chapters, projectId }) => {
         />
       )}
 
-      { chapters && (
+      { data && data.chapters && !!data.chapters.length && (
         <Tabs
           activeKey={activeTab}
           onChange={changeActiveTab}
@@ -141,7 +142,7 @@ const ChaptersContainer = ({ chapters, projectId }) => {
             />
           }
         >
-          {chapters.map(chapter => (
+          {data.chapters.map(chapter => (
             <TabPane
               key={chapter.id}
               tab={

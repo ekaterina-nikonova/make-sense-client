@@ -62,27 +62,24 @@ const Section = ({ section }) => {
 const NewSection = ({ cancel, chapter, projectId }) => {
   const [ createSection ] = useMutation(
     queries.createSection,
-  { update(cache, { data: { createSection }}) {
+      { update(cache, { data: { createSection }}) {
       const { section } = createSection;
-      const { project } = cache.readQuery({
-        query: queries.project, variables: { id: projectId }
+      const { chapters } = cache.readQuery({
+        query: queries.chapters, variables: { projectId }
       });
 
       cache.writeQuery({
-        query: queries.project,
-        variables: { id: project.id },
-        data: { project: {
-          ...project,
-          chapters: project.chapters.map(ch => {
-            if (ch.id === chapter.id) {
-              return (
-                {...chapter, sections: [ ...chapter.sections, section ]}
-              );
-            } else {
-              return ch;
-            }
-          })
-        } }
+        query: queries.chapters,
+        variables: { id: projectId },
+        data: { chapters: chapters.map(ch => {
+          if (ch.id === chapter.id) {
+            return (
+              {...chapter, sections: chapter.sections.concat([section])}
+            );
+          } else {
+            return ch;
+          }
+        })}
       })
     } }
   );

@@ -60,18 +60,6 @@ export const queries = {
       description
       board { id, name, components { id, name } }
       components { id, name }
-      chapters {
-        id
-        name
-        intro
-        projectId
-        sections {
-          id
-          paragraph
-          code
-          imageUrl
-        }
-      }
     }
   }`,
 
@@ -139,27 +127,27 @@ export const queries = {
 
   projectSubscription: gql`
     subscription {
-        projectAdded {
-            id
-            name
-            description
-            chapterCount
-            componentCount
-        }
-        
-        projectDeleted
+      projectAdded {
+        id
+        name
+        description
+        chapterCount
+        componentCount
+      }
+      
+      projectDeleted
 
-        projectUpdated {
-            project {
-                id
-                name
-                description
-                board { id, name, components { id, name } }
-                components { id, name }
-                chapterCount
-                componentCount
-            }
+      projectUpdated {
+        project {
+          id
+          name
+          description
+          board { id, name, components { id, name } }
+          components { id, name }
+          chapterCount
+          componentCount
         }
+      }
     }
   `,
 
@@ -199,6 +187,24 @@ export const queries = {
 
   // Chapters
 
+  chapters: gql`
+    query getChaptersForProject($projectId: ID!) {
+      chapters(projectId: $projectId) {
+        id,
+        name,
+        intro,
+        projectId,
+
+        sections {
+          id
+          paragraph
+          code
+          imageUrl
+        }
+      }
+    }
+  `,
+
   createChapter: gql`
     mutation createChapter(
       $projectId: ID!,
@@ -210,7 +216,7 @@ export const queries = {
         name: $name,
         intro: $intro
       ) {
-        chapter { id, name, intro, sections { id } }
+        chapter { id, projectId, name, intro, sections { id } }
         project { id, chapterCount }
       }
     }

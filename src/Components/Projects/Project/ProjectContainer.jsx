@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import ProjectHeader from "./ProjectHeader";
 import ChaptersContainer from "./ChaptersContainer";
 
-const ProjectContainer = ({ project, board, chapters, history }) => {
+const ProjectContainer = ({ project, board, history }) => {
   return (
     <div className="project-container">
       <ProjectHeader
@@ -13,7 +13,6 @@ const ProjectContainer = ({ project, board, chapters, history }) => {
       />
 
       <ChaptersContainer
-        chapters={chapters}
         projectId={project.id}
       />
     </div>
