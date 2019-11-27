@@ -1,5 +1,9 @@
 import React, { useState } from "react";
-import { Alert, Button, Form, Icon, Input, Tooltip, Typography } from "antd";
+import { useMutation } from "@apollo/react-hooks";
+
+import { queries } from "../../../Services/graphql";
+
+import { Alert, Button, Form, Icon, Input, Tooltip, Typography, message } from "antd";
 
 const Chapter = ({ chapter }) => {
   const [ newSectionShows, setNewSectionShows ] = useState(false);
@@ -25,7 +29,11 @@ const Chapter = ({ chapter }) => {
       ) }
 
       { newSectionShows && (
-        <NewSection cancel={toggleNewSection} chapterId={chapter.id} />
+        <NewSection
+          cancel={toggleNewSection}
+          chapter={chapter}
+          projectId={chapter.projectId}
+        />
       ) }
     </React.Fragment>
   );
@@ -51,20 +59,54 @@ const Section = ({ section }) => {
   );
 };
 
-const NewSection = ({ cancel, chapterId }) => {
-  const createSection = () => chapterId;
+const NewSection = ({ cancel, chapter, projectId }) => {
+  const [ createSection ] = useMutation(
+    queries.createSection,
+  { update(cache, { data: { createSection }}) {
+      const { section } = createSection;
+      const { project } = cache.readQuery({
+        query: queries.project, variables: { id: projectId }
+      });
+
+      cache.writeQuery({
+        query: queries.project,
+        variables: { id: project.id },
+        data: { project: {
+          ...project,
+          chapters: project.chapters.map(ch => {
+            if (ch.id === chapter.id) {
+              return (
+                {...chapter, sections: [ ...chapter.sections, section ]}
+              );
+            } else {
+              return ch;
+            }
+          })
+        } }
+      })
+    } }
+  );
+
+  const create = ({ paragraph, code }) => createSection(
+    { variables: {
+      projectId,
+      chapterId: chapter.id,
+      paragraph,
+      code
+    }
+  }).then(res => {
+    message.success('Project saved.');
+  });
 
   return (
     <div className="project-section">
-      <WrappedForm create={createSection} cancel={cancel} />
+      <WrappedForm create={create} cancel={cancel} />
     </div>
   );
 };
 
 const NewSectionForm = ({ cancel, create, form }) => {
   const [ error, setError ] = useState(false);
-  const [ description, setDescription ] = useState('');
-  const [ code, setCode ] = useState('');
 
   const { getFieldDecorator, validateFields } = form;
 
@@ -75,14 +117,16 @@ const NewSectionForm = ({ cancel, create, form }) => {
     e.preventDefault();
     validateFields((err, values) => {
       if (!err) {
-        // createSection mutation
-      }
+        create({ paragraph: values.paragraph, code: values.code });
+        setError(false);
+        form.resetFields();
+      } else setError(true);
     })
   };
 
   return (
     <Form onSubmit={createSection}>
-      {!error && (
+      {error && (
         <Item>
           <Alert
             type="error"
@@ -106,22 +150,24 @@ const NewSectionForm = ({ cancel, create, form }) => {
           <TextArea
             rows={5}
             placeholder="An intro, description or comment"
-            onChange={setDescription}
           />
         )}
       </Item>
 
       <Item>
-        <TextArea
-          rows={5}
-          placeholder="Code snippet"
-          onChange={setCode}
-          className="project-section-code"
-        />
+        { getFieldDecorator ('code')(
+          <TextArea
+            rows={5}
+            placeholder="Code snippet"
+            className="project-section-code"
+          />
+        )}
       </Item>
 
-      <Button onClick={cancel}>Cancel</Button>
-      <Button type="primary" htmlType="submit">Save</Button>
+      <div className="new-section-form-buttons">
+        <Button onClick={cancel}>Cancel</Button>
+        <Button type="primary" htmlType="submit">Save</Button>
+      </div>
     </Form>
   );
 };

@@ -64,6 +64,7 @@ export const queries = {
         id
         name
         intro
+        projectId
         sections {
           id
           paragraph
@@ -212,6 +213,26 @@ export const queries = {
         chapter { id, name, intro, sections { id } }
         project { id, chapterCount }
       }
+    }
+  `,
+
+  // Sections
+
+  createSection: gql`
+    mutation createSection(
+        $projectId: ID!,
+        $chapterId: ID!,
+        $paragraph: String!,
+        $code: String
+    ) {
+        createSection(
+            projectId: $projectId,
+            chapterId: $chapterId,
+            paragraph: $paragraph,
+            code: $code
+        ) {
+            section { id, paragraph, code, imageUrl }
+        }
     }
   `,
 
