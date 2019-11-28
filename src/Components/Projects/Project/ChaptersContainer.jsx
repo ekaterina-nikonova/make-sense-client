@@ -25,7 +25,7 @@ const ChaptersContainer = ({ projectId }) => {
     if (data && data.chapters && data.chapters.length) {
       setActiveTab(data.chapters[0].id)
     }
-  }, [projectId]);
+  }, [data, projectId]);
 
   window.addEventListener(
     'resize',
