@@ -7,15 +7,37 @@ import { Alert, Button, Form, Icon, Input, Popconfirm, Tooltip, Typography, mess
 
 const Chapter = ({ chapter }) => {
   const [ newSectionShows, setNewSectionShows ] = useState(false);
+  const [ updateChapter ] = useMutation(queries.updateChapter);
 
   const { Paragraph, Title } = Typography;
 
   const toggleNewSection = () => setNewSectionShows(!newSectionShows);
 
+  const updateName = str => updateChapter({
+    variables: {
+      projectId: chapter.projectId,
+      chapterId: chapter.id,
+      name: str
+    }
+  });
+
+  const updateIntro = str => updateChapter({
+    variables: {
+      projectId: chapter.projectId,
+      chapterId: chapter.id,
+      intro: str
+    }
+  });
+
   return (
     <React.Fragment>
-      <Title level={4}>{ chapter.name }</Title>
-      <Paragraph>{ chapter.intro }</Paragraph>
+      <Title level={4} editable={{ onChange: updateName }}>
+        { chapter.name }
+      </Title>
+
+      <Paragraph editable={{ onChange: updateIntro }}>
+        { chapter.intro }
+      </Paragraph>
 
       { chapter.sections && chapter.sections.map(section => (
         <Section

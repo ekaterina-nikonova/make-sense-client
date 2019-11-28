@@ -222,6 +222,30 @@ export const queries = {
     }
   `,
 
+  updateChapter: gql`
+    mutation updateChapter(
+      $projectId: ID!
+      $chapterId: ID!
+      $name: String
+      $intro: String
+    ) {
+      updateChapter(
+        projectId: $projectId
+        chapterId: $chapterId
+        attributes: {
+          name: $name
+          intro: $intro
+        }
+      ) {
+        chapter {
+          id
+          name
+          intro
+        }
+      }
+    }
+  `,
+
   deleteChapter: gql`
     mutation deleteChapter(
       $projectId: ID!,
