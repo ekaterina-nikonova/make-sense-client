@@ -3,7 +3,7 @@ import { useMutation } from "@apollo/react-hooks";
 
 import { queries } from "../../../Services/graphql";
 
-import { Alert, Button, Form, Icon, Input, Tooltip, Typography, message } from "antd";
+import { Alert, Button, Form, Icon, Input, Popconfirm, Tooltip, Typography, message } from "antd";
 
 const Chapter = ({ chapter }) => {
   const [ newSectionShows, setNewSectionShows ] = useState(false);
@@ -18,9 +18,13 @@ const Chapter = ({ chapter }) => {
       <Paragraph>{ chapter.intro }</Paragraph>
 
       { chapter.sections && chapter.sections.map(section => (
-      <Section key={section.id} section={section} />
+        <Section
+          key={section.id}
+          projectId={chapter.projectId}
+          chapterId={chapter.id}
+          section={section}
+        />
       ))}
-
 
       { !newSectionShows && (
         <Tooltip title="Add a section">
@@ -39,11 +43,51 @@ const Chapter = ({ chapter }) => {
   );
 };
 
-const Section = ({ section }) => {
+const Section = ({ projectId, chapterId, section }) => {
+  const [ deleteSection ] = useMutation(
+    queries.deleteSection,
+    { update(cache, { data: { deleteSection } }) {
+      const { section } = deleteSection;
+      const { chapters } = cache.readQuery({
+        query: queries.chapters, variables: { projectId }
+      });
+
+      const chapter = chapters.find(ch => ch.id === chapterId);
+
+      cache.writeQuery({
+        query: queries.chapters,
+        variables: { id: projectId },
+        data: { chapters: chapters.map(ch => {
+          if (ch.id === chapterId) {
+            return (
+              { ...chapter,
+                sections: chapter.sections.filter(s => s.id !== section.id)
+              }
+            );
+          } else {
+            return ch;
+          }
+        })}
+      })
+    }}
+  );
+
   const { Paragraph } = Typography;
+
+  const handleDelete = () => deleteSection({
+    variables: { projectId, chapterId, sectionId: section.id }
+  }).then(res => message.success('Section deleted.'))
+    .catch(err => message.error('Could not delete the section.'));
 
   return (
     <div className="project-section">
+      <Popconfirm title="Delete the section?" onConfirm={handleDelete}>
+        <Icon
+          type="close"
+          className="section-delete-icon"
+        />
+      </Popconfirm>
+
       { section.image && (
         <img
           alt="illustration for the section"

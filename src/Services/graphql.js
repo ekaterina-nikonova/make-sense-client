@@ -257,6 +257,22 @@ export const queries = {
     }
   `,
 
+  deleteSection: gql`
+    mutation deleteSection(
+      $projectId: ID!,
+      $chapterId: ID!,
+      $sectionId: ID!
+    ) {
+      deleteSection(
+        projectId: $projectId,
+        chapterId: $chapterId,
+        sectionId: $sectionId
+      ) {
+        section { id }
+      }
+    }
+  `,
+
   // Boards
 
   boardNames: gql` {
