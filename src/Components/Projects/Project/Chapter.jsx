@@ -66,6 +66,8 @@ const Chapter = ({ chapter }) => {
 };
 
 const Section = ({ projectId, chapterId, section }) => {
+  const [ updateSection ] = useMutation(queries.updateSection);
+
   const [ deleteSection ] = useMutation(
     queries.deleteSection,
     { update(cache, { data: { deleteSection } }) {
@@ -101,6 +103,24 @@ const Section = ({ projectId, chapterId, section }) => {
   }).then(res => message.success('Section deleted.'))
     .catch(err => message.error('Could not delete the section.'));
 
+  const updateParagraph = str => updateSection({
+    variables: {
+      projectId,
+      chapterId,
+      sectionId: section.id,
+      paragraph: str
+    }
+  });
+
+  const updateCode = str => updateSection({
+    variables: {
+      projectId,
+      chapterId,
+      sectionId: section.id,
+      code: str
+    }
+  });
+
   return (
     <div className="project-section">
       <Popconfirm title="Delete the section?" onConfirm={handleDelete}>
@@ -117,8 +137,15 @@ const Section = ({ projectId, chapterId, section }) => {
           className="board-main-image"
         />
       )}
-      <Paragraph>{ section.paragraph }</Paragraph>
-      <Paragraph copyable className="project-section-code">
+      <Paragraph editable={{ onChange: updateParagraph }}>
+        { section.paragraph }
+      </Paragraph>
+
+      <Paragraph
+        copyable
+        editable={{ onChange: updateCode }}
+        className="project-section-code"
+      >
         { section.code }
       </Paragraph>
     </div>

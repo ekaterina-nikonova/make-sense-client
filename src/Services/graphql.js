@@ -265,19 +265,45 @@ export const queries = {
 
   createSection: gql`
     mutation createSection(
-        $projectId: ID!,
-        $chapterId: ID!,
-        $paragraph: String!,
-        $code: String
+      $projectId: ID!,
+      $chapterId: ID!,
+      $paragraph: String!,
+      $code: String
     ) {
-        createSection(
-            projectId: $projectId,
-            chapterId: $chapterId,
-            paragraph: $paragraph,
-            code: $code
-        ) {
-            section { id, paragraph, code, imageUrl }
+      createSection(
+        projectId: $projectId,
+        chapterId: $chapterId,
+        paragraph: $paragraph,
+        code: $code
+      ) {
+        section { id, paragraph, code, imageUrl }
+      }
+    }
+  `,
+
+  updateSection: gql`
+    mutation updateSection(
+      $projectId: ID!
+      $chapterId: ID!
+      $sectionId: ID!
+      $paragraph: String
+      $code: String
+    ) {
+      updateSection(
+        projectId: $projectId
+        chapterId: $chapterId
+        sectionId: $sectionId
+        attributes: {
+          paragraph: $paragraph
+          code: $code
         }
+      ) {
+        section {
+          id
+          paragraph
+          code
+        }
+      }
     }
   `,
 
