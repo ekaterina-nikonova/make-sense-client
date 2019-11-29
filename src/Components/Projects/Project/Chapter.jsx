@@ -3,6 +3,11 @@ import { useMutation } from "@apollo/react-hooks";
 
 import { queries } from "../../../Services/graphql";
 
+import AutoForm from 'uniforms-antd/AutoForm';
+import LongTextField from 'uniforms-antd/LongTextField';
+import SimpleSchema from "simpl-schema";
+import ReactMarkdown from "react-markdown";
+
 import { Alert, Button, Form, Icon, Input, Popconfirm, Tooltip, Typography, message } from "antd";
 
 const Chapter = ({ chapter }) => {
@@ -66,6 +71,7 @@ const Chapter = ({ chapter }) => {
 };
 
 const Section = ({ projectId, chapterId, section }) => {
+  const [ editParagraph, setEditParagraph ] = useState(false);
   const [ updateSection ] = useMutation(queries.updateSection);
 
   const [ deleteSection ] = useMutation(
@@ -103,12 +109,23 @@ const Section = ({ projectId, chapterId, section }) => {
   }).then(res => message.success('Section deleted.'))
     .catch(err => message.error('Could not delete the section.'));
 
-  const updateParagraph = str => updateSection({
+  const paragraphModel = ({
+    paragraph: section.paragraph || ''
+  });
+
+  const paragraphSchema = new SimpleSchema(
+    { paragraph: String },
+    { requiredByDefault: true }
+  );
+
+  const toggleEditParagraph = () => setEditParagraph(!editParagraph);
+
+  const updateParagraph = data => updateSection({
     variables: {
       projectId,
       chapterId,
       sectionId: section.id,
-      paragraph: str
+      paragraph: data.paragraph
     }
   });
 
@@ -137,9 +154,33 @@ const Section = ({ projectId, chapterId, section }) => {
           className="board-main-image"
         />
       )}
-      <Paragraph editable={{ onChange: updateParagraph }}>
-        { section.paragraph }
-      </Paragraph>
+
+      { !editParagraph && (
+        <div className="icons-show-on-hover">
+          <Icon
+            type="edit"
+            onClick={toggleEditParagraph}
+          />
+          <ReactMarkdown
+            source={section.paragraph}
+            editable={{ onChange: updateParagraph }}
+          />
+        </div>
+      ) }
+
+      { editParagraph && (
+        <AutoForm
+          autosave
+          autosaveDelay={800}
+          label={false}
+          model={paragraphModel}
+          onSubmit={updateParagraph}
+          schema={paragraphSchema}
+        >
+          <Icon type="check" onClick={toggleEditParagraph} />
+          <LongTextField name="paragraph"/>
+        </AutoForm>
+      ) }
 
       <Paragraph
         copyable
