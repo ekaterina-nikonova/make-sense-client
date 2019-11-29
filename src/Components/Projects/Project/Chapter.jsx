@@ -5,10 +5,12 @@ import { queries } from "../../../Services/graphql";
 
 import AutoForm from 'uniforms-antd/AutoForm';
 import LongTextField from 'uniforms-antd/LongTextField';
+import SelectField from "uniforms-antd/SelectField";
 import SimpleSchema from "simpl-schema";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import * as prismLanguages from "react-syntax-highlighter/dist/esm/languages/prism";
 
 import { Alert, Button, Form, Icon, Input, Popconfirm, Tooltip, Typography, message } from "antd";
 
@@ -126,9 +128,11 @@ const Section = ({ projectId, chapterId, section }) => {
   );
 
   const codeSchema = new SimpleSchema(
-    { code: String },
+    { code: String, language: String },
     { requiredByDefault: false }
   );
+
+  const languages = Object.keys(prismLanguages).map(l => ({ label: l, value: l }));
 
   const toggleEditParagraph = () => setEditParagraph(!editParagraph);
   const toggleEditCode = () => setEditCode(!editCode);
@@ -147,7 +151,8 @@ const Section = ({ projectId, chapterId, section }) => {
       projectId,
       chapterId,
       sectionId: section.id,
-      code: data.code
+      code: data.code,
+      language: data.language
     }
   });
 
@@ -197,7 +202,11 @@ const Section = ({ projectId, chapterId, section }) => {
 
       { !editCode && section.code && (
         <div className="icons-show-on-hover">
-          <SyntaxHighlighter language='jsx' style={atomDark} wrapLines>
+          <SyntaxHighlighter
+            language={section.language || 'text'}
+            style={atomDark}
+            wrapLines
+          >
             { section.code }
           </SyntaxHighlighter>
 
@@ -218,6 +227,12 @@ const Section = ({ projectId, chapterId, section }) => {
           schema={codeSchema}
         >
           <LongTextField name="code"/>
+          <SelectField
+            options={languages}
+            value={section.language}
+            placeholder="Select a language"
+            name="language"
+          />
           <Icon type="check" onClick={toggleEditCode} />
         </AutoForm>
       ) }

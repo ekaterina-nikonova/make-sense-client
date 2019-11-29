@@ -199,6 +199,7 @@ export const queries = {
           id
           paragraph
           code
+          language
           imageUrl
         }
       }
@@ -276,7 +277,7 @@ export const queries = {
         paragraph: $paragraph,
         code: $code
       ) {
-        section { id, paragraph, code, imageUrl }
+        section { id, paragraph, code, language, imageUrl }
       }
     }
   `,
@@ -288,6 +289,7 @@ export const queries = {
       $sectionId: ID!
       $paragraph: String
       $code: String
+      $language: String
     ) {
       updateSection(
         projectId: $projectId
@@ -296,12 +298,14 @@ export const queries = {
         attributes: {
           paragraph: $paragraph
           code: $code
+          language: $language
         }
       ) {
         section {
           id
           paragraph
           code
+          language
         }
       }
     }
