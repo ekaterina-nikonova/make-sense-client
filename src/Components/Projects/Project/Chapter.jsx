@@ -7,6 +7,8 @@ import AutoForm from 'uniforms-antd/AutoForm';
 import LongTextField from 'uniforms-antd/LongTextField';
 import SimpleSchema from "simpl-schema";
 import ReactMarkdown from "react-markdown";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 import { Alert, Button, Form, Icon, Input, Popconfirm, Tooltip, Typography, message } from "antd";
 
@@ -72,6 +74,7 @@ const Chapter = ({ chapter }) => {
 
 const Section = ({ projectId, chapterId, section }) => {
   const [ editParagraph, setEditParagraph ] = useState(false);
+  const [ editCode, setEditCode ] = useState(false);
   const [ updateSection ] = useMutation(queries.updateSection);
 
   const [ deleteSection ] = useMutation(
@@ -113,12 +116,22 @@ const Section = ({ projectId, chapterId, section }) => {
     paragraph: section.paragraph || ''
   });
 
+  const codeModel = ({
+    code: section.code || ''
+  });
+
   const paragraphSchema = new SimpleSchema(
     { paragraph: String },
     { requiredByDefault: true }
   );
 
+  const codeSchema = new SimpleSchema(
+    { code: String },
+    { requiredByDefault: false }
+  );
+
   const toggleEditParagraph = () => setEditParagraph(!editParagraph);
+  const toggleEditCode = () => setEditCode(!editCode);
 
   const updateParagraph = data => updateSection({
     variables: {
@@ -129,12 +142,12 @@ const Section = ({ projectId, chapterId, section }) => {
     }
   });
 
-  const updateCode = str => updateSection({
+  const updateCode = data => updateSection({
     variables: {
       projectId,
       chapterId,
       sectionId: section.id,
-      code: str
+      code: data.code
     }
   });
 
@@ -182,13 +195,32 @@ const Section = ({ projectId, chapterId, section }) => {
         </AutoForm>
       ) }
 
-      <Paragraph
-        copyable
-        editable={{ onChange: updateCode }}
-        className="project-section-code"
-      >
-        { section.code }
-      </Paragraph>
+      { !editCode && section.code && (
+        <div className="icons-show-on-hover">
+          <SyntaxHighlighter language='jsx' style={atomDark} wrapLines>
+            { section.code }
+          </SyntaxHighlighter>
+
+          <Icon
+            type="edit"
+            onClick={toggleEditCode}
+          />
+        </div>
+      ) }
+
+      { editCode && (
+        <AutoForm
+          autosave
+          autosaveDelay={800}
+          label={false}
+          model={codeModel}
+          onSubmit={updateCode}
+          schema={codeSchema}
+        >
+          <LongTextField name="code"/>
+          <Icon type="check" onClick={toggleEditCode} />
+        </AutoForm>
+      ) }
     </div>
   );
 };
