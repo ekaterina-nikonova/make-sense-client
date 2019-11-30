@@ -269,13 +269,15 @@ export const queries = {
       $projectId: ID!,
       $chapterId: ID!,
       $paragraph: String!,
-      $code: String
+      $code: String,
+      $language: String
     ) {
       createSection(
         projectId: $projectId,
         chapterId: $chapterId,
         paragraph: $paragraph,
-        code: $code
+        code: $code,
+        language: $language
       ) {
         section { id, paragraph, code, language, imageUrl }
       }

@@ -12,7 +12,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import * as prismLanguages from "react-syntax-highlighter/dist/esm/languages/prism";
 
-import { Alert, Button, Form, Icon, Input, Popconfirm, Tag, Tooltip, Typography, message } from "antd";
+import { Alert, Button, Form, Icon, Input, Popconfirm, Select, Tag, Tooltip, Typography, message } from "antd";
 
 const Chapter = ({ chapter }) => {
   const [ newSectionShows, setNewSectionShows ] = useState(false);
@@ -282,12 +282,13 @@ const NewSection = ({ cancel, chapter, projectId }) => {
     } }
   );
 
-  const create = ({ paragraph, code }) => createSection(
+  const create = ({ paragraph, code, language }) => createSection(
     { variables: {
       projectId,
       chapterId: chapter.id,
       paragraph,
-      code
+      code,
+      language
     }
   }).then(res => {
     message.success('Project saved.');
@@ -307,12 +308,19 @@ const NewSectionForm = ({ cancel, create, form }) => {
 
   const { Item } = Form;
   const { TextArea } = Input;
+  const { Option } = Select;
+
+  const languages = Object.keys(prismLanguages);
 
   const createSection = e => {
     e.preventDefault();
     validateFields((err, values) => {
       if (!err) {
-        create({ paragraph: values.paragraph, code: values.code });
+        create({
+          paragraph: values.paragraph,
+          code: values.code,
+          language: values.language
+        });
         setError(false);
         form.resetFields();
       } else setError(true);
@@ -356,6 +364,20 @@ const NewSectionForm = ({ cancel, create, form }) => {
             placeholder="Code snippet"
             className="project-section-code"
           />
+        )}
+      </Item>
+
+      <Item>
+        { getFieldDecorator ('language')(
+          <Select
+            showSearch
+            placeholder="Select a language"
+            className="project-section-code"
+          >
+            { languages.map(lang => (
+              <Option key={lang} value={lang}>{ lang }</Option>
+            )) }
+          </Select>
         )}
       </Item>
 
