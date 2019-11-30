@@ -48,7 +48,7 @@
 .top-level-menu {
   padding: 2rem 0 80px 0;
   width: auto;
-  max-width: 20rem;
+  max-width: @mobile-menu-width;
 
   a {
     white-space: nowrap;
@@ -57,7 +57,7 @@
   }
 
   @media (min-width: @tablet-display-width) {
-    min-width: 18rem;
+    min-width: @tablet-menu-width;
   }
 
   svg {
@@ -184,10 +184,6 @@ h1.ant-typography {
   @media (max-width: @mobile-display-width) {
     padding: 0 1.5rem;
   }
-}
-
-.top-level-menu .ant-menu-item {
-  padding-right: 5rem;
 }
 
 .page-content .ant-row-flex {

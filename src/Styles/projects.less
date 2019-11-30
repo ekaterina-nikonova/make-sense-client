@@ -13,8 +13,12 @@
 }
 
 .projects-container {
-  width: 100%;
+  width: calc(100% - @mobile-menu-width);
   word-break: break-word;
+
+  @media(min-width: @tablet-display-width) {
+    width: calc(100% - @tablet-menu-width);
+  }
 
   .ant-collapse-item:first-child {
     padding-top: 4rem;

@@ -159,7 +159,7 @@ const Section = ({ projectId, chapterId, section }) => {
   return (
     <div className="project-section">
       <Popconfirm
-        placement="rightTop"
+        placement="bottomRight"
         title="Delete the section?"
         onConfirm={handleDelete}
       >
