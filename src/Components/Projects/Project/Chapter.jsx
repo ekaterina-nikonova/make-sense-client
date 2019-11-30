@@ -158,7 +158,11 @@ const Section = ({ projectId, chapterId, section }) => {
 
   return (
     <div className="project-section">
-      <Popconfirm title="Delete the section?" onConfirm={handleDelete}>
+      <Popconfirm
+        placement="rightTop"
+        title="Delete the section?"
+        onConfirm={handleDelete}
+      >
         <Icon
           type="close"
           className="section-delete-icon"
@@ -221,6 +225,10 @@ const Section = ({ projectId, chapterId, section }) => {
         </div>
       ) }
 
+      { !editCode && !section.code && (
+        <Icon type="code" onClick={toggleEditCode} />
+      ) }
+
       { editCode && (
         <AutoForm
           autosave
@@ -230,7 +238,12 @@ const Section = ({ projectId, chapterId, section }) => {
           onSubmit={updateCode}
           schema={codeSchema}
         >
-          <LongTextField name="code"/>
+          <LongTextField
+            name="code"
+            rows={10}
+            style={{ maxHeight: '50vh' }}
+          />
+
           <SelectField
             options={languages}
             value={section.language}
