@@ -12,7 +12,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import * as prismLanguages from "react-syntax-highlighter/dist/esm/languages/prism";
 
-import { Alert, Button, Form, Icon, Input, Popconfirm, Tooltip, Typography, message } from "antd";
+import { Alert, Button, Form, Icon, Input, Popconfirm, Tag, Tooltip, Typography, message } from "antd";
 
 const Chapter = ({ chapter }) => {
   const [ newSectionShows, setNewSectionShows ] = useState(false);
@@ -214,6 +214,10 @@ const Section = ({ projectId, chapterId, section }) => {
             type="edit"
             onClick={toggleEditCode}
           />
+
+          <Tag style={{ float: 'right' }}>
+            { section.language || 'Language not specified' }
+          </Tag>
         </div>
       ) }
 
