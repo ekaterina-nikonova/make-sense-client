@@ -104,23 +104,21 @@ const NewSectionForm = ({ cancel, create, form }) => {
             }
           ]
         })(
-          <React.Fragment>
-            <TextArea
-              rows={5}
-              placeholder="An intro, description or comment"
-              onChange={e => setParagraphText(e.target.value)}
-            />
-
-            <MDPreviewIcon openModal={togglePreview} />
-
-            <MDPreview
-              visible={previewShows}
-              text={paragraphText}
-              close={togglePreview}
-            />
-          </React.Fragment>
+          <TextArea
+            rows={5}
+            placeholder="An intro, description or comment"
+            onChange={e => setParagraphText(e.target.value)}
+          />
         )}
       </Item>
+
+      <MDPreviewIcon openModal={togglePreview} />
+
+      <MDPreview
+        visible={previewShows}
+        text={paragraphText}
+        close={togglePreview}
+      />
 
       <Item>
         { getFieldDecorator ('code')(
