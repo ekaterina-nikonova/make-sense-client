@@ -14,10 +14,12 @@ import AutoForm from "uniforms-antd/AutoForm";
 import LongTextField from "uniforms-antd/LongTextField";
 import SelectField from "uniforms-antd/SelectField";
 
+import MDPreview from "./MDPreview";
 
 const Section = ({ projectId, chapterId, section }) => {
   const [ editParagraph, setEditParagraph ] = useState(false);
   const [ editCode, setEditCode ] = useState(false);
+  const [ previewShows, setPreviewShows ] = useState(false);
   const [ updateSection ] = useMutation(queries.updateSection);
 
   const [ deleteSection ] = useMutation(
@@ -75,6 +77,7 @@ const Section = ({ projectId, chapterId, section }) => {
 
   const toggleEditParagraph = () => setEditParagraph(!editParagraph);
   const toggleEditCode = () => setEditCode(!editCode);
+  const togglePreview = () => setPreviewShows(!previewShows)
 
   const updateParagraph = data => updateSection({
     variables: {
@@ -139,7 +142,22 @@ const Section = ({ projectId, chapterId, section }) => {
           schema={paragraphSchema}
         >
           <Icon type="check" onClick={toggleEditParagraph} />
-          <LongTextField name="paragraph"/>
+
+          <LongTextField name="paragraph" />
+
+          <div className="preview-icon">
+            <Icon
+              type="eye"
+              onClick={togglePreview}
+            />
+            <span className="label">Markdown preview</span>
+          </div>
+
+          <MDPreview
+            visible={previewShows}
+            text={section.paragraph}
+            close={togglePreview}
+          />
         </AutoForm>
       ) }
 
