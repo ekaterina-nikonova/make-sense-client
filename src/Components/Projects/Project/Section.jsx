@@ -7,6 +7,7 @@ import * as prismLanguages from "react-syntax-highlighter/dist/cjs/languages/pri
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 
+import { deleteUpload } from "../../../Services/api";
 import getUploadProps from "../../../Services/getUploadProps";
 import { queries } from "../../../Services/graphql";
 
@@ -56,6 +57,25 @@ const Section = ({ projectId, chapterId, section }) => {
     variables: { projectId, chapterId, sectionId: section.id }
   }).then(res => message.success('Section deleted.'))
     .catch(err => message.error('Could not delete the section.'));
+
+  const deleteImage = async () => {
+    await deleteUpload({
+      parent: 'section',
+      parent_id: section.id,
+      type: 'image'
+    }).then(res => {
+      updateSection({
+        variables: {
+          projectId,
+          chapterId,
+          sectionId: section.id,
+          imageUrl: ''
+        }
+      });
+      updateFileList([]);
+      message.success('Image deleted.')
+    }).catch(err => message.error('Could not delete the image.'));
+  };
 
   const paragraphModel = ({
     paragraph: section.paragraph || ''
@@ -135,6 +155,14 @@ const Section = ({ projectId, chapterId, section }) => {
           <Upload { ...uploaderProps }>
             <Icon type="picture" />
           </Upload>
+
+          <Popconfirm title="Delete the image?" onConfirm={deleteImage}>
+            <Icon
+              type="close-circle"
+              theme="twoTone"
+              className="delete-image-icon"
+            />
+          </Popconfirm>
 
           <img
             alt="illustration for the section"

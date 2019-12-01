@@ -52,6 +52,10 @@ export const deleteInvitationSilent = id => axios.secured.delete(`${baseUrl}/api
 
 export const deleteInvitationWithEmail = id => axios.secured.delete(`${baseUrl}/api/v1/admin/invitation-reject/${id}`);
 
+/** Uploads */
+
+export const deleteUpload = params => axios.secured.delete(`${baseUrl}/api/v1/uploads`, { data: params });
+
 /** ActionCable */
 
 export const wsBaseUrl = process.env.NODE_ENV === 'production'
