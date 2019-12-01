@@ -5,6 +5,8 @@ import { queries } from "../../../Services/graphql";
 import { Alert, Button, Form, Icon, Input, message, Select } from "antd";
 import * as prismLanguages from "react-syntax-highlighter/dist/cjs/languages/prism";
 
+import MDPreview, { MDPreviewIcon } from "./MDPreview";
+
 const NewSection = ({ cancel, chapter, projectId }) => {
   const [ createSection ] = useMutation(
     queries.createSection,
@@ -51,6 +53,8 @@ const NewSection = ({ cancel, chapter, projectId }) => {
 
 const NewSectionForm = ({ cancel, create, form }) => {
   const [ error, setError ] = useState(false);
+  const [ paragraphText, setParagraphText ] = useState('');
+  const [ previewShows, setPreviewShows ] = useState(false);
 
   const { getFieldDecorator, validateFields } = form;
 
@@ -59,6 +63,8 @@ const NewSectionForm = ({ cancel, create, form }) => {
   const { Option } = Select;
 
   const languages = Object.keys(prismLanguages);
+
+  const togglePreview = () => setPreviewShows(!previewShows);
 
   const createSection = e => {
     e.preventDefault();
@@ -98,10 +104,21 @@ const NewSectionForm = ({ cancel, create, form }) => {
             }
           ]
         })(
-          <TextArea
-            rows={5}
-            placeholder="An intro, description or comment"
-          />
+          <React.Fragment>
+            <TextArea
+              rows={5}
+              placeholder="An intro, description or comment"
+              onChange={e => setParagraphText(e.target.value)}
+            />
+
+            <MDPreviewIcon openModal={togglePreview} />
+
+            <MDPreview
+              visible={previewShows}
+              text={paragraphText}
+              close={togglePreview}
+            />
+          </React.Fragment>
         )}
       </Item>
 

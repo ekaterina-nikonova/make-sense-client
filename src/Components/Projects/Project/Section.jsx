@@ -14,7 +14,7 @@ import AutoForm from "uniforms-antd/AutoForm";
 import LongTextField from "uniforms-antd/LongTextField";
 import SelectField from "uniforms-antd/SelectField";
 
-import MDPreview from "./MDPreview";
+import MDPreview, { MDPreviewIcon } from "./MDPreview";
 
 const Section = ({ projectId, chapterId, section }) => {
   const [ editParagraph, setEditParagraph ] = useState(false);
@@ -141,17 +141,11 @@ const Section = ({ projectId, chapterId, section }) => {
           onSubmit={updateParagraph}
           schema={paragraphSchema}
         >
-          <Icon type="check" onClick={toggleEditParagraph} />
+          <Icon type="check" onClick={toggleEditParagraph}/>
 
-          <LongTextField name="paragraph" />
+          <LongTextField name="paragraph"/>
 
-          <div className="preview-icon">
-            <Icon
-              type="eye"
-              onClick={togglePreview}
-            />
-            <span className="label">Markdown preview</span>
-          </div>
+          <MDPreviewIcon openModal={togglePreview} />
 
           <MDPreview
             visible={previewShows}
