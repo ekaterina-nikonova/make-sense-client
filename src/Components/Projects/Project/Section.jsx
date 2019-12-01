@@ -7,9 +7,10 @@ import * as prismLanguages from "react-syntax-highlighter/dist/cjs/languages/pri
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 
+import getUploadProps from "../../../Services/getUploadProps";
 import { queries } from "../../../Services/graphql";
 
-import { Icon, message, Popconfirm, Tag } from "antd";
+import { Button, Icon, message, Popconfirm, Tag, Upload } from "antd";
 import AutoForm from "uniforms-antd/AutoForm";
 import LongTextField from "uniforms-antd/LongTextField";
 import SelectField from "uniforms-antd/SelectField";
@@ -17,6 +18,7 @@ import SelectField from "uniforms-antd/SelectField";
 import MDPreview, { MDPreviewIcon } from "./MDPreview";
 
 const Section = ({ projectId, chapterId, section }) => {
+  const [fileList, updateFileList] = useState([]);
   const [ editParagraph, setEditParagraph ] = useState(false);
   const [ editCode, setEditCode ] = useState(false);
   const [ previewShows, setPreviewShows ] = useState(false);
@@ -98,6 +100,16 @@ const Section = ({ projectId, chapterId, section }) => {
     }
   });
 
+  const uploaderProps = getUploadProps({
+    parent: 'section',
+    parent_id: section.id,
+    type: 'image',
+    fileList,
+    updateFileList,
+    onSuccess: imageUrl =>
+      updateSection({ variables: { imageUrl } })
+  });
+
   return (
     <div className="project-section">
       <Popconfirm
@@ -111,13 +123,19 @@ const Section = ({ projectId, chapterId, section }) => {
         />
       </Popconfirm>
 
-      { section.image && (
+      { section.imageUrl && (
         <img
           alt="illustration for the section"
           src={section.imageUrl}
           className="board-main-image"
         />
       )}
+
+      { !section.imageUrl && (
+        <Upload {...uploaderProps}>
+          <Button shape="circle" icon="picture" />
+        </Upload>
+      ) }
 
       { !editParagraph && (
         <div className="icons-show-on-hover">
