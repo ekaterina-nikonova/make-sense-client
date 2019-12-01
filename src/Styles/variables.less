@@ -4,6 +4,10 @@
 @primary-color: #71A4EA;    // Cornflower Blue
 @white: #FBFBFB;
 
+.bgr-opacity-5(@color) {
+  @result: fadeout(@color, 95%);
+}
+
 .bgr-opacity-60(@color) {
   @result: fadeout(@color, 40%);
 }
@@ -19,7 +23,13 @@
 @shadow-large: 0 8px 20px #46454C30;
 @shadow-small: 0 4px 10px #46454C30;
 
+/* Dimensions */
+
+@header-height: 64px;
+
 /* Responsive */
 
 @mobile-display-width: 576px;
 @tablet-display-width: 768px;
+@mobile-menu-width: 6rem;
+@tablet-menu-width: 18rem;

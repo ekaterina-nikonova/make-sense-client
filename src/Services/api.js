@@ -16,6 +16,10 @@ export const signout = () => axios.secured.delete(`${baseUrl}/api/v1/signin`);
 
 export const me = () => axios.secured.get(`${baseUrl}/api/v1/me`);
 
+/** Projects */
+
+export const getProjects = () => axios.secured.get(`${baseUrl}/api/v1/projects`);
+
 /** Boards */
 
 export const createBoard = data => axios.secured.post(`${baseUrl}/api/v1/boards`, data);
@@ -47,6 +51,10 @@ export const acceptInvitation = id => axios.secured.patch(`${baseUrl}/api/v1/adm
 export const deleteInvitationSilent = id => axios.secured.delete(`${baseUrl}/api/v1/admin/invitations/${id}`);
 
 export const deleteInvitationWithEmail = id => axios.secured.delete(`${baseUrl}/api/v1/admin/invitation-reject/${id}`);
+
+/** Uploads */
+
+export const deleteUpload = params => axios.secured.delete(`${baseUrl}/api/v1/uploads`, { data: params });
 
 /** ActionCable */
 

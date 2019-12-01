@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useGlobal } from 'reactn';
+import { useQuery } from "@apollo/react-hooks";
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import { UserContext } from "../../App";
+import { queries } from "../../Services/graphql";
 
 import { Icon, Menu } from 'antd';
 
@@ -23,9 +24,9 @@ const TopLevelMenu = ({ currentPath, user, item }) => {
   const [openSubMenu, setOpenSubMenu] = useState(`sub-${item}`);
   const [mobileScreen, setMobileScreen] = useState(window.innerWidth < 576);
 
-  const [components, setComponents] = useGlobal('components');
-  const [boards, setBoards] = useGlobal('boards');
-  const [projects, setProjects] = useGlobal('projects');
+  const { loading, error, data } = useQuery(
+    queries.projectsBoardsComponents,
+  );
 
   useEffect(
     () => setActiveMenuItem(menuItemFrom(currentPath)),
@@ -35,10 +36,10 @@ const TopLevelMenu = ({ currentPath, user, item }) => {
   window.addEventListener(
     'resize',
     () => {
-      if (window.innerWidth < 576) {
+      if (window.innerWidth < 768) {
         setOpenSubMenu('');
       }
-      setMobileScreen(window.innerWidth < 576);
+      setMobileScreen(window.innerWidth < 768);
     }
   );
 
@@ -73,14 +74,14 @@ const TopLevelMenu = ({ currentPath, user, item }) => {
       >
         <Menu.Item key="projects">
           <Link to="/projects">
+            <Icon type="appstore" />
             <span className="submenu-label">All projects</span>
-            <Icon type="arrow-right" />
           </Link>
         </Menu.Item>
 
-        {projects && projects.map(
+        {data && data.projects && data.projects.map(
           project => <Menu.Item key={project.id}>
-            <Link to={{ pathname: `/boards/${project.id}` }}>
+            <Link to={{ pathname: `/projects/${project.id}` }}>
               { project.name }
             </Link>
           </Menu.Item>
@@ -98,12 +99,12 @@ const TopLevelMenu = ({ currentPath, user, item }) => {
       >
         <Menu.Item key="boards">
           <Link to="/boards">
+            <Icon type="appstore" />
             <span className="submenu-label">All boards</span>
-            <Icon type="arrow-right" />
           </Link>
         </Menu.Item>
 
-        {boards && boards.map(
+        {data && data.boards && data.boards.map(
           board => <Menu.Item key={board.id}>
             <Link to={{ pathname: `/boards/${board.id}` }}>
               { board.name }
@@ -123,12 +124,12 @@ const TopLevelMenu = ({ currentPath, user, item }) => {
       >
         <Menu.Item key="components">
           <Link to="/components">
+            <Icon type="appstore" />
             <span className="submenu-label">All components</span>
-            <Icon type="arrow-right" />
           </Link>
         </Menu.Item>
 
-        {components && components.map(
+        {data && data.components && data.components.map(
           component => <Menu.Item key={component.id}>
             <Link to={{ pathname: `/components/${component.id}` }}>
               { component.name }
@@ -160,7 +161,6 @@ const TopLevelMenu = ({ currentPath, user, item }) => {
 TopLevelMenu.propTypes = {
   currentPath: PropTypes.string.isRequired,
   item: PropTypes.string.isRequired,
-  url: PropTypes.string.isRequired
 };
 
 const WrappedTopLevelMenu = ({ currentPath, item }) => (

@@ -2,6 +2,6 @@
 <path d="M71 114C98.6142 114 121 91.6142 121 64C121 36.3858 98.6142 14 71 14C43.3858 14 21 36.3858 21 64" stroke="#9FA0B3" stroke-width="9"/>
 <path d="M71 99C90.33 99 106 83.33 106 64C106 44.67 90.33 29 71 29C51.67 29 36 44.67 36 64" stroke="#9FA0B3" stroke-width="9"/>
 <path d="M71 84C82.0457 84 91 75.0457 91 64C91 52.9543 82.0457 44 71 44C59.9543 44 51 52.9543 51 64" stroke="#9FA0B3" stroke-width="9"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M62 73H10V125H62V73ZM55 118H17V80H47L55 88V118Z" fill="#9FA0B3"/>
+<path fillRule="evenodd" clipRule="evenodd" d="M62 73H10V125H62V73ZM55 118H17V80H47L55 88V118Z" fill="#9FA0B3"/>
 <rect x="25" y="88" width="22" height="22" fill="#9FA0B3"/>
 </svg>

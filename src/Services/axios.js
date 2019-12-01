@@ -31,14 +31,17 @@ secured.interceptors.request.use(config => {
 });
 
 secured.interceptors.response.use(null, error => {
-  if (error.response && error.response.config && error.response.status === 401) {
+  if (error.response
+    && error.response.config
+    && (error.response.status === 401 || error.response.status === 403)) {
     return plain.post(
-      '/refresh',
+      '/api/v1/refresh',
       {},
       { headers: { 'X-CSRF-TOKEN': localStorage.csrf } }
     ).then(response => {
       localStorage.csrf = response.data.csrf;
       localStorage.signedIn = true;
+      window.location.reload();
 
       const retryConfig = error.response.config;
       retryConfig.headers['X-CSRF-TOKEN'] = localStorage.csrf;

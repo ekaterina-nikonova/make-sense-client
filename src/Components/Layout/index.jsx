@@ -38,19 +38,6 @@ export default () => {
             <Route path="/profile" component={ProfileContainer} />
             <Route path="/admin" component={AdminPanelContainer} />
             <Route path="/signup" component={SignupPage} />
-
-            <Route path="/components/:id" component={({ match }) => (
-              <LoggedInContext.Consumer>
-                {loggedIn => (
-                  loggedIn ? (
-                    <EmptyFullPage
-                      description={`A page for the component with id ${match.params.id} will be here soon.`}
-                    />
-                  ) : <Redirect to='/start' />
-                )}
-              </LoggedInContext.Consumer>
-            )} />
-
           </Content>
         </React.Fragment>
       </Router>

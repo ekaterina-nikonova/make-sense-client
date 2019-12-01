@@ -47,10 +47,16 @@
 
 .top-level-menu {
   padding: 2rem 0 80px 0;
-  width: auto;
+  width: @mobile-menu-width;
 
-  .submenu-label {
-    margin-right: 1rem;
+  a {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  @media (min-width: @tablet-display-width) {
+    min-width: @tablet-menu-width;
   }
 
   svg {
@@ -60,6 +66,11 @@
   .anticon {
     vertical-align: middle;
   }
+}
+
+.submenu-label {
+  margin-right: 1rem;
+  font-weight: bolder;
 }
 
 .footer-container {
@@ -123,6 +134,18 @@
   width: 3rem;
 }
 
+.icons-show-on-hover {
+  svg {
+    opacity: 0;
+  }
+  &:hover {
+    svg {
+      transition: opacity ease-out 800ms;
+      opacity: .8;
+    }
+  }
+}
+
 /* Controls */
 
 .button-right {
@@ -147,26 +170,32 @@ h1.ant-typography {
 }
 
 .ant-layout-footer {
+  z-index: 300;
   background: @info-color;
   color: @white;
 }
 
 .ant-layout-header {
+  z-index: 400;
   background: @white;
   box-shadow: @shadow-large;
-  z-index: 1000;
 
   @media (max-width: @mobile-display-width) {
     padding: 0 1.5rem;
   }
 }
 
-.top-level-menu .ant-menu-item {
-  padding-right: 5rem;
-}
-
 .page-content .ant-row-flex {
   width: 100%;
+}
+
+.ant-menu-submenu-popup {
+  max-width: 90%;
+
+  a {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 .ant-steps-horizontal {
@@ -175,22 +204,6 @@ h1.ant-typography {
 
 .ant-steps-item-title {
   font-size: .8rem;
-}
-
-.ant-tabs-tabpane {
-  padding: 2rem;
-}
-
-.ant-tabs-nav {
-  width: 100%;
-}
-
-.ant-tabs-nav > div {
-  display: flex;
-}
-
-.ant-tabs-tab {
-  flex-grow: 1;
 }
 
 .ant-tooltip-inner {
