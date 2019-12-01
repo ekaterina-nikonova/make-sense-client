@@ -308,6 +308,7 @@ export const queries = {
           paragraph
           code
           language
+          imageUrl
         }
       }
     }

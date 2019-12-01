@@ -107,7 +107,14 @@ const Section = ({ projectId, chapterId, section }) => {
     fileList,
     updateFileList,
     onSuccess: imageUrl =>
-      updateSection({ variables: { imageUrl } })
+      updateSection({
+        variables: {
+          projectId,
+          chapterId,
+          sectionId: section.id,
+          imageUrl
+        }
+      })
   });
 
   return (
@@ -124,11 +131,17 @@ const Section = ({ projectId, chapterId, section }) => {
       </Popconfirm>
 
       { section.imageUrl && (
-        <img
-          alt="illustration for the section"
-          src={section.imageUrl}
-          className="board-main-image"
-        />
+        <div className="icons-show-on-hover">
+          <Upload { ...uploaderProps }>
+            <Icon type="picture" />
+          </Upload>
+
+          <img
+            alt="illustration for the section"
+            src={section.imageUrl}
+            className="board-main-image"
+          />
+        </div>
       )}
 
       { !section.imageUrl && (
