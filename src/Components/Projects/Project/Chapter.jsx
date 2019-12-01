@@ -34,11 +34,18 @@ const Chapter = ({ chapter }) => {
 
   return (
     <React.Fragment>
-      <Title level={4} editable={{ onChange: updateName }}>
+      <Title
+        level={4}
+        editable={{ onChange: updateName }}
+        className="icons-show-on-hover"
+      >
         { chapter.name }
       </Title>
 
-      <Paragraph editable={{ onChange: updateIntro }}>
+      <Paragraph
+        editable={{ onChange: updateIntro }}
+        className="icons-show-on-hover"
+      >
         { chapter.intro }
       </Paragraph>
 

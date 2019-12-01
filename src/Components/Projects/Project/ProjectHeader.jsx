@@ -38,7 +38,11 @@ const ProjectHeader = ({ board, history, project }) => {
     <PageHeader
       onBack={() => history.push('/projects')}
       title={
-        <Title level={4} editable={{ onChange: updateName }}>
+        <Title
+          level={4}
+          editable={{ onChange: updateName }}
+          className="icons-show-on-hover"
+        >
           {project.name}
         </Title>
       }
@@ -69,7 +73,7 @@ const ProjectHeader = ({ board, history, project }) => {
       { project.description && !descriptionEdit && (
         <Paragraph
           editable={{ onChange: updateDescription }}
-          className="description-edit-textarea"
+          className="description-edit-textarea icons-show-on-hover"
         >
           {project.description}
         </Paragraph>
