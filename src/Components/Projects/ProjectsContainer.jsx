@@ -10,7 +10,7 @@ import TopLevelMenu from "../Layout/TopLevelMenu";
 import ProjectList from "./ProjectList";
 import NewProjectDrawer from "./NewProjectDrawer";
 import ProjectWrapper from "./Project/ProjectWrapper";
-import { Empty } from "antd";
+import { Empty, Result, Spin } from "antd";
 
 const ProjectsContainer = ({ location, match }) => {
   const { pathname } = location;
@@ -22,8 +22,21 @@ const ProjectsContainer = ({ location, match }) => {
 
         <Query query={queries.projects}>
           {({ loading, error, data, subscribeToMore }) => {
-            if (loading) return <div>Loading...</div>;
-            if (error) return <div>Error :-(</div>;
+            if (loading) return (
+              <div className="top-level-state">
+                <Spin />
+              </div>
+            );
+
+            if (error) return (
+              <div className="top-level-state">
+                <Result
+                  status="error"
+                  title="Something's wrong"
+                  subTitle={error.message}
+                />
+              </div>
+            );
 
             if (!data || !data.projects || !data.projects.length) return (
               <Empty
