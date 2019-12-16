@@ -6,9 +6,7 @@ import { acceptInvitation,
   deleteInvitationWithEmail,
   getInvitations } from "../../Services/api";
 
-import { Alert, Icon, List, Popconfirm, Tooltip } from "antd";
-
-import EmptyFullPage from "../UI/EmptyFullPage";
+import { Empty, Icon, List, Popconfirm, Result, Tooltip } from "antd";
 
 const InvitationsContainer = () => {
   const [invitations, setInvitations] = useGlobal('invitations');
@@ -48,13 +46,24 @@ const InvitationsContainer = () => {
 
   return (
     <React.Fragment>
-      { error &&
-        <Alert message="Error" description="Could not fetch invitations." showIcon type="error" />
-      }
+      { error && (
+        <div className="top-level-state">
+          <Result
+            status="error"
+            title="Something's wrong"
+            subTitle="Could not fetch invitations."
+          />
+        </div>
+      ) }
 
-      { (!error && !invitations.length) && <EmptyFullPage /> }
+      { (!error && !invitations.length) && (
+        <Empty
+          description="No invitations."
+          className="top-level-state"
+        />
+      ) }
 
-      { (!error && invitations.length) && (
+      { (!error && !!invitations.length) && (
         <List
           dataSource={invitations}
           renderItem={invitation => (
