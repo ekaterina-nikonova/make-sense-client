@@ -4,9 +4,8 @@ import { useDispatch, useGlobal } from "reactn";
 import { deleteUser, getUsers } from "../../Services/api";
 import { UserContext } from "../../App";
 
-import { Alert, Icon, List, Popconfirm } from "antd";
+import { Empty, Icon, List, Popconfirm, Result } from "antd";
 
-import EmptyFullPage from "../UI/EmptyFullPage";
 
 const UsersContainer = () => {
   const [users, setUsers] = useGlobal('users');
@@ -30,11 +29,24 @@ const UsersContainer = () => {
 
   return (
     <React.Fragment>
-      {error && <Alert message="Error" description="Could not fetch users." showIcon type="error" />}
+      { error && (
+        <div className="top-level-state">
+          <Result
+            status="error"
+            title="Something's wrong"
+            subTitle="Could not fetch users."
+          />
+        </div>
+      ) }
 
-      {(!error && !users.length) && <EmptyFullPage />}
+      { (!error && !users.length) && (
+        <Empty
+          description="No users."
+          className="top-level-state"
+        />
+      ) }
 
-      {(!error && users.length) && (
+      {(!error && !!users.length) && (
         <UserContext.Consumer>
           {currentUser => (currentUser &&
             <List
