@@ -51,6 +51,7 @@ const UsersContainer = () => {
           {currentUser => (currentUser &&
             <List
               dataSource={users}
+              className="admin-user-list"
               renderItem={user => (
                 <List.Item
                   actions={[

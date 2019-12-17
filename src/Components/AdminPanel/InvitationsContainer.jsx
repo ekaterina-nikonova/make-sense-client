@@ -66,6 +66,7 @@ const InvitationsContainer = () => {
       { (!error && !!invitations.length) && (
         <List
           dataSource={invitations}
+          className="admin-invitation-list"
           renderItem={invitation => (
             <List.Item
               actions={InvitationActions({
@@ -95,10 +96,10 @@ const tooltipTitle = ({ invitation }) => {
   const { used_at, accepted_at, created_at } = invitation;
 
   if (used_at) {
-    return `Used at ${ new Date(used_at) }`;
+    return `Used ${ new Date(used_at) }`;
   } else if (accepted_at) {
-    return `Accepted at ${ new Date(accepted_at) }`;
-  } else return `Requested at ${ new Date(created_at) }`;
+    return `Sent ${ new Date(accepted_at) }`;
+  } else return `Requested ${ new Date(created_at) }`;
 };
 
 const InvitationAvatar = ({ invitation }) => {
