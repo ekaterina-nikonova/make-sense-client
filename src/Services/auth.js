@@ -32,7 +32,6 @@ export const authLogin = (data, setError) => {
     }
   };
   const failure = error => {
-    console.log(error);
     setError(error);
   };
 
