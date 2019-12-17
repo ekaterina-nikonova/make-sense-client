@@ -36,7 +36,7 @@ const UsersContainer = () => {
 
       {(!error && users.length) && (
         <UserContext.Consumer>
-          {currentUser => (
+          {currentUser => (currentUser &&
             <List
               dataSource={users}
               renderItem={user => (
