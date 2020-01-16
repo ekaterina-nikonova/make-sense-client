@@ -11,14 +11,14 @@ const Footer = () => {
     <Footer>
       <div className="footer-container">
         <Row gutter={[16, 24]}>
-          <Col xs={24} sm={8}>
+          <Col xs={24} sm={8} data-testid="resources-section">
             <Title level={4}>Resources</Title>
             <a href="/about"><Text>About</Text></a>
             <br/>
             <a href="https://blog.brittle-pins.com" target="_blank"><Text>Blog</Text></a>
           </Col>
 
-          <Col xs={24} sm={8}>
+          <Col xs={24} sm={8} data-testid="source-code-section">
             <Title level={4}>Source code</Title>
 
             <Icon type="android" />
@@ -51,7 +51,7 @@ const Footer = () => {
             </a>
           </Col>
 
-          <Col xs={24} sm={8}>
+          <Col xs={24} sm={8} data-testid="apps-section">
             <Title level={4}>Mobile apps</Title>
 
             <a href='https://play.google.com/store/apps/developer?id=Ekaterina+Nikonova&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1' target="_blank" rel="noopener noreferrer">
@@ -60,7 +60,7 @@ const Footer = () => {
           </Col>
         </Row>
 
-        <div className="contacts-container">
+        <div className="contacts-container" data-testid="contacts-section">
           <a href="mailto:admin@brittle-pins.com">
             <Icon type="mail"/>
           </a>

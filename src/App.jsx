@@ -1,4 +1,4 @@
-import React, { addCallback, addReducer, setGlobal } from 'reactn';
+import React, { addReducer, setGlobal } from 'reactn';
 import { useEffect, useState } from 'react';
 import { ActionCableProvider } from 'react-actioncable-provider';
 
@@ -72,11 +72,6 @@ addReducer('invitationReducer', (global, dispatch, action) => {
   }
 
   return newState;
-});
-
-addCallback(global => {
-  console.log("Callback called", global);
-  return null;
 });
 
 const App = () => {

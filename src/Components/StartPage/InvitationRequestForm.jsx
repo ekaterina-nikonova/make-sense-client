@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { requestInvitation } from "../../Services/api";
 
@@ -29,11 +29,6 @@ const InvitationRequestForm = ({ form }) => {
     });
   };
 
-  useEffect(() => {
-    console.log("Effect");
-    form.validateFields();
-  }, []);
-
   return (
     <Form onSubmit={handleSubmit}>
       <Form.Item validateStatus={emailError ? 'error': ''} help={emailError || ''}>
@@ -56,7 +51,11 @@ const InvitationRequestForm = ({ form }) => {
         )}
       </Form.Item>
       <Form.Item>
-        <Button type="primary" htmlType="submit" disabled={hasErrors(getFieldsError())}>
+        <Button
+          type="primary"
+          htmlType="submit"
+          disabled={!isFieldTouched('email') || hasErrors(getFieldsError())}
+        >
           Request invitation <Icon type="arrow-right" />
         </Button>
       </Form.Item>

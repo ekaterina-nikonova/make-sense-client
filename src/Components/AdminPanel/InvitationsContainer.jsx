@@ -6,9 +6,7 @@ import { acceptInvitation,
   deleteInvitationWithEmail,
   getInvitations } from "../../Services/api";
 
-import { Alert, Icon, List, Popconfirm, Tooltip } from "antd";
-
-import EmptyFullPage from "../UI/EmptyFullPage";
+import { Empty, Icon, List, Popconfirm, Result, Tooltip } from "antd";
 
 const InvitationsContainer = () => {
   const [invitations, setInvitations] = useGlobal('invitations');
@@ -48,15 +46,27 @@ const InvitationsContainer = () => {
 
   return (
     <React.Fragment>
-      { error &&
-        <Alert message="Error" description="Could not fetch invitations." showIcon type="error" />
-      }
+      { error && (
+        <div className="top-level-state">
+          <Result
+            status="error"
+            title="Something's wrong"
+            subTitle="Could not fetch invitations."
+          />
+        </div>
+      ) }
 
-      { (!error && !invitations.length) && <EmptyFullPage /> }
+      { (!error && !invitations.length) && (
+        <Empty
+          description="No invitations."
+          className="top-level-state"
+        />
+      ) }
 
-      { (!error && invitations.length) && (
+      { (!error && !!invitations.length) && (
         <List
           dataSource={invitations}
+          className="admin-invitation-list"
           renderItem={invitation => (
             <List.Item
               actions={InvitationActions({
@@ -86,10 +96,10 @@ const tooltipTitle = ({ invitation }) => {
   const { used_at, accepted_at, created_at } = invitation;
 
   if (used_at) {
-    return `Used at ${ new Date(used_at) }`;
+    return `Used ${ new Date(used_at) }`;
   } else if (accepted_at) {
-    return `Accepted at ${ new Date(accepted_at) }`;
-  } else return `Requested at ${ new Date(created_at) }`;
+    return `Sent ${ new Date(accepted_at) }`;
+  } else return `Requested ${ new Date(created_at) }`;
 };
 
 const InvitationAvatar = ({ invitation }) => {
