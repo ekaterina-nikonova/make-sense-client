@@ -1,4 +1,4 @@
-This project is a web client for **Brittle Pins** app bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is a web client for [**Brittle Pins**](https://brittle-pins.com) app bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## How to run
 
