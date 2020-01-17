@@ -50,13 +50,18 @@ const InvitationRequestForm = ({ form }) => {
           />
         )}
       </Form.Item>
-      <Form.Item>
+
+      <Form.Item className="form-buttons">
         <Button
           type="primary"
           htmlType="submit"
           disabled={!isFieldTouched('email') || hasErrors(getFieldsError())}
         >
           Request invitation <Icon type="arrow-right" />
+        </Button>
+
+        <Button>
+          Continue as guest <Icon type="clock-circle" />
         </Button>
       </Form.Item>
     </Form>

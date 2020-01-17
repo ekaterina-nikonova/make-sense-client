@@ -22,6 +22,22 @@
     .subtitle {
       color: @white;
     }
+
+    .form-buttons {
+      .ant-form-item-children {
+        display: flex;
+        flex-direction: column;
+
+        & button {
+          margin-top: 1rem;
+        }
+
+        @media (min-width: @mobile-display-width) {
+          flex-direction: row;
+          justify-content: space-between;
+        }
+      }
+    }
   }
 
   .about-container {
