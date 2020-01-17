@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { requestInvitation } from "../../Services/api";
+import { authSignup } from "../../Services/auth";
 
-import { Button, Form, Icon, Input, message } from "antd";
+import { Alert, Button, Form, Icon, Input, message } from "antd";
 
 const InvitationRequestForm = ({ form }) => {
+  const [error, setError] = useState('');
   const { getFieldDecorator, getFieldError, getFieldsError, isFieldTouched, setFieldsValue } = form;
 
   const hasErrors = fieldsError => (
@@ -29,8 +31,17 @@ const InvitationRequestForm = ({ form }) => {
     });
   };
 
+  const signupGuest = e => {
+    e.preventDefault();
+    authSignup({ setError });
+  };
+
   return (
     <Form onSubmit={handleSubmit}>
+      <Form.Item>
+        { error && <Alert type="error" message="Something went wrong." banner /> }
+      </Form.Item>
+
       <Form.Item validateStatus={emailError ? 'error': ''} help={emailError || ''}>
         {getFieldDecorator('email', {
           rules: [
@@ -60,7 +71,7 @@ const InvitationRequestForm = ({ form }) => {
           Request invitation <Icon type="arrow-right" />
         </Button>
 
-        <Button>
+        <Button onClick={signupGuest}>
           Continue as guest <Icon type="clock-circle" />
         </Button>
       </Form.Item>

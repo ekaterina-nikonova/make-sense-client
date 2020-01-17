@@ -1,6 +1,6 @@
-import { signin, signout, signup } from './api';
+import { signin, signout, signup, signupAsGuest } from './api';
 
-export const authSignup = (data, setError) => {
+export const authSignup = ({ data, setError }) => {
   const success = response => {
     if (!response.data.csrf) {
       failure(response);
@@ -16,9 +16,15 @@ export const authSignup = (data, setError) => {
     setError(error);
   };
 
-  signup(data)
-    .then(response => success(response))
-    .catch(error => failure(error));
+  if (!!data) {
+    signup(data)
+      .then(response => success(response))
+      .catch(error => failure(error));
+  } else {
+    signupAsGuest()
+      .then(response => success(response))
+      .catch(error => failure(error));
+  }
 };
 
 export const authLogin = (data, setError) => {
