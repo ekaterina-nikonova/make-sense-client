@@ -6,6 +6,7 @@ import { ApolloLink } from "apollo-link";
 import { ApolloProvider } from "react-apollo";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { createHttpLink } from "apollo-link-http";
+import { setContext } from "apollo-link-context";
 import gql from "graphql-tag";
 
 import { baseUrl, wsBaseUrl } from "./api";
@@ -13,10 +14,16 @@ import { baseUrl, wsBaseUrl } from "./api";
 const httpLink = createHttpLink({
   uri: `${baseUrl}/api/v1/graphql`,
   credentials: 'include',
-  headers: { 'X-CSRF-TOKEN': localStorage.csrf }
 });
 
-const cable = ActionCable.createConsumer(`${wsBaseUrl}`);
+const authLink = setContext((_, { headers }) => ({
+  headers: {
+    ...headers,
+    'X-CSRF-TOKEN': localStorage.csrf,
+  }
+}));
+
+const cable = ActionCable.createConsumer(`${ wsBaseUrl }`);
 
 const hasSubscriptionOperation = ({ query: { definitions } }) => {
   return definitions.some(
@@ -27,7 +34,7 @@ const hasSubscriptionOperation = ({ query: { definitions } }) => {
 const link = ApolloLink.split(
   hasSubscriptionOperation,
   new ActionCableLink({cable}),
-  httpLink
+  authLink.concat(httpLink)
 );
 
 export const client = new ApolloClient({
