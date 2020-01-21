@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { requestInvitation } from "../../Services/api";
+import { authSignup } from "../../Services/auth";
 
-import { Button, Form, Icon, Input, message } from "antd";
+import { Alert, Button, Form, Icon, Input, Tooltip, message } from "antd";
 
 const InvitationRequestForm = ({ form }) => {
+  const [error, setError] = useState('');
   const { getFieldDecorator, getFieldError, getFieldsError, isFieldTouched, setFieldsValue } = form;
 
   const hasErrors = fieldsError => (
@@ -29,8 +31,17 @@ const InvitationRequestForm = ({ form }) => {
     });
   };
 
+  const signupGuest = e => {
+    e.preventDefault();
+    authSignup({ setError });
+  };
+
   return (
     <Form onSubmit={handleSubmit}>
+      <Form.Item>
+        { error && <Alert type="error" message="Something went wrong." banner /> }
+      </Form.Item>
+
       <Form.Item validateStatus={emailError ? 'error': ''} help={emailError || ''}>
         {getFieldDecorator('email', {
           rules: [
@@ -50,14 +61,21 @@ const InvitationRequestForm = ({ form }) => {
           />
         )}
       </Form.Item>
-      <Form.Item>
+
+      <Form.Item className="form-buttons">
         <Button
-          type="primary"
+          ghost
           htmlType="submit"
           disabled={!isFieldTouched('email') || hasErrors(getFieldsError())}
         >
           Request invitation <Icon type="arrow-right" />
         </Button>
+
+        <Tooltip title="Everything you create as a guest will remain in the system for an hour.">
+          <Button onClick={signupGuest} ghost>
+            Continue as guest <Icon type="clock-circle" />
+          </Button>
+        </Tooltip>
       </Form.Item>
     </Form>
   );

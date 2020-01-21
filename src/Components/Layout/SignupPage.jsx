@@ -68,7 +68,7 @@ const SignupForm = ({ form }) => {
     e.preventDefault();
     validateFields((validationError, values) => {
       if (!validationError) {
-        authSignup(values, setError);
+        authSignup({ data: values, setError });
       }
     });
   };

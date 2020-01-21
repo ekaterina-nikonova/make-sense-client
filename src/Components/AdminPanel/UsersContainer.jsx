@@ -4,7 +4,7 @@ import { useDispatch, useGlobal } from "reactn";
 import { deleteUser, getUsers } from "../../Services/api";
 import { UserContext } from "../../App";
 
-import { Empty, Icon, List, Popconfirm, Result } from "antd";
+import { Empty, Icon, List, Popconfirm, Popover, Result } from "antd";
 
 
 const UsersContainer = () => {
@@ -55,20 +55,29 @@ const UsersContainer = () => {
               renderItem={user => (
                 <List.Item
                   actions={[
-                    user.id !== currentUser.id && <Popconfirm
-                      placement="topRight"
-                      title={`Delete user ${user.email}?`}
-                      onConfirm={() => handleDelete(user)}
-                      okText="Yes"
-                      cancelText="Cancel"
-                    >
-                      <Icon type="delete" />
-                    </Popconfirm>
+                    user.id !== currentUser.id ?
+                      <Popconfirm
+                        placement="topRight"
+                        title={`Delete user ${user.email}?`}
+                        onConfirm={() => handleDelete(user)}
+                        okText="Yes"
+                        cancelText="Cancel"
+                      >
+                        <Icon type="delete" />
+                      </Popconfirm> :
+                      <Popover
+                        title="Current user"
+                        trigger="click"
+                        content="You can't delete yourself here."
+                      >
+                        <Icon type="user" />
+                      </Popover>
                   ]}
                 >
                   <List.Item.Meta
                     title={<a href={`profile/${user.id}`}>{user.email}</a>}
                   />
+                  <div>{user.role}</div>
                 </List.Item>
               )}
             />

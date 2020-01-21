@@ -11,6 +11,11 @@
     .ant-form-explain {
       text-shadow: 1px 1px 4px black;
     }
+
+    .ant-btn-background-ghost[disabled] {
+      color: @white;
+      opacity: .4;
+    }
   }
 
   .hero-section {
@@ -21,6 +26,22 @@
     h1,
     .subtitle {
       color: @white;
+    }
+
+    .form-buttons {
+      .ant-form-item-children {
+        display: flex;
+        flex-direction: column;
+
+        & button {
+          margin-top: 1rem;
+        }
+
+        @media (min-width: @mobile-display-width) {
+          flex-direction: row;
+          justify-content: space-between;
+        }
+      }
     }
   }
 

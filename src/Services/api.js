@@ -10,6 +10,8 @@ export const requestInvitation = data => axios.plain.post(`${baseUrl}/api/v1/adm
 
 export const signup = data => axios.plain.post(`${baseUrl}/api/v1/signup`, data);
 
+export const signupAsGuest = () => axios.plain.post(`${baseUrl}/api/v1/signup-guest`);
+
 export const signin = data => axios.plain.post(`${baseUrl}/api/v1/signin`, data);
 
 export const signout = () => axios.secured.delete(`${baseUrl}/api/v1/signin`);

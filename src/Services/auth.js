@@ -1,6 +1,7 @@
-import { signin, signout, signup } from './api';
+import { signin, signout, signup, signupAsGuest } from './api';
+import { client } from "./graphql";
 
-export const authSignup = (data, setError) => {
+export const authSignup = ({ data, setError }) => {
   const success = response => {
     if (!response.data.csrf) {
       failure(response);
@@ -16,9 +17,15 @@ export const authSignup = (data, setError) => {
     setError(error);
   };
 
-  signup(data)
-    .then(response => success(response))
-    .catch(error => failure(error));
+  if (!!data) {
+    signup(data)
+      .then(response => success(response))
+      .catch(error => failure(error));
+  } else {
+    signupAsGuest()
+      .then(response => success(response))
+      .catch(error => failure(error));
+  }
 };
 
 export const authLogin = (data, setError) => {
@@ -28,7 +35,6 @@ export const authLogin = (data, setError) => {
     } else {
       localStorage.csrf = response.data.csrf;
       localStorage.setItem('signedIn', 'true');
-      window.location.reload();
     }
   };
   const failure = error => {
@@ -44,6 +50,7 @@ export const authLogout = () => {
   const success = response => {
     delete localStorage.csrf;
     localStorage.setItem('signedIn', '');
+    client.clearStore();
   };
 
   const failure = error => console.log(error);

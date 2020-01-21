@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 
-import { Card } from 'antd';
+import { Alert, Card } from 'antd';
 
 import { LoggedInContext, UserContext } from "../../App";
 
@@ -40,6 +40,13 @@ const MainPageContent = ({ user }) => {
 
   return (
     <div className="main-page-nav-container">
+      { user && user.role === 'guest' &&
+        <Alert
+          message="You have logged in as a guest. Everything you create will be deleted within an hour."
+          banner
+        />
+      }
+
       { navs.map(nav => <MainPageCard key={`card-${nav.link}`} item={nav} />) }
     </div>
   )
