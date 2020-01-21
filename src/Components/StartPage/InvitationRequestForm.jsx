@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { requestInvitation } from "../../Services/api";
 import { authSignup } from "../../Services/auth";
 
-import { Alert, Button, Form, Icon, Input, message } from "antd";
+import { Alert, Button, Form, Icon, Input, Tooltip, message } from "antd";
 
 const InvitationRequestForm = ({ form }) => {
   const [error, setError] = useState('');
@@ -64,16 +64,18 @@ const InvitationRequestForm = ({ form }) => {
 
       <Form.Item className="form-buttons">
         <Button
-          type="primary"
+          ghost
           htmlType="submit"
           disabled={!isFieldTouched('email') || hasErrors(getFieldsError())}
         >
           Request invitation <Icon type="arrow-right" />
         </Button>
 
-        <Button onClick={signupGuest}>
-          Continue as guest <Icon type="clock-circle" />
-        </Button>
+        <Tooltip title="Everything you create as a guest will remain in the system for an hour.">
+          <Button onClick={signupGuest} ghost>
+            Continue as guest <Icon type="clock-circle" />
+          </Button>
+        </Tooltip>
       </Form.Item>
     </Form>
   );
