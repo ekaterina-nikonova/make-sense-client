@@ -84,7 +84,7 @@ const App = () => {
         .then(response => setCurrentUser(response.data))
         .catch(err => console.log("ERR", err));
     }
-  }, []);
+  }, [loggedIn]);
 
   useEffect(() => {
     document.addEventListener(
