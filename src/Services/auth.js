@@ -1,4 +1,5 @@
 import { signin, signout, signup, signupAsGuest } from './api';
+import { client } from "./graphql";
 
 export const authSignup = ({ data, setError }) => {
   const success = response => {
@@ -49,6 +50,7 @@ export const authLogout = () => {
   const success = response => {
     delete localStorage.csrf;
     localStorage.setItem('signedIn', '');
+    client.clearStore();
   };
 
   const failure = error => console.log(error);
