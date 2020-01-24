@@ -1,13 +1,13 @@
-import React, { useDispatch, useGlobal, useState } from 'reactn';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import {Redirect, Route, Switch} from 'react-router-dom';
-import { ActionCableConsumer } from 'react-actioncable-provider';
+import { Redirect, Route, Switch } from 'react-router-dom';
+import { Query } from "react-apollo";
+import { useMutation } from "@apollo/react-hooks";
 
-import { Alert, Col, Empty, Row } from 'antd';
+import { LoggedInContext } from "../../App";
+import { queries } from "../../Services/graphql";
 
-import {LoggedInContext} from "../../App";
-import { getBoards } from '../../Services/api';
+import { Col, Empty, Result, Row, Spin, message } from 'antd';
 
 import AddBoard from './AddBoard';
 import BoardCard from './BoardCard';
@@ -22,33 +22,101 @@ function BoardsContainer({ location, match }) {
     <React.Fragment>
       <TopLevelMenu currentPath={pathname} item="boards" url={url} />
 
-      <div style={{ width: '100%' }}>
+      <div style={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
         <AddBoard />
-        <Switch>
-          <Route path="/boards/:id" component={BoardContainer} />
-          <Route path="/boards" component={BoardList} />
-        </Switch>
+
+        <Query query={queries.boards}>
+          {({ loading, error, data, subscribeToMore }) => {
+            if (loading) return (
+              <div className="top-level-state">
+                <Spin />
+              </div>
+            );
+
+            if (error) return (
+              <div className="top-level-state">
+                <Result
+                  status="error"
+                  title="Something's wrong"
+                  subTitle={error.message}
+                />
+              </div>
+            );
+
+            if (!data || !data.boards || !data.boards.length) return (
+              <Empty
+                description="No boards"
+                className="top-level-state"
+              />
+            );
+
+            return (
+              <div className="boards-container">
+                <Switch>
+                  <Route path="/boards/:id" component={BoardContainer} />
+                  <Route path="/boards" component={() => (
+                    <BoardList
+                      boards={data.boards}
+                      subscribeToMore={subscribeToMore}
+                    />)}
+                  />
+                </Switch>
+              </div>
+            );
+          }}
+        </Query>
       </div>
+
     </React.Fragment>
   );
-};
+}
 
 BoardsContainer.propTypes = {
   location: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired
 };
 
-const BoardList = function() {
-  const [boards, setBoards] = useGlobal('boards');
-  const [error, setError] = useState();
-  const handleReceivedBoard = useDispatch('boardReducer');
+const BoardList = ({ boards, subscribeToMore }) => {
+  const [deleteBoard] = useMutation(queries.deleteBoard);
 
-  useEffect(() => { getBoardsAsync(); }, []);
+  useEffect(() => subscribe(subscribeToMore), []);
 
-  const getBoardsAsync = async () => {
-    await getBoards()
-      .then(boards => setBoards(boards.data))
-      .catch(error => setError(error));
+  const subscribe = subscribeToMore => {
+    subscribeToMore({
+      document: queries.boardAdded,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev;
+
+        const newBoard = subscriptionData.data.boardAdded;
+
+        return Object.assign({}, prev, {
+          boards: [newBoard, ...prev.boards],
+          __typename: prev.boards.__typename
+        });
+      }
+    });
+
+    subscribeToMore({
+      document: queries.boardDeleted,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev;
+
+        const deletedBoard = subscriptionData.data.boardDeleted;
+
+        return Object.assign({}, prev, {
+          boards: prev.boards.filter(brd => brd.id !== deletedBoard),
+          __typename: prev.boards.__typename
+        })
+      }
+    });
+  };
+
+  const handleDelete = (e, id) => {
+    e.stopPropagation();
+    deleteBoard({ variables: { id } })
+      .then(res => message.success(
+        `Deleted board ${res.data.deleteBoard.board.name}.`
+      )).catch(err => message.error('Could not delete board.'))
   };
 
   return (
@@ -58,30 +126,11 @@ const BoardList = function() {
         type="flex"
         align={boards && boards.length? 'top' : 'middle'}
       >
-        {!error && (!boards || !boards.length) &&
-          <Col span={24}>
-            <Empty description="No boards." />
+        {boards && boards.map(board => (
+          <Col xs={24} sm={12} md={8} lg={6} key={board.id} className="board-col">
+            <BoardCard board={board} deleteBoard={handleDelete} />
           </Col>
-        }
-
-        {!error && boards &&
-          <ActionCableConsumer
-            channel={{ channel: 'BoardsChannel' }}
-            onReceived={response => handleReceivedBoard(response)}
-          >
-            {boards.map(board => (
-              <Col xs={24} sm={12} md={8} lg={6} key={board.id} className="board-col">
-                <BoardCard board={board} />
-              </Col>
-            ))}
-          </ActionCableConsumer>
-        }
-
-        {error &&
-          <Col xs={{ span: 22, offset: 1 }} sm={{ span: 12, offset: 6 }}>
-            <Alert description="Could not fetch boards." message="Error" showIcon type="error" />
-          </Col>
-        }
+        ))}
       </Row>
     </div>
   );

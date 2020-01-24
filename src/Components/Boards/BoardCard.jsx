@@ -2,20 +2,12 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import { deleteBoard } from '../../Services/api';
+import { Card, Empty, Icon, Modal, Popconfirm } from 'antd';
 
-import { Card, Empty, Icon, message, Modal, Popconfirm } from 'antd';
-
-const BoardCard = ({ board }) => {
+const BoardCard = ({ board, deleteBoard }) => {
   const [modalOpen, openModal] = useState();
 
   const { Meta } = Card;
-
-  const handleDelete = e => {
-    e.stopPropagation();
-    deleteBoard(board.id);
-    message.success('The board has been deleted.');
-  };
 
   const handleOpenModal = e => {
     e.preventDefault();
@@ -31,7 +23,14 @@ const BoardCard = ({ board }) => {
           actions={[
             <Icon onClick={handleOpenModal} type="plus-circle" />,
 
-            <Popconfirm placement="topRight" title="Delete the board?" onCancel={e => e.stopPropagation()} onConfirm={handleDelete} okText="Yes" cancelText="No">
+            <Popconfirm
+              placement="topRight"
+              title="Delete the board?"
+              onCancel={e => e.stopPropagation()}
+              onConfirm={e => deleteBoard(e, board.id)}
+              okText="Yes"
+              cancelText="No"
+            >
               <Icon type="delete" />
             </Popconfirm>
           ]}
@@ -39,7 +38,7 @@ const BoardCard = ({ board }) => {
           cover={
             <img
               alt="board"
-              src={board.image || require('../../Assets/Images/board-generic.svg')}
+              src={board.imageUrl || require('../../Assets/Images/board-generic.svg')}
             />
           }
         >

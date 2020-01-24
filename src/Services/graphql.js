@@ -344,8 +344,32 @@ export const queries = {
   }`,
 
   boards: gql` {
-    boards { id, name, components { id, name } }
+    boards { id, name, imageUrl, components { id, name } }
   }`,
+
+  deleteBoard: gql`
+    mutation deleteBoard($id: ID!) {
+      deleteBoard(id: $id) {
+        board {
+          id
+          name
+        }
+      }
+    }
+  `,
+
+  boardAdded: gql`
+    subscription {
+      boardAdded {
+        id
+        name
+      }
+    }
+  `,
+
+  boardDeleted: gql`
+    subscription { boardDeleted }
+  `,
 
   componentsForBoard: gql`
     query getComponentsForBoard($boardId: ID!) {
