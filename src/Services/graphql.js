@@ -366,6 +366,32 @@ export const queries = {
     }
   `,
 
+  updateBoard: gql`
+    mutation updateBoard(
+      $id: ID!
+      $name: String
+      $description: String
+      $components: [String!]
+    ) {
+      updateBoard(
+        id: $id
+        attributes: {
+          name: $name
+          description: $description
+          components: $components
+        }
+      ) {
+        board {
+          id
+          name
+          description
+          imageUrl
+          components { id, name }
+        }
+      }
+    }
+  `,
+
   deleteBoard: gql`
     mutation deleteBoard($id: ID!) {
       deleteBoard(id: $id) {
