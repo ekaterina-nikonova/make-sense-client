@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useMutation } from "@apollo/react-hooks";
 
-import { baseUrl, createBoard, updateBoard } from '../../Services/api';
+import { baseUrl, updateBoard } from '../../Services/api';
+import { queries } from "../../Services/graphql";
 
 import { Button, Collapse, Icon, Menu, message, Steps, Upload } from 'antd';
 
@@ -14,6 +16,8 @@ import EmptyFullPage from '../UI/EmptyFullPage';
 const AddBoard = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [newBoardId, setNewBoardId] = useState('');
+
+  const [createBoard] = useMutation(queries.createBoard);
 
   const Dragger = Upload.Dragger;
   const Panel = Collapse.Panel;
@@ -107,14 +111,17 @@ const AddBoard = () => {
   const moveToNextStep = () => setCurrentStep(currentStep + 1);
 
   const submit = async data => {
-    const create = async data => createBoard(data);
+    const create = async data => createBoard({ variables: {
+      name: data.name,
+      description: data.description
+    } });
 
     if (newBoardId) {
       updateBoard({ boardId: newBoardId, updates: data })
     } else {
       create(data)
         .then(response => {
-          setNewBoardId(response.data.id);
+          setNewBoardId(response.data.createBoard.board.id);
           moveToNextStep();
         })
         .catch(error => message.error(`Could not create a board. ${error}`));
