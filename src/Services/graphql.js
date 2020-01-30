@@ -347,6 +347,10 @@ export const queries = {
     boards { id, name, imageUrl, components { id, name } }
   }`,
 
+  board: gql`query ($id: ID!) {
+      board(id: $id) { id, name, description, imageUrl }
+  }`,
+
   createBoard: gql`
     mutation createBoard(
       $name: String!,
