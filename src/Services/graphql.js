@@ -422,9 +422,41 @@ export const queries = {
     subscription { boardDeleted }
   `,
 
+  // Components
+
+  createComponent: gql`
+    mutation createComponent(
+      $boardId: ID!,
+      $name: String!,
+      $description: String
+    ) {
+      createComponent(
+        boardId: $boardId,
+        name: $name,
+        description: $description,
+      ) {
+        component {
+          id
+          name
+          description
+        }
+      }
+    }
+  `,
+
   componentsForBoard: gql`
     query getComponentsForBoard($boardId: ID!) {
-      componentsForBoard(boardId: $boardId) { id, name }
+      componentsForBoard(boardId: $boardId) { id, name, description }
+    }
+  `,
+
+  componentAdded: gql`
+    subscription {
+      componentAdded {
+        id
+        name
+        description
+      }
     }
   `,
 };

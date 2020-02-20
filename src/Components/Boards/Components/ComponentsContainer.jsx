@@ -1,73 +1,62 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
-import { getComponents } from '../../../Services/api';
+import { Query } from "react-apollo";
 
-import { Alert, Collapse, Empty, Icon } from 'antd';
+import { queries } from "../../../Services/graphql";
 
-import Component from './Component';
+import { Empty, Result, Spin } from 'antd';
+
+import ComponentList from "./ComponentList";
 
 const ComponentsContainer = ({ boardId }) => {
-  const [components, setComponents] = useState();
-  const [error, setError] = useState();
+  const subscribe = subscribeToMore => {
+    subscribeToMore({
+      document: queries.componentAdded,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev;
 
-  const getComponentsAsync = async () => {
-    await getComponents(boardId)
-      .then(response => setComponents(response.data))
-      .catch(error => setError(error));
-  }
+        const newComponent = subscriptionData.data.componentAdded;
 
-  useEffect(
-    () => { getComponentsAsync(); },
-    [boardId]
-  );
-
-  const { Panel } = Collapse;
+        return Object.assign({}, prev, {
+          components: [newComponent, ...prev.components],
+          __typename: prev.components.__typename
+        });
+      }
+    });
+  };
 
   return (
-    <React.Fragment>
-      {error &&
-        <Alert description="Could not fetch components." message="Error" showIcon type="error" />
-      }
+    <Query query={queries.componentsForBoard} variables={{ boardId }}>
+      {({ loading, error, data, subscribeToMore }) => {
+        useEffect(() => subscribe(subscribeToMore), []);
 
-      {!error &&
-        components &&
-        !!components.length &&
-        <Collapse>
-          {
-            components.map(component =>
-              <Panel
-                extra={
-                  <Link to={`/components/${component.id}`} target="_blank">
-                    <Icon type="profile" />
-                  </Link>
-                }
-                header={
-                  <span>
-                    <img
-                      alt={component.name}
-                      src={component.image || require('../../../Assets/Images/component-generic.svg')}
-                      className="component-image-icon"
-                    />
-                    {component.name}
-                  </span>
-                }
-                key={`component-panel-${component.id}`}
-              >
-                <Component component={component} />
-              </Panel>
-            )
-          }
-        </Collapse>
-      }
+        if (loading) return (
+          <div className="top-level-state">
+            <Spin />
+          </div>
+        );
 
-      {!error && (!components || !components.length) &&
-        <Empty
-          description="No components for this board."
-        />
-      }
-    </React.Fragment>
+        if (error) return (
+          <div className="top-level-state">
+            <Result
+              status="error"
+              title="Something's wrong"
+              subTitle={error.message}
+            />
+          </div>
+        );
+
+        if (!data || !data.componentsForBoard || !data.componentsForBoard.length) return (
+          <Empty
+            description="No components for this board."
+            className="top-level-state"
+          />
+        );
+
+        return <ComponentList components={data.componentsForBoard} />
+      }}
+    </Query>
   );
 };
 
