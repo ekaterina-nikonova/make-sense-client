@@ -65,7 +65,7 @@ const BoardView = ({ board }) => {
             </div>
             <img
               alt="board main"
-              src={board.imageUrl || require('../../Assets/Images/board-generic.svg')}
+              src={board.imageUrl || require('../../Assets/Icons/icon-board.svg')}
               className="board-main-image"
             />
           </Col>

@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 
 import { Card, Empty, Icon, Modal, Popconfirm } from 'antd';
 
+import BoardIcon from "../../Assets/Icons/BoardIcon";
+
 const BoardCard = ({ board, deleteBoard }) => {
   const [modalOpen, openModal] = useState();
 
@@ -38,7 +40,7 @@ const BoardCard = ({ board, deleteBoard }) => {
           cover={
             <img
               alt="board"
-              src={board.imageUrl || require('../../Assets/Images/board-generic.svg')}
+              src={board.imageUrl || require('../../Assets/Icons/icon-board-default.svg')}
             />
           }
         >
