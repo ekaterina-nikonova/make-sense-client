@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { useMutation } from "@apollo/react-hooks";
 
@@ -6,43 +6,11 @@ import { queries } from "../../Services/graphql";
 
 import { Col, Collapse, Empty, Icon, Popconfirm, Row, Typography, message } from "antd";
 
-const ProjectList = ({ projects, subscribeToMore }) => {
+const ProjectList = ({ projects }) => {
   const [deleteProject] = useMutation(queries.deleteProject);
-
-  useEffect(() => subscribe(subscribeToMore), []);
 
   const { Panel } = Collapse;
   const { Paragraph } = Typography;
-
-  const subscribe = subscribeToMore => {
-    subscribeToMore({
-      document: queries.projectAdded,
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) return prev;
-
-        const newProject = subscriptionData.data.projectAdded;
-
-        return Object.assign({}, prev, {
-          projects: [newProject, ...prev.projects],
-          __typename: prev.projects.__typename
-        })
-      }
-    });
-
-    subscribeToMore({
-      document: queries.projectDeleted,
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) return prev;
-
-        const deletedProject = subscriptionData.data.projectDeleted;
-
-        return Object.assign({}, prev, {
-          projects: prev.projects.filter(prj => prj.id !== deletedProject),
-          __typename: prev.projects.__typename
-        })
-      }
-    })
-  };
 
   const handleDelete = (e, id) => {
     e.stopPropagation();

@@ -27,6 +27,40 @@ function BoardsContainer({ location, match }) {
 
         <Query query={queries.boards}>
           {({ loading, error, data, subscribeToMore }) => {
+            useEffect(() => subscribe(subscribeToMore), []);
+
+            const subscribe = subscribeToMore => {
+              subscribeToMore({
+                document: queries.boardAdded,
+                updateQuery: (prev, { subscriptionData }) => {
+                  if (!subscriptionData.data) return prev;
+
+                  const newBoard = subscriptionData.data.boardAdded;
+
+                  if (prev.boards.map(brd => brd.id).includes(newBoard.id)) return prev;
+
+                  return Object.assign({}, prev, {
+                    boards: [newBoard, ...prev.boards],
+                    __typename: prev.boards.__typename
+                  });
+                }
+              });
+
+              subscribeToMore({
+                document: queries.boardDeleted,
+                updateQuery: (prev, { subscriptionData }) => {
+                  if (!subscriptionData.data) return prev;
+
+                  const deletedBoard = subscriptionData.data.boardDeleted;
+
+                  return Object.assign({}, prev, {
+                    boards: prev.boards.filter(brd => brd.id !== deletedBoard),
+                    __typename: prev.boards.__typename
+                  })
+                }
+              });
+            };
+
             if (loading) return (
               <div className="top-level-state">
                 <Spin />
@@ -76,40 +110,8 @@ BoardsContainer.propTypes = {
   match: PropTypes.object.isRequired
 };
 
-const BoardList = ({ boards, subscribeToMore }) => {
+const BoardList = ({ boards }) => {
   const [deleteBoard] = useMutation(queries.deleteBoard);
-
-  useEffect(() => subscribe(subscribeToMore), []);
-
-  const subscribe = subscribeToMore => {
-    subscribeToMore({
-      document: queries.boardAdded,
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) return prev;
-
-        const newBoard = subscriptionData.data.boardAdded;
-
-        return Object.assign({}, prev, {
-          boards: [newBoard, ...prev.boards],
-          __typename: prev.boards.__typename
-        });
-      }
-    });
-
-    subscribeToMore({
-      document: queries.boardDeleted,
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) return prev;
-
-        const deletedBoard = subscriptionData.data.boardDeleted;
-
-        return Object.assign({}, prev, {
-          boards: prev.boards.filter(brd => brd.id !== deletedBoard),
-          __typename: prev.boards.__typename
-        })
-      }
-    });
-  };
 
   const handleDelete = (e, id) => {
     e.stopPropagation();
