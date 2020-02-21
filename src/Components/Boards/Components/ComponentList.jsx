@@ -20,13 +20,13 @@ const ComponentList = ({ components }) => {
             }
             header={
               <span>
-                        <img
-                          alt={component.name}
-                          src={component.image || require('../../../Assets/Images/component-generic.svg')}
-                          className="component-image-icon"
-                        />
+                <img
+                  alt={component.name}
+                  src={component.image || require('../../../Assets/Images/component-generic.svg')}
+                  className="component-image-icon"
+                />
                 {component.name}
-                      </span>
+              </span>
             }
             key={`component-panel-${component.id}`}
           >

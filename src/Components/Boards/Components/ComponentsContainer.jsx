@@ -1,15 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { Query } from "react-apollo";
 
 import { queries } from "../../../Services/graphql";
 
-import { Empty, Result, Spin } from 'antd';
+import { Button, Empty, Icon, Result, Spin } from 'antd';
 
 import ComponentList from "./ComponentList";
+import NewComponentForm from "./NewComponentForm";
 
 const ComponentsContainer = ({ boardId }) => {
+  const [newComponentShows, setNewComponentShows] = useState(false);
+
   const subscribe = subscribeToMore => {
     subscribeToMore({
       document: queries.componentAdded,
@@ -18,45 +21,68 @@ const ComponentsContainer = ({ boardId }) => {
 
         const newComponent = subscriptionData.data.componentAdded;
 
+        if (prev.componentsForBoard.map(comp => comp.id).includes(newComponent.id)) return prev;
+
         return Object.assign({}, prev, {
-          components: [newComponent, ...prev.components],
-          __typename: prev.components.__typename
+          componentsForBoard: [newComponent, ...prev.componentsForBoard],
+          __typename: prev.componentsForBoard.__typename
         });
       }
     });
   };
 
+  const toggleNewComponent = () => setNewComponentShows(!newComponentShows);
+
   return (
-    <Query query={queries.componentsForBoard} variables={{ boardId }}>
-      {({ loading, error, data, subscribeToMore }) => {
-        useEffect(() => subscribe(subscribeToMore), []);
+    <React.Fragment>
+      <Button
+        type="primary"
+        shape="circle"
+        ghost
+        className="add-component-button"
+        onClick={toggleNewComponent}
+      >
+        <Icon type={newComponentShows ? 'minus' : 'plus'} />
+      </Button>
 
-        if (loading) return (
-          <div className="top-level-state">
-            <Spin />
-          </div>
-        );
+      { newComponentShows && <NewComponentForm boardId={boardId} /> }
 
-        if (error) return (
-          <div className="top-level-state">
-            <Result
-              status="error"
-              title="Something's wrong"
-              subTitle={error.message}
+      <Query query={queries.componentsForBoard} variables={{ boardId }}>
+        {({ loading, error, data, subscribeToMore }) => {
+          useEffect(() => subscribe(subscribeToMore), []);
+
+          if (loading) return (
+            <div className="top-level-state">
+              <Spin />
+            </div>
+          );
+
+          if (error) return (
+            <div className="top-level-state">
+              <Result
+                status="error"
+                title="Something's wrong"
+                subTitle={error.message}
+              />
+            </div>
+          );
+
+          if (!data || !data.componentsForBoard || !data.componentsForBoard.length) return (
+            <Empty
+              description="No components for this board."
+              className="top-level-state"
             />
-          </div>
-        );
+          );
 
-        if (!data || !data.componentsForBoard || !data.componentsForBoard.length) return (
-          <Empty
-            description="No components for this board."
-            className="top-level-state"
-          />
-        );
-
-        return <ComponentList components={data.componentsForBoard} />
-      }}
-    </Query>
+          return (
+              <ComponentList
+                components={data.componentsForBoard}
+                subscribeToMore={subscribeToMore}
+              />
+          );
+        }}
+      </Query>
+    </React.Fragment>
   );
 };
 
