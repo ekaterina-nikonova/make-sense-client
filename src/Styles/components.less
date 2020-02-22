@@ -1,3 +1,47 @@
 .add-component-button {
   margin-bottom: 1rem;
 }
+
+.components-container {
+  .ant-collapse-item:first-child {
+    padding-top: 4rem;
+  }
+
+  .ant-collapse-header {
+    display: flex;
+    align-items: center;
+  }
+
+  .ant-collapse > .ant-collapse-item > .ant-collapse-content {
+    background-color: .bgr-opacity-5(@info-color)[@result];
+    padding: 1rem;
+
+    @media (max-width: @mobile-display-width) {
+      padding: .5rem;
+    }
+  }
+
+  .list-component-title {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+
+    a {
+      padding-right: 1rem;
+    }
+
+    .list-project-name {
+      margin-bottom: 0;
+    }
+  }
+
+  .list-component-title-extras {
+    padding: 0 .5rem;
+  }
+
+
+  .component-image-icon {
+    height: 1.5rem;
+    margin-right: 1rem;
+  }
+}

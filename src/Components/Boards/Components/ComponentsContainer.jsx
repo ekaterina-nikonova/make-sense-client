@@ -75,10 +75,12 @@ const ComponentsContainer = ({ boardId }) => {
           );
 
           return (
+            <div className="components-container">
               <ComponentList
                 components={data.componentsForBoard}
                 subscribeToMore={subscribeToMore}
               />
+            </div>
           );
         }}
       </Query>
