@@ -444,6 +444,17 @@ export const queries = {
     }
   `,
 
+  deleteComponent: gql`
+    mutation deleteComponent($id: ID!) {
+      deleteComponent(id: $id) {
+        component {
+          id
+          name
+        }
+      }
+    }
+  `,
+
   componentsForBoard: gql`
     query getComponentsForBoard($boardId: ID!) {
       componentsForBoard(boardId: $boardId) { id, name, description }
@@ -457,6 +468,12 @@ export const queries = {
         name
         description
       }
+    }
+  `,
+
+  componentDeleted: gql`
+    subscription {
+      componentDeleted
     }
   `,
 };

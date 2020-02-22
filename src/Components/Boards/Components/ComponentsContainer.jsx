@@ -29,6 +29,20 @@ const ComponentsContainer = ({ boardId }) => {
         });
       }
     });
+
+    subscribeToMore({
+      document: queries.componentDeleted,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev;
+
+        const deletedComponent = subscriptionData.data.componentDeleted;
+
+        return Object.assign({}, prev, {
+          componentsForBoard: prev.componentsForBoard.filter(comp => comp.id !== deletedComponent),
+          __typename: prev.componentsForBoard.__typename
+        })
+      }
+    });
   };
 
   const toggleNewComponent = () => setNewComponentShows(!newComponentShows);

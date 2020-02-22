@@ -1,16 +1,26 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useMutation } from "@apollo/react-hooks";
 
-import {Button, Collapse, Icon, Popconfirm, Typography} from "antd";
+import { queries } from "../../../Services/graphql";
+
+import { Collapse, Icon, Popconfirm, message } from "antd";
 
 import Component from "./Component";
 
 const ComponentList = ({ components }) => {
-  const { Panel } = Collapse;
-  const { Paragraph } = Typography;
+  const [deleteComponent] = useMutation(
+    queries.deleteComponent,
+    { refetchQueries: [{ query: queries.projectsBoardsComponents }] }
+  );
 
-  const handleDelete = (e, componentId) => {
+  const { Panel } = Collapse;
+
+  const handleDelete = (e, id) => {
     e.stopPropagation();
+    deleteComponent({ variables: { id } })
+      .then(res => message.success(`Deleted ${res.data.deleteComponent.component.name}`))
+      .catch(err => message.error('Could not delete component.'))
   };
 
   return (
