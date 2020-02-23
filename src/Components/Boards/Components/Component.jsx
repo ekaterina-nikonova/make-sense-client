@@ -1,35 +1,35 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useMutation } from "@apollo/react-hooks";
 
-import { updateComponent } from '../../../Services/api';
+import { queries } from "../../../Services/graphql";
 
-import AutoForm from 'uniforms-antd/AutoForm';
-import LongTextField from 'uniforms-antd/LongTextField';
-import SimpleSchema from 'simpl-schema';
-import TextField from 'uniforms-antd/TextField';
+import { Typography, message } from "antd";
 
 const Component = ({ component }) => {
-  const model = component => ({
-    name: component.name || '',
-    description: component.description || ''
-  });
+  const [updateComponent] = useMutation(
+    queries.updateComponent,
+    { refetchQueries: [{ query: queries.projectsBoardsComponents }] }
+  );
 
-  const schema = new SimpleSchema({
-    name: String,
-    description: String
-  },
-  {
-    requiredByDefault: false
-  });
+  const { Paragraph } = Typography;
+
+  const updateName = str => {
+    updateComponent({
+      variables: { id: component.id, name: str }
+    }).then(res => message.success(`${component.name} saved.`))
+      .catch(err => message.error('Could not update.'));
+  };
+
+  const updateDescription = str => {
+    updateComponent({
+      variables: { id: component.id, description: str }
+    }).then(res => message.success(`${component.name} saved.`))
+      .catch(err => message.error('Could not update.'));
+  };
 
   return (
-    <AutoForm
-      autosave
-      autosaveDelay={500}
-      model={model(component)}
-      onSubmit={data => updateComponent({ componentId: component.id, updates: data })}
-      schema={schema}
-    >
+    <React.Fragment>
       {component.image &&
         <img
           alt={component.name}
@@ -37,9 +37,11 @@ const Component = ({ component }) => {
           className="component-image"
         />
       }
-      <TextField name="name" />
-      <LongTextField name="description" />
-    </AutoForm>
+
+      <Paragraph editable={{ onChange: updateName }}>{ component.name }</Paragraph>
+
+      <Paragraph editable={{ onChange: updateDescription }}>{ component.description }</Paragraph>
+    </React.Fragment>
   );
 };
 

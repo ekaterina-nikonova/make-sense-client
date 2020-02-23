@@ -444,6 +444,28 @@ export const queries = {
     }
   `,
 
+  updateComponent: gql`
+    mutation updateComponent(
+      $id: ID!
+      $name: String
+      $description: String
+    ) {
+      updateComponent(
+        id: $id
+        attributes: {
+          name: $name
+          description: $description
+        }
+      ) {
+        component {
+          id
+          name
+          description
+        }
+      }
+    }
+  `,
+
   deleteComponent: gql`
     mutation deleteComponent($id: ID!) {
       deleteComponent(id: $id) {
