@@ -11,7 +11,7 @@ import LongTextField from 'uniforms-antd/LongTextField';
 import SimpleSchema from 'simpl-schema';
 import TextField from 'uniforms-antd/TextField';
 
-import EmptyFullPage from '../UI/EmptyFullPage';
+import ComponentsContainer from "./Components/ComponentsContainer";
 
 const AddBoard = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -102,7 +102,7 @@ const AddBoard = () => {
   }, {
     content: (
       <div>
-        <EmptyFullPage description="Soon you'll be able to add components here." />
+        <ComponentsContainer boardId={newBoardId} />
         <Button type="primary" onClick={resetAndClose} className="button-right">
           <span>Done</span>
           <Icon type="check" />
