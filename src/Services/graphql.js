@@ -439,6 +439,7 @@ export const queries = {
           id
           name
           description
+          imageUrl
         }
       }
     }
@@ -461,6 +462,7 @@ export const queries = {
           id
           name
           description
+          imageUrl
         }
       }
     }
@@ -479,7 +481,7 @@ export const queries = {
 
   componentsForBoard: gql`
     query getComponentsForBoard($boardId: ID!) {
-      componentsForBoard(boardId: $boardId) { id, name, description }
+      componentsForBoard(boardId: $boardId) { id, name, description, imageUrl }
     }
   `,
 
