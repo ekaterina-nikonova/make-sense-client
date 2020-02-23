@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import { Card, Empty, Icon, Modal, Popconfirm } from 'antd';
+import { Button, Card, Icon, Modal, Popconfirm } from 'antd';
 
-import BoardIcon from "../../Assets/Icons/BoardIcon";
+import ComponentsContainer from "./Components/ComponentsContainer";
 
 const BoardCard = ({ board, deleteBoard }) => {
-  const [modalOpen, openModal] = useState();
+  const [modalOpen, openModal] = useState(false);
 
   const { Meta } = Card;
 
@@ -51,14 +51,16 @@ const BoardCard = ({ board, deleteBoard }) => {
       </Link>
 
       <Modal
-        onOk={() => openModal(false)}
+        footer={
+          <Button onClick={() => openModal(false)}>
+            Close
+          </Button>
+        }
         onCancel={() => openModal(false)}
-        title="Add component"
+        title={`Components for ${board.name}`}
         visible={modalOpen}
       >
-        <Empty
-          description="Soon you'll be able to create here a new component for the selected board."
-        />
+        <ComponentsContainer boardId={board.id} />
       </Modal>
     </React.Fragment>
   );
