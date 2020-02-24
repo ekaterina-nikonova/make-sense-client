@@ -424,6 +424,10 @@ export const queries = {
 
   // Components
 
+  components: gql`{
+    components { id name description}
+  }`,
+
   createComponent: gql`
     mutation createComponent(
       $boardId: ID!,
