@@ -9,6 +9,7 @@ import { Button, Empty, Icon, Result, Select, Spin } from "antd";
 
 import EmptyFullPage from '../UI/EmptyFullPage';
 import TopLevelMenu from "../Layout/TopLevelMenu";
+import ComponentContainer from "./ComponentContainer";
 import AllComponentsList from "./AllComponentsList";
 import NewComponentForm from "../Boards/Components/NewComponentForm";
 
@@ -21,7 +22,7 @@ const AllComponentsContainer = ({ location, match }) => {
       <TopLevelMenu url={url} currentPath={pathname} item="components" />
 
       <Switch>
-        <Route path="/components/:id" component={ComponentPlaceholder} />
+        <Route path="/components/:id" component={ComponentContainer} />
         <Route path="/components" component={AllComponents} />
       </Switch>
     </React.Fragment>
@@ -163,11 +164,6 @@ const SelectBoard = ({ setBoardId }) => {
     </Select>
   );
 };
-
-const ComponentPlaceholder = ({ match }) =>
-  <EmptyFullPage
-    description={`A page for the component with id ${match.params.id} will be here soon.`}
-  />;
 
 const WrappedAllComponentsContainer = ({ location, match }) => (
   <LoggedInContext.Consumer>

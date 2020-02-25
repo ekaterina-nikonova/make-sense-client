@@ -443,6 +443,16 @@ export const queries = {
     }
   }`,
 
+  component: gql`query ($id: ID!) {
+    component(id: $id) {
+      id
+      name
+      description
+      projects { id name description }
+      boards { id name imageUrl }
+    }
+  }`,
+
   createComponent: gql`
     mutation createComponent(
       $boardId: ID!,
