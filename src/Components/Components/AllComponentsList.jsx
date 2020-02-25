@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useMutation } from "@apollo/react-hooks";
+import {useMutation, useQuery} from "@apollo/react-hooks";
 
 import { queries } from "../../Services/graphql";
 
-import { Button, Collapse, Icon, Popconfirm, Tooltip, Typography, Upload, message } from "antd";
+import { Button, Collapse, Empty, Icon, Popconfirm, Select, Tooltip, Typography, Upload, message } from "antd";
 
 import getUploadProps from "../../Services/getUploadProps";
+
+import ComponentDetails from "./ComponentDetails";
 
 const ComponentList = ({ components }) => {
   const [fileList, updateFileList] = useState([]);
@@ -101,41 +103,6 @@ const ComponentList = ({ components }) => {
         )
       }
     </Collapse>
-  );
-};
-
-const ComponentDetails = ({ component }) => {
-  const { Paragraph, Text } = Typography;
-
-  const [updateComponent] = useMutation(
-    queries.updateComponent,
-    { refetchQueries: [{ query: queries.projectsBoardsComponents }] }
-  );
-
-  const updateName = (id, componentName, str) => {
-    updateComponent({
-      variables: { id, name: str }
-    }).then(res => message.success(`${componentName} saved.`))
-      .catch(err => message.error('Could not update.'));
-  };
-
-  const updateDescription = (id, componentName, str) => {
-    updateComponent({
-      variables: { id, description: str }
-    }).then(res => message.success(`${componentName} saved.`))
-      .catch(err => message.error('Could not update.'));
-  };
-
-  return (
-    <React.Fragment>
-      <Paragraph editable={{ onChange: str => updateName(component.id, component.name, str) }}>
-        { component.name }
-      </Paragraph>
-
-      <Paragraph editable={{ onChange: str => updateDescription(component.id, component.name, str) }}>
-        { component.description || <Text disabled>No description</Text> }
-      </Paragraph>
-    </React.Fragment>
   );
 };
 

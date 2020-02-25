@@ -340,7 +340,7 @@ export const queries = {
   // Boards
 
   boardNames: gql` {
-    boards { id, name }
+    boards { id, name, imageUrl }
   }`,
 
   boards: gql` {
@@ -425,7 +425,13 @@ export const queries = {
   // Components
 
   components: gql`{
-    components { id name description}
+    components {
+      id
+      name
+      description
+      projects { id name description }
+      boards { id name imageUrl }
+    }
   }`,
 
   createComponent: gql`
@@ -454,12 +460,14 @@ export const queries = {
       $id: ID!
       $name: String
       $description: String
+      $boards: [String!]
     ) {
       updateComponent(
         id: $id
         attributes: {
           name: $name
           description: $description
+          boards: $boards
         }
       ) {
         component {
@@ -467,6 +475,7 @@ export const queries = {
           name
           description
           imageUrl
+          boards { id name }
         }
       }
     }
