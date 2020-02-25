@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import { Redirect, Route, Switch } from "react-router-dom";
-import { Query } from "react-apollo";
+import { Query, useQuery } from "react-apollo";
 
 import { LoggedInContext } from "../../App";
 import { queries } from "../../Services/graphql";
 
-import { Button, Empty, Icon, Result, Spin } from "antd";
+import { Button, Empty, Icon, Result, Select, Spin } from "antd";
 
 import EmptyFullPage from '../UI/EmptyFullPage';
 import TopLevelMenu from "../Layout/TopLevelMenu";
@@ -29,6 +29,7 @@ const AllComponentsContainer = ({ location, match }) => {
 };
 
 const AllComponents = () => {
+  const [boardId, setBoardId] = useState('');
   const [newComponentShows, setNewComponentShows] = useState(false);
 
   const subscribe = subscribeToMore => {
@@ -77,7 +78,9 @@ const AllComponents = () => {
         <Icon type={newComponentShows ? 'minus' : 'plus'} />
       </Button>
 
-      { newComponentShows && <NewComponentForm boardId={'boardId'} /> }
+      { newComponentShows && <SelectBoard setBoardId={setBoardId} /> }
+
+      { newComponentShows && boardId && <NewComponentForm boardId={boardId} /> }
 
       <Query query={queries.components}>
         {({ loading, error, data, subscribeToMore }) => {
@@ -117,6 +120,47 @@ const AllComponents = () => {
         }}
       </Query>
     </div>
+  );
+};
+
+const SelectBoard = ({ setBoardId }) => {
+  const { loading, error, data } = useQuery(queries.boards);
+
+  const { Option } = Select;
+
+  const handleSelect = id => setBoardId(id);
+
+  return (
+    <Select
+      onChange={handleSelect}
+      placeholder={
+        (error && (
+          <span>
+              <Icon type="exclamation-circle" theme="twoTone" twoToneColor="red" /> Could not load
+            </span>
+        )) ||
+        (loading && (<span><Icon type="loading" /> Loading...</span>)) ||
+        (data && 'Select a board') ||
+        (<span><Icon type="frown" /> Something went wrong</span>)
+      }
+      filterOption={(input, option) =>
+        option.props.children[2].toLowerCase().indexOf(input.toLowerCase()) >= 0
+      }
+      className="board-select"
+    >
+      { data && data.boards && data.boards.map(b =>
+        <Option
+          key={b.id}
+          value={b.id}
+        >
+          <img
+            src={b.imageUrl || require("../../Assets/Icons/icon-board.svg")}
+            alt={b.name}
+            className="board-select-image"
+          /> { b.name }
+        </Option>
+      ) }
+    </Select>
   );
 };
 

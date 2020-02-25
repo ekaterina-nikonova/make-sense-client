@@ -9,7 +9,12 @@ const NewComponentForm = ({ form, boardId }) => {
   const [error, setError] = useState('');
   const [createComponent] = useMutation(
     queries.createComponent,
-    {refetchQueries: [{ query: queries.projectsBoardsComponents }]}
+    { refetchQueries: [
+      { query: queries.projectsBoardsComponents },
+      { query: queries.componentsForBoard, variables: { boardId } },
+      { query: queries.projects },
+      { query: queries.components }
+    ] }
   );
 
   const { Item } = Form;

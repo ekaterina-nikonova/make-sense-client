@@ -74,7 +74,7 @@ const BoardSelect = ({ component }) => {
               <Icon type="exclamation-circle" theme="twoTone" twoToneColor="red" /> Could not load
             </span>
           )) ||
-          (!loading && (<span><Icon type="loading" /> Loading...</span>)) ||
+          (loading && (<span><Icon type="loading" /> Loading...</span>)) ||
           (data && 'Select boards') ||
           (<span><Icon type="frown" /> Something went wrong</span>)
         }

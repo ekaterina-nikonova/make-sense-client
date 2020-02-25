@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import {useMutation, useQuery} from "@apollo/react-hooks";
+import { useMutation } from "@apollo/react-hooks";
 
 import { queries } from "../../Services/graphql";
 
-import { Button, Collapse, Empty, Icon, Popconfirm, Select, Tooltip, Typography, Upload, message } from "antd";
+import { Button, Collapse, Icon, Popconfirm, Tooltip, Upload, message } from "antd";
 
 import getUploadProps from "../../Services/getUploadProps";
 
@@ -20,7 +20,11 @@ const ComponentList = ({ components }) => {
 
   const [deleteComponent] = useMutation(
     queries.deleteComponent,
-    { refetchQueries: [{ query: queries.projectsBoardsComponents }] }
+    { refetchQueries: [
+      { query: queries.projectsBoardsComponents },
+      { query: queries.boards },
+      { query: queries.projects }
+    ] }
   );
 
   const { Panel } = Collapse;
