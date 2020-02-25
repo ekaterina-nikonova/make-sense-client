@@ -8,8 +8,8 @@ import { queries } from "../../Services/graphql";
 import { Col, Divider, Empty, Icon, Row, Tabs, Typography, Upload, message } from 'antd';
 
 import BoardDescriptionForm from './BoardDescriptionForm';
+import ProjectsContainer from './ProjectsContainer';
 import ComponentsContainer from './Components/ComponentsContainer';
-import EmptyFullPage from '../UI/EmptyFullPage';
 
 const BoardView = ({ board }) => {
   const [fileList, updateFileList] = useState([]);
@@ -97,7 +97,7 @@ const BoardView = ({ board }) => {
               </TabPane>
 
               <TabPane tab="Projects" key="2">
-                <EmptyFullPage />
+                <ProjectsContainer boardId={board.id} />
               </TabPane>
 
               <TabPane tab="Components" key="3">

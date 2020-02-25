@@ -60,6 +60,15 @@ export const queries = {
     projects { id, name, description, chapterCount, componentCount }
   }`,
 
+  projectsForBoard: gql`query ($boardId: ID!) {
+    projectsForBoard(boardId: $boardId) {
+      id
+      name
+      description
+    }
+  }
+  `,
+
   project: gql`query ($id: ID!){
     project(id: $id) {
       id
