@@ -438,6 +438,7 @@ export const queries = {
       id
       name
       description
+      imageUrl
       projects { id name description }
       boards { id name imageUrl }
     }
@@ -448,6 +449,7 @@ export const queries = {
       id
       name
       description
+      imageUrl
       projects { id name description }
       boards { id name imageUrl }
     }
