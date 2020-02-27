@@ -167,7 +167,6 @@ const Section = ({ projectId, chapterId, section }) => {
           <img
             alt="illustration for the section"
             src={section.imageUrl}
-            className="board-main-image"
           />
         </div>
       )}
