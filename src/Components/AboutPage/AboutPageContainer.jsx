@@ -108,6 +108,10 @@ const AboutPageContainer = () => {
   );
 
   const apiLibraries = [{
+    title: 'GraphQL Ruby',
+    description: 'Handle GraphQL requests to fetch and modify projects, boards, and components',
+    link: 'https://graphql-ruby.org'
+  }, {
     title: 'JWT Sessions',
     description: 'Manage sessions using JSON Web Tokens',
     link: 'https://github.com/tuwukee/jwt_sessions'
@@ -126,6 +130,10 @@ const AboutPageContainer = () => {
   );
 
   const reactLibraries = [{
+    title: 'Apollo GraphQL',
+    description: 'Handle requests to the API (projects, boards, and components are being processed with GraphQL)',
+    link: 'https://www.apollographql.com'
+  }, {
     title: 'Axios',
     description: 'Send HTTP requests to the API, handle headers and credentials',
     link: 'https://github.com/axios/axios'
