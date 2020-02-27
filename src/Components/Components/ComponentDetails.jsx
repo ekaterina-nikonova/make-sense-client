@@ -4,6 +4,7 @@ import { useMutation, useQuery } from "@apollo/react-hooks";
 import { queries } from "../../Services/graphql";
 
 import { Icon, Select, Typography, message } from "antd";
+import ProjectList from "../Projects/ProjectList";
 
 const ComponentDetails = ({ component }) => {
   const { Paragraph, Text, Title } = Typography;
@@ -38,6 +39,14 @@ const ComponentDetails = ({ component }) => {
       </Paragraph>
 
       <BoardSelect component={component} />
+
+      { component.projects && !!component.projects.length && (
+        <div className="component-details-project-list">
+          <Text type="secondary" className="component-details-label">Projects:</Text>
+          <ProjectList projects={component.projects} />
+        </div>
+      ) }
+
     </React.Fragment>
   );
 };
@@ -60,9 +69,7 @@ const BoardSelect = ({ component }) => {
 
   return (
     <React.Fragment>
-      <label htmlFor="board-select">
-        <Text type="secondary">Boards:</Text>
-      </label>
+      <Text type="secondary" className="component-details-label">Boards:</Text>
 
       <Select
         mode="multiple"
@@ -82,7 +89,6 @@ const BoardSelect = ({ component }) => {
           option.props.children[2].toLowerCase().indexOf(input.toLowerCase()) >= 0
         }
         className="board-select"
-        id="board-select"
       >
         { data && data.boards && data.boards.map(b =>
           <Option

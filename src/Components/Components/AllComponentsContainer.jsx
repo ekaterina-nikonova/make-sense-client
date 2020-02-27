@@ -147,7 +147,7 @@ const SelectBoard = ({ setBoardId }) => {
       filterOption={(input, option) =>
         option.props.children[2].toLowerCase().indexOf(input.toLowerCase()) >= 0
       }
-      className="board-select"
+      className="board-select new-component-form"
     >
       { data && data.boards && data.boards.map(b =>
         <Option

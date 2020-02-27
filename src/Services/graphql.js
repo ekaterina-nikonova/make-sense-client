@@ -439,7 +439,7 @@ export const queries = {
       name
       description
       imageUrl
-      projects { id name description }
+      projects { id name description chapterCount componentCount }
       boards { id name imageUrl }
     }
   }`,
@@ -450,7 +450,7 @@ export const queries = {
       name
       description
       imageUrl
-      projects { id name description }
+      projects { id name description chapterCount componentCount }
       boards { id name imageUrl }
     }
   }`,

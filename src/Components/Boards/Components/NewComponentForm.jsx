@@ -42,7 +42,7 @@ const NewComponentForm = ({ form, boardId }) => {
   };
 
   return (
-    <Form onSubmit={submit}>
+    <Form onSubmit={submit} className="new-component-form">
       { error &&
         <Alert
           type="error"
