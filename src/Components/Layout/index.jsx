@@ -10,7 +10,7 @@ import AboutPageContainer from "../AboutPage/AboutPageContainer";
 import MainPageContent from './MainPageContent';
 import ProjectsContainer from "../Projects/ProjectsContainer";
 import BoardsContainer from '../Boards/BoardsContainer';
-import ComponentsContainer from '../Components/ComponentsContainer';
+import AllComponentsContainer from '../Components/AllComponentsContainer';
 import ProfileContainer from "../Profile/ProfileContainer";
 import AdminPanelContainer from '../AdminPanel/AdminPanelContainer';
 import EmptyFullPage from '../UI/EmptyFullPage';
@@ -34,7 +34,7 @@ export default () => {
             <Route path="/about" component={AboutPageContainer} />
             <Route path="/projects" component={ProjectsContainer} />
             <Route path="/boards" component={BoardsContainer} />
-            <Route path="/components" component={ComponentsContainer} />
+            <Route path="/components" component={AllComponentsContainer} />
             <Route path="/profile" component={ProfileContainer} />
             <Route path="/admin" component={AdminPanelContainer} />
             <Route path="/signup" component={SignupPage} />

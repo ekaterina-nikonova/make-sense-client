@@ -1,15 +1,17 @@
-import React, { useDispatch } from 'reactn';
+import React from 'react';
 import PropTypes from 'prop-types';
+import { useMutation } from "@apollo/react-hooks";
 
-import { updateBoard } from '../../Services/api';
+import { queries } from "../../Services/graphql";
 
+import { message } from "antd";
 import AutoForm from 'uniforms-antd/AutoForm';
 import LongTextField from 'uniforms-antd/LongTextField';
 import SimpleSchema from 'simpl-schema';
 import TextField from 'uniforms-antd/TextField';
 
 const BoardDescriptionForm = ({ board }) => {
-  const dispatchUpdate = useDispatch('boardReducer');
+  const [updateBoard] = useMutation(queries.updateBoard);
 
   const schema = new SimpleSchema({
     name: String,
@@ -25,10 +27,8 @@ const BoardDescriptionForm = ({ board }) => {
   });
 
   const update = data => {
-    const updatedBoard = { ...board, ...data };
-    const action = { action: 'update', data: updatedBoard };
-    updateBoard({ boardId: board.id, updates: data })
-      .then(response => dispatchUpdate(action));
+    updateBoard({ variables: { id: board.id, ...data } })
+      .catch(err => message.error('Could not update board.'));
   };
 
   return (

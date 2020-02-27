@@ -1,45 +1,41 @@
-import React, { useGlobal } from 'reactn';
-import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
+import { Query } from "react-apollo";
 
-import { getBoards } from '../../Services/api';
+import { queries } from "../../Services/graphql";
 
-import { Alert } from 'antd';
+import { Alert, Spin } from 'antd';
 
 import BoardView from './BoardView';
 
 const BoardContainer = ({ match }) => {
-  const [board, setBoard] = useState();
-  const [error, setError] = useState();
-  const [boards, setBoards] = useGlobal('boards');
-
   const { params } = match;
-
-  useEffect(() => { getBoardAsync(params); }, [boards]);
-
-  const getBoardAsync = async params => {
-    if (boards.length) {
-      setBoard(boards.find(b => b.id === params.id));
-    }
-  };
-
-  useEffect(() => { getBoardsAsync(); }, [params]);
-
-  const getBoardsAsync = async () => {
-    await getBoards()
-      .then(boards => setBoards(boards.data))
-      .catch(error => setError(error));
-  };
+  const { id } = params;
 
   return (
     <div className="board-container">
-      {error &&
-        <div style={{ flexShrink: '1' }}>
-          <Alert description="Could not fetch board info." message="Error" showIcon type="error" />
-        </div>
-      }
+      <Query query={queries.board} variables={{ id }}>
+        {({ loading, error, data, subscribeToMore }) => {
+          if (loading) return (
+            <div className="top-level-state">
+              <Spin />
+            </div>
+          );
 
-      { !error && board && <BoardView board={board} /> }
+          if (error) return (
+            <div className="top-level-state">
+              <Alert
+                description="Could not fetch board info."
+                message="Error"
+                showIcon
+                type="error"
+              />
+            </div>
+          );
+
+          return <BoardView board={data.board} />;
+        }}
+      </Query>
     </div>
   );
 };

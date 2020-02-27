@@ -1,17 +1,20 @@
-import React, { useDispatch, useState } from 'reactn';
+import React, { useState } from 'reactn';
 import PropTypes from 'prop-types';
+import { useMutation } from "@apollo/react-hooks";
 
 import { baseUrl } from '../../Services/api';
+import { queries } from "../../Services/graphql";
 
 import { Col, Divider, Empty, Icon, Row, Tabs, Typography, Upload, message } from 'antd';
 
 import BoardDescriptionForm from './BoardDescriptionForm';
+import ProjectsContainer from './ProjectsContainer';
 import ComponentsContainer from './Components/ComponentsContainer';
-import EmptyFullPage from '../UI/EmptyFullPage';
 
 const BoardView = ({ board }) => {
   const [fileList, updateFileList] = useState([]);
-  const dispatchUpdate = useDispatch('boardReducer');
+
+  const [updateBoard] = useMutation(queries.updateBoard);
 
   const Dragger = Upload.Dragger;
   const { TabPane } = Tabs;
@@ -27,22 +30,18 @@ const BoardView = ({ board }) => {
     fileList: fileList,
     name: 'file',
     onChange(info) {
-      const file = info.file;
-
       if (info.file.status === 'done') {
-        dispatchUpdate({
-          action: 'update',
-          data: { ...board, image: info.file.response.data.url }
-        });
-        message.success(`File ${info.file.name} uploaded.`);
-        file.url = info.file.response.data.url;
+        const imageUrl = info.file.response.data.url;
+        updateBoard({ variables: { id: board.id, imageUrl } })
+          .then(res => message.success(`File ${info.file.name} uploaded.`))
+          .catch(err => message.error('Could not update board.'));
       }
 
       if (info.file.status === 'error') {
         message.error(`Could not upload file ${info.file.name}`);
       }
 
-      updateFileList([file]);
+      updateFileList([info.file]);
     }
   };
 
@@ -66,7 +65,7 @@ const BoardView = ({ board }) => {
             </div>
             <img
               alt="board main"
-              src={board.image || require('../../Assets/Images/board-generic.svg')}
+              src={board.imageUrl || require('../../Assets/Icons/icon-board.svg')}
               className="board-main-image"
             />
           </Col>
@@ -98,7 +97,7 @@ const BoardView = ({ board }) => {
               </TabPane>
 
               <TabPane tab="Projects" key="2">
-                <EmptyFullPage />
+                <ProjectsContainer boardId={board.id} />
               </TabPane>
 
               <TabPane tab="Components" key="3">

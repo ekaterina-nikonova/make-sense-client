@@ -60,6 +60,15 @@ export const queries = {
     projects { id, name, description, chapterCount, componentCount }
   }`,
 
+  projectsForBoard: gql`query ($boardId: ID!) {
+    projectsForBoard(boardId: $boardId) {
+      id
+      name
+      description
+    }
+  }
+  `,
+
   project: gql`query ($id: ID!){
     project(id: $id) {
       id
@@ -340,16 +349,189 @@ export const queries = {
   // Boards
 
   boardNames: gql` {
-    boards { id, name }
+    boards { id, name, imageUrl }
   }`,
 
   boards: gql` {
-    boards { id, name, components { id, name } }
+    boards { id, name, imageUrl, components { id, name } }
   }`,
+
+  board: gql`query ($id: ID!) {
+      board(id: $id) { id, name, description, imageUrl }
+  }`,
+
+  createBoard: gql`
+    mutation createBoard(
+      $name: String!,
+      $description: String,
+    ) {
+      createBoard(
+        name: $name,
+        description: $description,
+      ) {
+        board {
+          id
+          name
+          imageUrl
+          components { id }
+        }
+      }
+    }
+  `,
+
+  updateBoard: gql`
+    mutation updateBoard(
+      $id: ID!
+      $name: String
+      $description: String
+      $components: [String!]
+    ) {
+      updateBoard(
+        id: $id
+        attributes: {
+          name: $name
+          description: $description
+          components: $components
+        }
+      ) {
+        board {
+          id
+          name
+          description
+          imageUrl
+          components { id, name }
+        }
+      }
+    }
+  `,
+
+  deleteBoard: gql`
+    mutation deleteBoard($id: ID!) {
+      deleteBoard(id: $id) {
+        board {
+          id
+          name
+        }
+      }
+    }
+  `,
+
+  boardAdded: gql`
+    subscription {
+      boardAdded {
+        id
+        name
+        imageUrl
+        components { id }
+      }
+    }
+  `,
+
+  boardDeleted: gql`
+    subscription { boardDeleted }
+  `,
+
+  // Components
+
+  components: gql`{
+    components {
+      id
+      name
+      description
+      imageUrl
+      projects { id name description chapterCount componentCount }
+      boards { id name imageUrl }
+    }
+  }`,
+
+  component: gql`query ($id: ID!) {
+    component(id: $id) {
+      id
+      name
+      description
+      imageUrl
+      projects { id name description chapterCount componentCount }
+      boards { id name imageUrl }
+    }
+  }`,
+
+  createComponent: gql`
+    mutation createComponent(
+      $boardId: ID!,
+      $name: String!,
+      $description: String
+    ) {
+      createComponent(
+        boardId: $boardId,
+        name: $name,
+        description: $description,
+      ) {
+        component {
+          id
+          name
+          description
+          imageUrl
+        }
+      }
+    }
+  `,
+
+  updateComponent: gql`
+    mutation updateComponent(
+      $id: ID!
+      $name: String
+      $description: String
+      $boards: [String!]
+    ) {
+      updateComponent(
+        id: $id
+        attributes: {
+          name: $name
+          description: $description
+          boards: $boards
+        }
+      ) {
+        component {
+          id
+          name
+          description
+          imageUrl
+          boards { id name }
+        }
+      }
+    }
+  `,
+
+  deleteComponent: gql`
+    mutation deleteComponent($id: ID!) {
+      deleteComponent(id: $id) {
+        component {
+          id
+          name
+        }
+      }
+    }
+  `,
 
   componentsForBoard: gql`
     query getComponentsForBoard($boardId: ID!) {
-      componentsForBoard(boardId: $boardId) { id, name }
+      componentsForBoard(boardId: $boardId) { id, name, description, imageUrl }
+    }
+  `,
+
+  componentAdded: gql`
+    subscription {
+      componentAdded {
+        id
+        name
+        description
+      }
+    }
+  `,
+
+  componentDeleted: gql`
+    subscription {
+      componentDeleted
     }
   `,
 };

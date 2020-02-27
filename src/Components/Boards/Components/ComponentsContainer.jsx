@@ -1,72 +1,103 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
-import { getComponents } from '../../../Services/api';
+import { Query } from "react-apollo";
 
-import { Alert, Collapse, Empty, Icon } from 'antd';
+import { queries } from "../../../Services/graphql";
 
-import Component from './Component';
+import { Button, Empty, Icon, Result, Spin } from 'antd';
+
+import ComponentList from "./ComponentList";
+import NewComponentForm from "./NewComponentForm";
 
 const ComponentsContainer = ({ boardId }) => {
-  const [components, setComponents] = useState();
-  const [error, setError] = useState();
+  const [newComponentShows, setNewComponentShows] = useState(false);
 
-  const getComponentsAsync = async () => {
-    await getComponents(boardId)
-      .then(response => setComponents(response.data))
-      .catch(error => setError(error));
-  }
+  const subscribe = subscribeToMore => {
+    subscribeToMore({
+      document: queries.componentAdded,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev;
 
-  useEffect(
-    () => { getComponentsAsync(); },
-    [boardId]
-  );
+        const newComponent = subscriptionData.data.componentAdded;
 
-  const { Panel } = Collapse;
+        if (prev.componentsForBoard.map(comp => comp.id).includes(newComponent.id)) return prev;
+
+        return Object.assign({}, prev, {
+          componentsForBoard: [newComponent, ...prev.componentsForBoard],
+          __typename: prev.componentsForBoard.__typename
+        });
+      }
+    });
+
+    subscribeToMore({
+      document: queries.componentDeleted,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev;
+
+        const deletedComponent = subscriptionData.data.componentDeleted;
+
+        return Object.assign({}, prev, {
+          componentsForBoard: prev.componentsForBoard.filter(comp => comp.id !== deletedComponent),
+          __typename: prev.componentsForBoard.__typename
+        })
+      }
+    });
+  };
+
+  const toggleNewComponent = () => setNewComponentShows(!newComponentShows);
 
   return (
     <React.Fragment>
-      {error &&
-        <Alert description="Could not fetch components." message="Error" showIcon type="error" />
-      }
+      <Button
+        type="primary"
+        shape="circle"
+        ghost
+        className="add-component-button"
+        onClick={toggleNewComponent}
+      >
+        <Icon type={newComponentShows ? 'minus' : 'plus'} />
+      </Button>
 
-      {!error &&
-        components &&
-        !!components.length &&
-        <Collapse>
-          {
-            components.map(component =>
-              <Panel
-                extra={
-                  <Link to={`/components/${component.id}`} target="_blank">
-                    <Icon type="profile" />
-                  </Link>
-                }
-                header={
-                  <span>
-                    <img
-                      alt={component.name}
-                      src={component.image || require('../../../Assets/Images/component-generic.svg')}
-                      className="component-image-icon"
-                    />
-                    {component.name}
-                  </span>
-                }
-                key={`component-panel-${component.id}`}
-              >
-                <Component component={component} />
-              </Panel>
-            )
-          }
-        </Collapse>
-      }
+      { newComponentShows && <NewComponentForm boardId={boardId} /> }
 
-      {!error && (!components || !components.length) &&
-        <Empty
-          description="No components for this board."
-        />
-      }
+      <Query query={queries.componentsForBoard} variables={{ boardId }}>
+        {({ loading, error, data, subscribeToMore }) => {
+          useEffect(() => subscribe(subscribeToMore), []);
+
+          if (loading) return (
+            <div className="top-level-state">
+              <Spin />
+            </div>
+          );
+
+          if (error) return (
+            <div className="top-level-state">
+              <Result
+                status="error"
+                title="Something's wrong"
+                subTitle={error.message}
+              />
+            </div>
+          );
+
+          if (!data || !data.componentsForBoard || !data.componentsForBoard.length) return (
+            <Empty
+              description="No components for this board."
+              className="top-level-state"
+            />
+          );
+
+          return (
+            <div className="components-container">
+              <ComponentList
+                components={data.componentsForBoard}
+                subscribeToMore={subscribeToMore}
+              />
+            </div>
+          );
+        }}
+      </Query>
     </React.Fragment>
   );
 };

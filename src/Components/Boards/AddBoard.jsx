@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useMutation } from "@apollo/react-hooks";
 
-import { baseUrl, createBoard, updateBoard } from '../../Services/api';
+import { baseUrl } from '../../Services/api';
+import { queries } from "../../Services/graphql";
 
 import { Button, Collapse, Icon, Menu, message, Steps, Upload } from 'antd';
 
@@ -9,11 +11,14 @@ import LongTextField from 'uniforms-antd/LongTextField';
 import SimpleSchema from 'simpl-schema';
 import TextField from 'uniforms-antd/TextField';
 
-import EmptyFullPage from '../UI/EmptyFullPage';
+import ComponentsContainer from "./Components/ComponentsContainer";
 
 const AddBoard = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [newBoardId, setNewBoardId] = useState('');
+
+  const [createBoard] = useMutation(queries.createBoard);
+  const [updateBoard] = useMutation(queries.updateBoard);
 
   const Dragger = Upload.Dragger;
   const Panel = Collapse.Panel;
@@ -27,7 +32,7 @@ const AddBoard = () => {
   const NameDescriptionForm = () => {
     return (
       <AutoForm
-        onSubmit={submit}
+        onSubmit={handleCreateBoard}
         schema={schema}
       >
         <TextField name="name" />
@@ -51,7 +56,11 @@ const AddBoard = () => {
       name: 'file',
       onChange(info) {
         if (info.file.status === 'done') {
-          message.success(`File ${info.file.name} uploaded.`);
+          const imageUrl = info.file.response.data.url;
+          updateBoard({ variables: { id: newBoardId, imageUrl } })
+            .then(res => {
+              message.success(`File ${info.file.name} uploaded.`);
+            }).catch(err => message.error('Could not update board.'))
         }
 
         if (info.file.status === 'error') {
@@ -93,7 +102,7 @@ const AddBoard = () => {
   }, {
     content: (
       <div>
-        <EmptyFullPage description="Soon you'll be able to add components here." />
+        <ComponentsContainer boardId={newBoardId} />
         <Button type="primary" onClick={resetAndClose} className="button-right">
           <span>Done</span>
           <Icon type="check" />
@@ -106,19 +115,14 @@ const AddBoard = () => {
 
   const moveToNextStep = () => setCurrentStep(currentStep + 1);
 
-  const submit = async data => {
-    const create = async data => createBoard(data);
-
-    if (newBoardId) {
-      updateBoard({ boardId: newBoardId, updates: data })
-    } else {
-      create(data)
-        .then(response => {
-          setNewBoardId(response.data.id);
-          moveToNextStep();
-        })
-        .catch(error => message.error(`Could not create a board. ${error}`));
-    }
+  const handleCreateBoard = data => {
+    createBoard({ variables: {
+        name: data.name,
+        description: data.description
+    } }).then(res => {
+      setNewBoardId(res.data.createBoard.board.id);
+      moveToNextStep();
+    }).catch(err => message.error(`Could not create a board. ${err}`));
   };
 
   return (

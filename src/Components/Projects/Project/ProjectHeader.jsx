@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { useMutation, useQuery } from "@apollo/react-hooks";
+import { Query } from "react-apollo";
 
 import { queries } from "../../../Services/graphql";
 
-import { Button, Col, Empty, Icon, Input, message, PageHeader, Row, Select, Typography } from "antd";
+import {Button, Col, Empty, Icon, Input, message, PageHeader, Result, Row, Select, Spin, Typography} from "antd";
 
 const ProjectHeader = ({ board, history, project }) => {
   const [ descriptionEdit, setDescriptionEdit ] = useState(false);
@@ -162,6 +163,38 @@ const ComponentSelect = ({ board, project }) => {
 
   const components = project.components.map(c => c.id);
 
+  const subscribe = subscribeToMore => {
+    subscribeToMore({
+      document: queries.componentAdded,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev;
+
+        const newComponent = subscriptionData.data.componentAdded;
+
+        if (prev.componentsForBoard.map(comp => comp.id).includes(newComponent.id)) return prev;
+
+        return Object.assign({}, prev, {
+          componentsForBoard: [newComponent, ...prev.componentsForBoard],
+          __typename: prev.componentsForBoard.__typename
+        });
+      }
+    });
+
+    subscribeToMore({
+      document: queries.componentDeleted,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev;
+
+        const deletedComponent = subscriptionData.data.componentDeleted;
+
+        return Object.assign({}, prev, {
+          componentsForBoard: prev.componentsForBoard.filter(comp => comp.id !== deletedComponent),
+          __typename: prev.componentsForBoard.__typename
+        })
+      }
+    });
+  };
+
   const handleUpdate = selection => {
     const id = project.id;
     updateProject({ variables: { id, components: selection} })
@@ -170,18 +203,35 @@ const ComponentSelect = ({ board, project }) => {
   };
 
   return (
-    <Select
-      mode="multiple"
-      value={components}
-      onChange={handleUpdate}
-      placeholder="Select components"
-      dropdownClassName="project-attrs-select"
-      style={{ width: '100%' }}
-    >
-      { board && board.components && board.components.map(c =>
-        <Option key={c.id} value={c.id}>{c.name}</Option>
-      ) }
-    </Select>
+    <Query query={queries.componentsForBoard} variables={{ boardId: board.id }}>
+      {({ loading, error, data, subscribeToMore }) => {
+        useEffect(() => subscribe(subscribeToMore), []);
+
+        return (
+          <Select
+            mode="multiple"
+            value={components}
+            onChange={handleUpdate}
+            placeholder={
+              (error && (
+                <span>
+              <Icon type="exclamation-circle" theme="twoTone" twoToneColor="red" /> Could not load
+            </span>
+              )) ||
+              (loading && (<span><Icon type="loading" /> Loading...</span>)) ||
+              (data && 'Select components') ||
+              (<span><Icon type="frown" /> Something went wrong</span>)
+            }
+            dropdownClassName="project-attrs-select"
+            style={{ width: '100%' }}
+          >
+            { data && data.componentsForBoard && data.componentsForBoard.map(c =>
+              <Option key={c.id} value={c.id}>{c.name}</Option>
+            ) }
+          </Select>
+        );
+      }}
+    </Query>
   );
 };
 

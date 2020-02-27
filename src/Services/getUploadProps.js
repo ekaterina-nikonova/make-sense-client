@@ -1,7 +1,7 @@
 import {baseUrl} from "./api";
 import {message} from "antd";
 
-export default ({parent, parent_id, type, fileList, updateFileList, onSuccess }) => ({
+export default ({parent, parent_id, type, fileList, updateFileList, showUploadList, onSuccess }) => ({
   action: `${ baseUrl }/api/v1/uploads`,
   headers: {
     'X-CSRF-TOKEN': localStorage.csrf
@@ -10,6 +10,7 @@ export default ({parent, parent_id, type, fileList, updateFileList, onSuccess })
   data: { parent, parent_id, type },
   fileList: fileList,
   name: 'file',
+  showUploadList,
   onChange(info) {
     const file = info.file;
 
@@ -23,6 +24,6 @@ export default ({parent, parent_id, type, fileList, updateFileList, onSuccess })
       message.error(`Could not upload file ${info.file.name}`);
     }
 
-    updateFileList([file]);
+    if (updateFileList) updateFileList([file]);
   }
 });
