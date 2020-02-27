@@ -134,14 +134,16 @@
   width: 3rem;
 }
 
-.icons-show-on-hover {
-  svg {
-    opacity: 0;
-  }
-  &:hover {
+@media (min-width: @tablet-display-width) {
+  .icons-show-on-hover {
     svg {
-      transition: opacity ease-out 800ms;
-      opacity: .8;
+      opacity: 0;
+    }
+    &:hover {
+      svg {
+        transition: opacity ease-out 800ms;
+        opacity: .8;
+      }
     }
   }
 }

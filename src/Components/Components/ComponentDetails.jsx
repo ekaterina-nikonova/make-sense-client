@@ -6,7 +6,7 @@ import { queries } from "../../Services/graphql";
 import { Icon, Select, Typography, message } from "antd";
 
 const ComponentDetails = ({ component }) => {
-  const { Paragraph, Text } = Typography;
+  const { Paragraph, Text, Title } = Typography;
 
   const [updateComponent] = useMutation(
     queries.updateComponent,
@@ -29,9 +29,9 @@ const ComponentDetails = ({ component }) => {
 
   return (
     <React.Fragment>
-      <Paragraph editable={{ onChange: str => updateName(component.id, component.name, str) }}>
+      <Title level={4} editable={{ onChange: str => updateName(component.id, component.name, str) }}>
         { component.name }
-      </Paragraph>
+      </Title>
 
       <Paragraph editable={{ onChange: str => updateDescription(component.id, component.name, str) }}>
         { component.description || <Text disabled>No description</Text> }
