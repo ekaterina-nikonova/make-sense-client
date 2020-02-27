@@ -69,19 +69,21 @@ const AllComponents = () => {
 
   return (
     <div className="all-components-container">
-      <Button
-        type="primary"
-        shape="circle"
-        ghost
-        className="add-component-button"
-        onClick={toggleNewComponent}
-      >
-        <Icon type={newComponentShows ? 'minus' : 'plus'} />
-      </Button>
+      <div className="new-component-form-container">
+        <Button
+          type="primary"
+          shape="circle"
+          ghost
+          className="add-component-button"
+          onClick={toggleNewComponent}
+        >
+          <Icon type={newComponentShows ? 'minus' : 'plus'} />
+        </Button>
 
-      { newComponentShows && <SelectBoard setBoardId={setBoardId} /> }
+        { newComponentShows && <SelectBoard setBoardId={setBoardId} /> }
 
-      { newComponentShows && boardId && <NewComponentForm boardId={boardId} /> }
+        { newComponentShows && boardId && <NewComponentForm boardId={boardId} /> }
+      </div>
 
       <Query query={queries.components}>
         {({ loading, error, data, subscribeToMore }) => {
@@ -105,7 +107,7 @@ const AllComponents = () => {
 
           if (!data || !data.components || !data.components.length) return (
             <Empty
-              description="No components for this board."
+              description="No components created yet."
               className="top-level-state"
             />
           );
@@ -147,7 +149,7 @@ const SelectBoard = ({ setBoardId }) => {
       filterOption={(input, option) =>
         option.props.children[2].toLowerCase().indexOf(input.toLowerCase()) >= 0
       }
-      className="board-select new-component-form"
+      className="board-select"
     >
       { data && data.boards && data.boards.map(b =>
         <Option

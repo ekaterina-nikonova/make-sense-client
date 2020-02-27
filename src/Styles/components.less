@@ -15,8 +15,16 @@
 .all-components-container, .single-component-container {
   margin-left: auto;
   margin-right: auto;
+  width: 100%;
+  max-width: 900px;
 
-  .new-component-form {
+  @media(min-width: @tablet-display-width) {
+    padding-bottom: 3rem;
+  }
+
+  .new-component-form-container {
+    max-width: 40rem;
+    margin: auto;
     padding: 1rem;
   }
 
