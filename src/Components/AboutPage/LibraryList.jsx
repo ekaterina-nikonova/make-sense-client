@@ -7,7 +7,6 @@ const LibraryList = ({ datasource }) => {
     <List
       className="libraries-list"
       dataSource={datasource}
-      header="Internals"
       renderItem={item => (
         <List.Item>
           <List.Item.Meta
