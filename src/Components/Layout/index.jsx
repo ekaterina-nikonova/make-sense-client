@@ -7,6 +7,7 @@ import { LoggedInContext } from "../../App";
 
 import StartPageContent from "../StartPage/StartPageContent";
 import AboutPageContainer from "../AboutPage/AboutPageContainer";
+import PublicProjectsContainer from "../PublicProjectsPage/PublicProjectsContainer";
 import MainPageContent from './MainPageContent';
 import ProjectsContainer from "../Projects/ProjectsContainer";
 import BoardsContainer from '../Boards/BoardsContainer';
@@ -31,6 +32,7 @@ export default () => {
           <Content className="page-content">
             <Route exact path="/" component={MainPageContent} />
             <Route path="/start" component={StartPageContent} />
+            <Route path="/public" component={PublicProjectsContainer} />
             <Route path="/about" component={AboutPageContainer} />
             <Route path="/projects" component={ProjectsContainer} />
             <Route path="/boards" component={BoardsContainer} />
