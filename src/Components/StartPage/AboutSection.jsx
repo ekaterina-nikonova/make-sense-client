@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Col, Divider, Row, Typography } from "antd";
+import { Button, Col, Divider, Row, Typography } from "antd";
 
 import aboutLogo from "../../Assets/Icons/icon-about-round.png";
 import blogLogo from "../../Assets/Icons/icon-blog-round.png";
@@ -24,6 +24,12 @@ const AboutSection = () => {
       </Paragraph>
 
       <Row gutter={[16, 16]}>
+        <Col>
+          <a href="/public" target="_self">
+            <Button type="primary" block ghost>See all public projects</Button>
+          </a>
+        </Col>
+
         <Col xs={24} sm={12}>
           <AboutSectionCard
             image={aboutLogo}
