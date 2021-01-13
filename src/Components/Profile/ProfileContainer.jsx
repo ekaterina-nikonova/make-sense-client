@@ -14,7 +14,10 @@ const ProfileContainer = ({ location, match }) => {
     <React.Fragment>
       <TopLevelMenu url={url} currentPath={pathname} item="profile" />
 
-      <EmptyFullPage description="The Profile page is under construction." />
+      <EmptyFullPage
+        description="The Profile page is under construction."
+        icon="tool"
+      />
     </React.Fragment>
   );
 };

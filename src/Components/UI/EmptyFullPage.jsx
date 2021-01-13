@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 
 import { Col, Empty, Icon, Row } from 'antd';
 
-const EmptyFullPage = ({ description }) => (
+const EmptyFullPage = ({ description, icon }) => (
   <Row type="flex">
     <Col span={24} style={{ display: 'flex' }}>
       <Empty
         className="empty-full-page"
         description={description}
         image={
-          <Icon type="tool" className="empty-icon" />
+          <Icon type={icon} className="empty-icon" />
         }
       />
     </Col>
@@ -18,11 +18,13 @@ const EmptyFullPage = ({ description }) => (
 );
 
 EmptyFullPage.defaultProps = {
-  description: 'It\'s empty here...'
+  description: 'No data',
+  icon: 'inbox'
 };
 
 EmptyFullPage.propTypes = {
-  description: PropTypes.string
+  description: PropTypes.string,
+  icon: PropTypes.string
 };
 
 export default EmptyFullPage;
