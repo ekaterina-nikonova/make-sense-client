@@ -25,7 +25,7 @@ const AboutSection = () => {
 
       <Row gutter={[16, 16]}>
         <Col>
-          <a href="/public" target="_self">
+          <a href="/public-projects" target="_self">
             <Button type="primary" block ghost>See all public projects</Button>
           </a>
         </Col>

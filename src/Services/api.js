@@ -20,7 +20,7 @@ export const me = () => axios.secured.get(`${baseUrl}/api/v1/me`);
 
 /** Projects */
 
-export const getProjects = () => axios.secured.get(`${baseUrl}/api/v1/projects`);
+export const getPublicProjects = () => axios.plain.get(`${baseUrl}/api/v1/public-projects`);
 
 /** Boards */
 

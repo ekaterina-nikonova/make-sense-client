@@ -14,6 +14,7 @@ export const UserContext = React.createContext();
 
 setGlobal({
   boards: [],
+  publicProjects: [],
   users: [],
   invitations: [],
   status: null

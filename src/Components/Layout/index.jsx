@@ -32,7 +32,7 @@ export default () => {
           <Content className="page-content">
             <Route exact path="/" component={MainPageContent} />
             <Route path="/start" component={StartPageContent} />
-            <Route path="/public" component={PublicProjectsContainer} />
+            <Route path="/public-projects" component={PublicProjectsContainer} />
             <Route path="/about" component={AboutPageContainer} />
             <Route path="/projects" component={ProjectsContainer} />
             <Route path="/boards" component={BoardsContainer} />
