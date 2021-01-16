@@ -44,7 +44,7 @@ const PublicProjectsContainer = () => {
               );
 
               return (
-                <div className="projects-container">
+                <div className="public-projects-container">
                   <Switch>
                     <Route path="/public-projects/:id" component={ProjectWrapper} />
                     <Route path="/public-projects" component={() => (

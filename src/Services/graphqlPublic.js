@@ -52,7 +52,8 @@ export const queries = {
       publicProjects {
           id,
           name, 
-          description, 
+          description,
+          user,
           chapterCount, 
           componentCount,
           board { name },
