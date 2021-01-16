@@ -1,61 +1,65 @@
-import React, { useEffect, useState } from "react";
-import { useGlobal } from "reactn";
+import React from "react";
+import { Route, Switch } from "react-router-dom";
+import { Query } from "react-apollo";
 
-import { getPublicProjects } from "../../Services/api";
+import { Apollo } from "../../Services/graphqlPublic";
+import { queries } from "../../Services/graphqlPublic";
 
 import { Empty, Result, Spin } from "antd";
 
 import PublicProjectsHeader from "./PublicProjectsHeader";
 import PublicProjectsList from "./PublicProjectsList";
+import ProjectWrapper from "../Projects/Project/ProjectWrapper";
 
 const PublicProjectsContainer = () => {
-  const [publicProjects, setPublicProjects] = useGlobal('publicProjects');
-  const [loading, setLoading] = useState();
-  const [error, setError] = useState();
-
-  useEffect(() => {
-    setLoading(true);
-
-    getPublicProjects()
-      .then(response => {
-        setLoading(false);
-        setPublicProjects(response.data);
-      })
-      .catch(error => {
-        setLoading(false);
-        setError(error);
-      });
-  }, []);
-
   return(
-    <div className="public-projects-container">
-      <div className="public-projects-section">
-        <PublicProjectsHeader />
+    <Apollo>
+      <div className="public-projects-container">
+        <div className="public-projects-section">
+          <PublicProjectsHeader />
 
-        {loading && <Spin className="top-level-state" />}
+          <Query query={queries.publicProjects}>
+            {({ loading, error, data }) => {
+              if (loading) return (
+                <div className="top-level-state">
+                  <Spin />
+                </div>
+              );
 
-        {error && (
-          <div className="top-level-state">
-            <Result
-              status="error"
-              title="Could not fetch public projects"
-              subTitle={error.message}
-            />
-          </div>
-        )}
+              if (error) return (
+                <div className="top-level-state">
+                  <Result
+                    status="error"
+                    title="Something's wrong"
+                    subTitle={error.message}
+                  />
+                </div>
+              );
 
-        {(!error && !publicProjects.length) && (
-          <Empty
-            description="No public projects."
-            className="top-level-state"
-          />
-        )}
+              if (!data || !data.publicProjects || !data.publicProjects.length) return (
+                <Empty
+                  description="No projects."
+                  className="top-level-state"
+                />
+              );
 
-        {(!error && !!publicProjects.length) && (
-          <PublicProjectsList projects={publicProjects} />
-        )}
+              return (
+                <div className="projects-container">
+                  <Switch>
+                    <Route path="/public-projects/:id" component={ProjectWrapper} />
+                    <Route path="/public-projects" component={() => (
+                      <PublicProjectsList
+                        projects={data.publicProjects}
+                      />
+                    )} />
+                  </Switch>
+                </div>
+              );
+            }}
+          </Query>
+        </div>
       </div>
-    </div>
+    </Apollo>
   );
 };
 
