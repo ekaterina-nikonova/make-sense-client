@@ -4,7 +4,7 @@ import { Query } from "react-apollo";
 
 import { queries } from "../../../Services/graphql";
 
-import {Button, Col, Empty, Icon, Input, message, PageHeader, Result, Row, Select, Spin, Typography} from "antd";
+import { Button, Col, Empty, Icon, Input, message, PageHeader, Row, Select, Switch, Tooltip, Typography } from "antd";
 
 const ProjectHeader = ({ board, history, project }) => {
   const [ descriptionEdit, setDescriptionEdit ] = useState(false);
@@ -20,6 +20,10 @@ const ProjectHeader = ({ board, history, project }) => {
 
   const updateDescription = str => updateProject({
     variables: { id: project.id, description: str }
+  });
+
+  const updatePublic = checked => updateProject({
+    variables: { id: project.id, public: checked }
   });
 
   const createDescription = e =>
@@ -48,6 +52,16 @@ const ProjectHeader = ({ board, history, project }) => {
         </Title>
       }
     >
+      <Tooltip title={`Make ${project.public ? "private" : "public"}`}>
+        <Switch
+          checkedChildren={<Icon type="unlock" />}
+          unCheckedChildren={<Icon type="lock" />}
+          checked={project.public}
+          onChange={updatePublic}
+          className="project-public-switch"
+        />
+      </Tooltip>
+
       { !project.description && !descriptionEdit && (
         <Empty
           image={Empty.PRESENTED_IMAGE_SIMPLE}

@@ -74,6 +74,7 @@ export const queries = {
       id
       name
       description
+      public
       board { id, name, components { id, name } }
       components { id, name }
     }
@@ -103,17 +104,19 @@ export const queries = {
   updateProject: gql`
     mutation updateProject(
       $id: ID!
-      $board: ID
       $name: String
       $description: String
+      $public: Boolean
+      $board: ID
       $components: [String!]
     ) {
       updateProject(
         id: $id
         attributes: {
-          board: $board
           name: $name
           description: $description
+          public: $public
+          board: $board
           components: $components
         }
       ) {
@@ -121,6 +124,7 @@ export const queries = {
           id
           name
           description
+          public
           board { id, name, components { id, name } }
           components { id, name }
           chapterCount
