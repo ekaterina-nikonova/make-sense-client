@@ -73,7 +73,7 @@ const Footer = () => {
         </div>
 
         <div className="copyright-container">
-          <Text>©&nbsp;2019&ndash;2020 Ekaterina Nikonova</Text>
+          <Text>©&nbsp;2019&ndash;2021 Ekaterina Nikonova</Text>
         </div>
       </div>
     </Footer>
