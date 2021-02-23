@@ -4,13 +4,21 @@ import { useMutation } from "@apollo/react-hooks";
 
 import { queries } from "../../Services/graphql";
 
-import { Col, Collapse, Empty, Icon, Popconfirm, Row, Typography, message } from "antd";
+import {Col, Collapse, Empty, Icon, Popconfirm, Row, Typography, message, Switch, Tooltip} from "antd";
 
 const ProjectList = ({ projects }) => {
   const [deleteProject] = useMutation(queries.deleteProject);
+  const [updateProject] = useMutation(queries.updateProject);
 
   const { Panel } = Collapse;
   const { Paragraph } = Typography;
+
+  const updatePublic = (id, checked, event) => {
+    event.stopPropagation();
+    updateProject({
+      variables: {id, public: checked}
+    });
+  };
 
   const handleDelete = (e, id) => {
     e.stopPropagation();
@@ -55,6 +63,14 @@ const ProjectList = ({ projects }) => {
               >
                 <Icon type="delete" onClick={e => e.stopPropagation()} />
               </Popconfirm>
+
+              <Switch
+                checkedChildren={<Icon type="unlock" />}
+                unCheckedChildren={<Icon type="lock" />}
+                checked={project.public}
+                onChange={(checked, event) => updatePublic(project.id, checked, event)}
+                className="project-public-switch-list"
+              />
             </div>
           }
         >
