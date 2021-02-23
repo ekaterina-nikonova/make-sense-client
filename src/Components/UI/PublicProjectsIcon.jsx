@@ -8,7 +8,7 @@ import publicProjectsLine from "../../Assets/Icons/icon-public-line.svg";
 const PublicProjectsIcon = ({ currentPath }) => {
   if (currentPath === '/public-projects') return (
     <img
-      src={publicProjectsLine}
+      src={publicProjects}
       alt="Public projects"
       style={{ maxHeight: '1.2rem' }}
     />
@@ -17,9 +17,15 @@ const PublicProjectsIcon = ({ currentPath }) => {
   return (
     <Tooltip title="Public projects">
       <img
+        src={publicProjectsLine}
+        alt="Public projects"
+        className="public-projects-icon-line"
+      />
+
+      <img
         src={publicProjects}
         alt="Public projects"
-        style={{ maxHeight: '1.2rem'}}
+        className="public-projects-icon-color"
       />
     </Tooltip>
   );

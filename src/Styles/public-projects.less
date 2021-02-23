@@ -23,3 +23,25 @@
     max-height: 2rem;
   }
 }
+
+.public-projects-icon-color {
+  max-height: 1.2rem;
+  opacity: 0;
+
+  &:hover {
+    transition: opacity ease-out 800ms;
+    opacity: 1;
+  }
+}
+
+.public-projects-icon-line {
+  max-height: 1.2rem;
+  opacity: 1;
+  position: relative;
+  left: 1.2rem;
+
+  &:hover {
+    transition: opacity ease-out 800ms;
+    opacity: 0;
+  }
+}
