@@ -3,7 +3,7 @@ import { useMutation, useQuery } from "@apollo/react-hooks";
 
 import { queries } from "../../Services/graphql";
 
-import { Alert, Button, Drawer, Form, Icon, Input, Select, message } from "antd";
+import { Alert, Button, Checkbox, Drawer, Form, Icon, Input, Select, message } from "antd";
 
 const NewProjectDrawer = () => {
   const [ drawerOpen, setDrawerOpen ] = useState(false);
@@ -58,9 +58,10 @@ const NewProjectForm = ({ form, close }) => {
     validateFields((err, values) => {
       if(!err) {
         createProject({ variables: {
-          boardId: values.board,
           name: values.name,
           description: values.description,
+          public: values.public,
+          boardId: values.board,
           components: values.components
         } })
         .then(res => {
@@ -108,9 +109,15 @@ const NewProjectForm = ({ form, close }) => {
         )}
       </Item>
 
+      <Item>
+        { getFieldDecorator('public', { valuePropName: 'checked' })(
+          <Checkbox>Public</Checkbox>
+        )}
+      </Item>
+
       <Item label="Description">
         { getFieldDecorator('description', {})(
-            <TextArea rows={5} placeholder="What is your project about?" />
+          <TextArea rows={5} placeholder="What is your project about?" />
         )}
       </Item>
 

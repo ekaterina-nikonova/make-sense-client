@@ -82,15 +82,17 @@ export const queries = {
 
   createProject: gql`
     mutation createProject(
-        $boardId: ID!,
         $name: String!,
         $description: String,
+        $public: Boolean,
+        $boardId: ID!,
         $components: [String!]
     ) {
       createProject(
-          boardId: $boardId,
           name: $name,
           description: $description,
+          public: $public,
+          boardId: $boardId,
           components: $components
       ) {
         project {
