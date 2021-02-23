@@ -1,9 +1,7 @@
 import React from 'react';
-import { BrowserRouter as Router, Redirect, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import { Layout } from 'antd';
-
-import { LoggedInContext } from "../../App";
 
 import StartPageContent from "../StartPage/StartPageContent";
 import AboutPageContainer from "../AboutPage/AboutPageContainer";
@@ -14,7 +12,6 @@ import BoardsContainer from '../Boards/BoardsContainer';
 import AllComponentsContainer from '../Components/AllComponentsContainer';
 import ProfileContainer from "../Profile/ProfileContainer";
 import AdminPanelContainer from '../AdminPanel/AdminPanelContainer';
-import EmptyFullPage from '../UI/EmptyFullPage';
 
 import SignupPage from './SignupPage';
 import Header from './Header';
@@ -27,7 +24,7 @@ export default () => {
     <Layout>
       <Router>
         <React.Fragment>
-          <Header />
+          <Route path="/" component={Header} />
 
           <Content className="page-content">
             <Route exact path="/" component={MainPageContent} />

@@ -3,15 +3,26 @@ import React from "react";
 import { Tooltip } from "antd";
 
 import publicProjects from "../../Assets/Icons/icon-public.svg";
+import publicProjectsLine from "../../Assets/Icons/icon-public-line.svg";
 
-const PublicProjectsIcon = () => (
-  <Tooltip title="Public projects">
+const PublicProjectsIcon = ({ currentPath }) => {
+  if (currentPath === '/public-projects') return (
     <img
-      src={publicProjects}
+      src={publicProjectsLine}
       alt="Public projects"
-      style={{ maxHeight: '1.2rem'}}
+      style={{ maxHeight: '1.2rem' }}
     />
-  </Tooltip>
-);
+  );
+
+  return (
+    <Tooltip title="Public projects">
+      <img
+        src={publicProjects}
+        alt="Public projects"
+        style={{ maxHeight: '1.2rem'}}
+      />
+    </Tooltip>
+  );
+};
 
 export default PublicProjectsIcon;

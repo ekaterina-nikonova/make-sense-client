@@ -11,7 +11,9 @@ import LogInOutButton from "./LogInOutButton";
 import PublicProjectsIcon from "../UI/PublicProjectsIcon";
 import { ServerStatusConnected, ServerStatusDisconnected } from "../UI/ServerStatusIcon";
 
-export default () => {
+const Header = ({ location }) => {
+  const { pathname } = location;
+
   const { Header } = Layout;
 
   const [ connected, setConnected ] = useState(false);
@@ -26,7 +28,7 @@ export default () => {
 
         <span style={{ marginLeft: 'auto' }}>
           <Link to="/public-projects">
-            <PublicProjectsIcon />
+            <PublicProjectsIcon currentPath={pathname} />
           </Link>
 
           <ActionCableConsumer
@@ -47,3 +49,5 @@ export default () => {
     </Row>
   </Header>;
 };
+
+export default Header;
