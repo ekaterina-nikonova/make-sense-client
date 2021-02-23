@@ -8,6 +8,7 @@ import { Col, Layout, Row } from "antd";
 
 import logo from "../../Assets/Images/logo_square.png";
 import LogInOutButton from "./LogInOutButton";
+import PublicProjectsIcon from "../UI/PublicProjectsIcon";
 import { ServerStatusConnected, ServerStatusDisconnected } from "../UI/ServerStatusIcon";
 
 export default () => {
@@ -24,6 +25,10 @@ export default () => {
         <span className="app-title">Brittle pins</span>
 
         <span style={{ marginLeft: 'auto' }}>
+          <Link to="/public-projects">
+            <PublicProjectsIcon />
+          </Link>
+
           <ActionCableConsumer
             channel={{ channel: 'AppChannel' }}
             onConnected={() => setConnected(true)}
