@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import { Icon, List, Typography } from "antd";
 
@@ -6,6 +7,14 @@ const PublicProjectsList = ({ projects }) => {
   const { Paragraph } = Typography;
   const { Item } = List;
   const { Meta } = Item;
+
+  const date = fullDate => new Date(fullDate).toDateString();
+
+  const ProjectHeader = ({ projectName, id }) => (
+    <Link to={`public-projects/${id}`}>
+      <Icon type="arrow-right" /> <span>{ projectName }</span>
+    </Link>
+  );
 
   const IconText = ({ icon, text }) => (
     <span>
@@ -28,11 +37,14 @@ const PublicProjectsList = ({ projects }) => {
           key={project.id}
           actions={[
             <IconText icon="user" text={`Author: ${project.user}`} />,
-            <IconText icon="ordered-list" text={`Chapters: ${project.chapterCount}`} />,
-            <IconText icon="bulb" text={`Components: ${project.componentCount}`} />
+            <IconText icon="calendar" text={`Created: ${date(project.createdAt)}`} />,
           ]}
         >
-          <Meta title={project.name} description={project.description} />
+          <Meta
+            title={
+              <ProjectHeader projectName={project.name} id={project.id} />}
+            description={project.description}
+          />
         </Item>
       )}
     />

@@ -48,10 +48,12 @@ export const Apollo = ({children}) => (
 
 export const queries = {
   // Projects
+
   publicProjects: gql`{
       publicProjects {
           id,
-          name, 
+          createdAt,
+          name,
           description,
           user,
           chapterCount, 
@@ -60,4 +62,50 @@ export const queries = {
           components { name }
       }
   }`,
+
+  publicProject: gql`query ($id: ID!){
+      publicProject(id: $id) {
+          id
+          name
+          description
+          board { id, name, imageUrl }
+          components { id, name, imageUrl }
+      }
+  }`,
+
+  projectSubscription: gql`
+      subscription {
+          projectUpdated {
+              project {
+                  id
+                  name
+                  description
+                  board { id, name, imageUrl, components { id, name } }
+                  components { id, name, imageUrl }
+                  chapterCount
+                  componentCount
+              }
+          }
+      }
+  `,
+
+  // Chapters
+  publicChapters: gql`
+      query getChaptersForProject($projectId: ID!) {
+          publicChapters(projectId: $projectId) {
+              id,
+              name,
+              intro,
+              projectId,
+
+              sections {
+                  id
+                  paragraph
+                  code
+                  language
+                  imageUrl
+              }
+          }
+      }
+  `,
 };

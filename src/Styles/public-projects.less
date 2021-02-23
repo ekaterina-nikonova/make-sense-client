@@ -1,12 +1,25 @@
 .public-projects-container {
   flex-grow: 1;
+  min-height: calc(100vh - 64px);
+  max-width: 900px;
+  padding: 3rem 2rem;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
 
-  .public-projects-section {
-    min-height: calc(100vh - 64px);
-    max-width: 900px;
-    padding: 3rem 2rem;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
+  img {
+    max-width: 100%;
+    margin: 1rem 0;
+  }
+
+  .board-icon {
+    margin-right: 1rem;
+    max-width: 3rem;
+  }
+
+  .component-icon {
+    margin-right: 0.5rem;
+    max-width: 2rem;
+    max-height: 2rem;
   }
 }

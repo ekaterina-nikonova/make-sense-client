@@ -9,55 +9,51 @@ import { Empty, Result, Spin } from "antd";
 
 import PublicProjectsHeader from "./PublicProjectsHeader";
 import PublicProjectsList from "./PublicProjectsList";
-import ProjectWrapper from "../Projects/Project/ProjectWrapper";
+import PublicProjectWrapper from "./PublicProjectWrapper";
 
 const PublicProjectsContainer = () => {
   return(
     <Apollo>
       <div className="public-projects-container">
-        <div className="public-projects-section">
-          <PublicProjectsHeader />
+        <PublicProjectsHeader />
 
-          <Query query={queries.publicProjects}>
-            {({ loading, error, data }) => {
-              if (loading) return (
-                <div className="top-level-state">
-                  <Spin />
-                </div>
-              );
+        <Query query={queries.publicProjects}>
+          {({ loading, error, data }) => {
+            if (loading) return (
+              <div className="top-level-state">
+                <Spin />
+              </div>
+            );
 
-              if (error) return (
-                <div className="top-level-state">
-                  <Result
-                    status="error"
-                    title="Something's wrong"
-                    subTitle={error.message}
-                  />
-                </div>
-              );
-
-              if (!data || !data.publicProjects || !data.publicProjects.length) return (
-                <Empty
-                  description="No projects."
-                  className="top-level-state"
+            if (error) return (
+              <div className="top-level-state">
+                <Result
+                  status="error"
+                  title="Something's wrong"
+                  subTitle={error.message}
                 />
-              );
+              </div>
+            );
 
-              return (
-                <div className="public-projects-container">
-                  <Switch>
-                    <Route path="/public-projects/:id" component={ProjectWrapper} />
-                    <Route path="/public-projects" component={() => (
-                      <PublicProjectsList
-                        projects={data.publicProjects}
-                      />
-                    )} />
-                  </Switch>
-                </div>
-              );
-            }}
-          </Query>
-        </div>
+            if (!data || !data.publicProjects || !data.publicProjects.length) return (
+              <Empty
+                description="No projects."
+                className="top-level-state"
+              />
+            );
+
+            return (
+              <Switch>
+                <Route path="/public-projects/:id" component={PublicProjectWrapper} />
+                <Route path="/public-projects" component={() => (
+                  <PublicProjectsList
+                    projects={data.publicProjects}
+                  />
+                )} />
+              </Switch>
+            );
+          }}
+        </Query>
       </div>
     </Apollo>
   );
