@@ -30,7 +30,7 @@
     "react-scripts": "2.1.5",
     "react-syntax-highlighter": "^11.0.2",
     "reactn": "^2.0.2",
-    "simpl-schema": "^1.5.5",
+    "simpl-schema": "^1.10.2",
     "subscriptions-transport-ws": "^0.9.16",
     "uniforms": "^1.31.1",
     "uniforms-antd": "^1.31.1"
